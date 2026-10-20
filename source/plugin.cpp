@@ -5,6 +5,7 @@
 #include "public.sdk/source/main/pluginfactory.h"
 #include "base/source/fstreamer.h"
 #include "pluginterfaces/vst/ivstparameterchanges.h"
+#include "pluginterfaces/vst/ivstprocesscontext.h"
 #include "pluginterfaces/vst/vstspeaker.h"
 #if JERZY_GUI
 #include "vstgui/plugin-bindings/vst3editor.h"
@@ -21,15 +22,15 @@ static const FUID controllerID(0xBE7CA5D9,0xCA984617,0xB99A5712,0x2F38D819);
 bool readState(IBStream* stream,Parameters& p){
     if(!stream)return false;
     IBStreamer s(stream,kLittleEndian);int32 version=0;
-    if(!s.readInt32(version)||(version!=1&&version!=2))return false;
+    if(!s.readInt32(version)||(version<1||version>3))return false;
     Parameters next;
-    for(int i=0;i<(version==1?9:Count);++i){double v;if(!s.readDouble(v)||!std::isfinite(v))return false;next.set(i,v);}
+    for(int i=0;i<(version==1?9:version==2?12:Count);++i){double v;if(!s.readDouble(v)||!std::isfinite(v))return false;next.set(i,v);}
     p=next;return true;
 }
 class Processor final:public AudioEffect {
-    Parameters p;Engine engine;
+    Parameters p;Engine engine;double tempo=120.;
 public:
-    Processor(){setControllerClass(controllerID);}
+    Processor(){setControllerClass(controllerID);processContextRequirements.needTempo();}
     static FUnknown* create(void*){return static_cast<IAudioProcessor*>(new Processor);}
     tresult PLUGIN_API initialize(FUnknown* context) SMTG_OVERRIDE {
         auto r=AudioEffect::initialize(context);if(r!=kResultOk)return r;
@@ -46,10 +47,11 @@ public:
     tresult PLUGIN_API setState(IBStream* s) SMTG_OVERRIDE {return readState(s,p)?kResultOk:kResultFalse;}
     tresult PLUGIN_API getState(IBStream* stream) SMTG_OVERRIDE {
         if(!stream)return kResultFalse;IBStreamer s(stream,kLittleEndian);
-        if(!s.writeInt32(2))return kResultFalse;
+        if(!s.writeInt32(3))return kResultFalse;
         for(auto v:p.value)if(!s.writeDouble(v))return kResultFalse;return kResultOk;
     }
     tresult PLUGIN_API process(ProcessData& d) SMTG_OVERRIDE {
+        if(d.processContext&&(d.processContext->state&ProcessContext::kTempoValid)&&validTempo(d.processContext->tempo))tempo=d.processContext->tempo;
         if(d.symbolicSampleSize!=kSample32&&d.symbolicSampleSize!=kSample64)return kResultFalse;
         // Fixed-size queue cursors: no allocation, locks or sorting on the audio thread.
         std::array<IParamValueQueue*,Count> queues{};std::array<int32,Count> cursors{};
@@ -75,7 +77,7 @@ public:
                 if(d.symbolicSampleSize==kSample32){auto** b=d.inputs[0].channelBuffers32;if(!silent&&b&&b[c])input[c]=b[c][sample];}
                 else{auto** b=d.inputs[0].channelBuffers64;if(!silent&&b&&b[c])input[c]=b[c][sample];}
             }
-            engine.tick(input,output,ch,p);
+            engine.tick(input,output,ch,p,tempo);
             for(int c=0;c<ch;++c){
                 if(d.symbolicSampleSize==kSample32){auto** b=d.outputs[0].channelBuffers32;if(b&&b[c])b[c][sample]=static_cast<float>(output[c]);}
                 else{auto** b=d.outputs[0].channelBuffers64;if(b&&b[c])b[c][sample]=output[c];}
@@ -122,6 +124,10 @@ public:
         parameters.addParameter(STR16("Boost"),nullptr,1,defaults[Boost],ParameterInfo::kCanAutomate,Boost);
         parameters.addParameter(new RangeParameter(STR16("Squelch"),Squelch,STR16("%"),0,100,defaults[Squelch]*100));
         parameters.addParameter(STR16("Modulation"),nullptr,1,defaults[ModEnable],ParameterInfo::kCanAutomate,ModEnable);
+        parameters.addParameter(STR16("Tempo Sync"),nullptr,1,defaults[TempoSync],ParameterInfo::kCanAutomate,TempoSync);
+        auto* notes=new StringListParameter(STR16("Note Division"),Division);
+        for(const auto& note:divisions){String128 name{};UString(name,128).fromAscii(note.name);notes->appendString(name);}
+        notes->setNormalized(defaults[Division]);parameters.addParameter(notes);
         parameters.addParameter(STR16("Overload"),nullptr,0,0,ParameterInfo::kIsReadOnly,OverloadMeter);
         return kResultOk;
     }
@@ -141,7 +147,7 @@ public:
 }
 BEGIN_FACTORY_DEF("Jerzy Audio","","")
 DEF_CLASS2(INLINE_UID_FROM_FUID(Jerzy::processorID),PClassInfo::kManyInstances,kVstAudioEffectClass,
-    "Jerzy Memory Delay",Vst::kDistributable,"Fx|Delay","0.1.0",kVstVersionString,Jerzy::Processor::create)
+    "Jerzy Memory Delay",Vst::kDistributable,"Fx|Delay","0.1.1",kVstVersionString,Jerzy::Processor::create)
 DEF_CLASS2(INLINE_UID_FROM_FUID(Jerzy::controllerID),PClassInfo::kManyInstances,kVstComponentControllerClass,
-    "Jerzy Memory Delay Controller",0,"","0.1.0",kVstVersionString,Jerzy::Controller::create)
+    "Jerzy Memory Delay Controller",0,"","0.1.1",kVstVersionString,Jerzy::Controller::create)
 END_FACTORY

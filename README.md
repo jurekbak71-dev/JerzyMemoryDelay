@@ -34,6 +34,9 @@ Gotowe paczki są publikowane automatycznie po pomyślnej kompilacji i testach o
 - Depth: głębokość modulacji zegara. Delay: żądany czas 20…550 ms, ograniczony zakresem modelu (Early 300 ms, Squelch 400 ms).
 - Circuit: zmiana układu; stary ogon jest wygaszany, a obwód przełączany przez sygnał bezpośredni.
 - Circuit Details: Boost, Squelch, kształt LFO i włącznik modulacji. Kontrolki nieobecne w danym obwodzie są nieaktywne.
+- Tempo Sync: synchronizacja czasu echa z BPM hosta, również FL Studio. Włącz przycisk **TEMPO SYNC** i wybierz podział poniżej. Dostępne są `1/1`, `1/2`, `1/4`, `1/8`, `1/16`, `1/32`, `1/64`, każdy w wersji prostej, z kropką (`D`) i triolowej (`T`).
+- Sync jest domyślnie wyłączony; stare sesje zachowują ustawienia i brzmienie. Po wyłączeniu Sync ponownie działa gałka Delay z poprzednią wartością. W Sync gałka jest nieaktywna, a jej wyświetlacz pokazuje wybrany podział. Tempo jest pobierane przez VST3 z hosta; jeżeli host chwilowo go nie przekaże, pozostaje ostatnia poprawna wartość (przy starcie 120 BPM). Obsługiwany zakres wynosi 10–1000 BPM.
+- Długie podziały w Sync rozszerzają zakres zegara BBD zamiast skracać nutę do limitu sprzętowego. Przy wolnym zegarze echo staje się ciemniejsze; czasy ręczne i dotychczasowe profile pozostają bez zmian.
 - Footswitch: bypass; pomarańczowa dioda wskazuje aktywny efekt, czerwona przeciążenie wejścia.
 - Prawy przycisk na gałce przywraca ustawienie domyślne. Shift umożliwia precyzyjniejszy ruch. Menu kontekstowe edytora zawiera skalę GUI.
 

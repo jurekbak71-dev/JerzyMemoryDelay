@@ -29,10 +29,10 @@ public:
     }
     double peak()const{return overload;}
     // Single-sample entry supports sample-offset host automation and in-place audio.
-    void tick(const double* input,double* output,int count,const Parameters& p){
+    void tick(const double* input,double* output,int count,const Parameters& p,double tempo=120.){
         if(channels[0].line.empty()){for(int c=0;c<count;++c)output[c]=input[c];return;}
         const double smoothing=1.-std::exp(-1./(.012*sr));
-        if(first){smooth=p.value;activeModel=p.model();delaySamples=std::min(delayMs(smooth[Delay]),profiles[activeModel].maxMs)*sr*.001;first=false;}
+        if(first){smooth=p.value;activeModel=p.model();delaySamples=requestedDelayMs(p,smooth[Delay],activeModel,tempo)*sr*.001;first=false;}
         // Switching physical circuits fades through dry audio and clears the old circuit.
         if(activeModel!=p.model()){
             modelFade=std::max(0.,modelFade-1./(.02*sr));
@@ -40,12 +40,12 @@ public:
                 for(auto& c:channels){std::fill(c.line.begin(),c.line.end(),0.);c.pre1=c.pre2=c.post1=c.post2=c.low=c.feedback=c.env=c.boostLow=c.previousCharge=c.heldCharge=c.oldHeldCharge=c.compressEnv=c.expandEnv=0.;}
                 pos=0;clockPhase=0.;
                 activeModel=p.model();
-                delaySamples=std::min(delayMs(smooth[Delay]),profiles[activeModel].maxMs)*sr*.001;
+                delaySamples=requestedDelayMs(p,smooth[Delay],activeModel,tempo)*sr*.001;
             }
         }else modelFade=std::min(1.,modelFade+1./(.02*sr));
         const auto& profile=profiles[activeModel];
         for(int i=0;i<Count;++i)smooth[i]+=smoothing*(p.value[i]-smooth[i]);
-        const double target=std::min(delayMs(smooth[Delay]),profile.maxMs)*sr*.001;
+        const double target=requestedDelayMs(p,smooth[Delay],activeModel,tempo)*sr*.001;
         delaySamples+=(1.-std::exp(-1./(.035*sr)))*(target-delaySamples);
         const double rate=.15+7.85*smooth[ModRate];
         phase+=rate/sr;if(phase>=1.)phase-=1.;
@@ -56,7 +56,8 @@ public:
         const double tickRate=profile.stages/std::max(2.,delaySamples*(1.+depth*lfo));
         const double initialPhase=clockPhase;
         // Tracking low-pass loses bandwidth as the BBD clock slows down.
-        const double cutoff=std::min(sr*.22,profile.bandwidth*std::sqrt(180./std::max(20.,delaySamples*1000./sr)));
+        double cutoff=std::min(sr*.22,profile.bandwidth*std::sqrt(180./std::max(20.,delaySamples*1000./sr)));
+        if(p.value[TempoSync]>=.5)cutoff=std::min(cutoff,.22*tickRate*sr);
         const double a=1.-std::exp(-2*pi*cutoff/sr),hp=1.-std::exp(-2*pi*65./sr);
         const double gain=std::pow(10.,(-12.+24.*smooth[Level])/20.);
         const double mix=smooth[Blend],fb=profile.feedbackMax*smooth[Feedback];

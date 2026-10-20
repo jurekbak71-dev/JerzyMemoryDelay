@@ -9,7 +9,7 @@ colors=ET.SubElement(root,'colors')
 for name,value in [('Cream','#e8e5d4ff'),('Dark','#151719ff'),('Ink','#30332fff'),('Red','#c8322aff'),('Muted','#a8ad9bff'),('Drawer','#252a2bff')]:
  ET.SubElement(colors,'color',{'name':name,'rgba':value})
 tags=ET.SubElement(root,'control-tags')
-names=['Blend','Level','Feedback','Rate','Depth','Delay','Model','Wave','Bypass','Boost','Squelch','ModEnable']
+names=['Blend','Level','Feedback','Rate','Depth','Delay','Model','Wave','Bypass','Boost','Squelch','ModEnable','TempoSync','Division']
 for i,n in enumerate(names):ET.SubElement(tags,'control-tag',name=n,tag=str(i))
 ET.SubElement(tags,'control-tag',name='Overload',tag='100')
 ET.SubElement(tags,'control-tag',name='Details',tag='900')
@@ -28,6 +28,8 @@ add(view,'MemoryLed',300,320,30,30,control_tag='Overload',mouse_enabled='false')
 label(view,75,554,75,24,'CIRCUIT',color='Muted')
 add(view,'COptionMenu',159,550,270,32,control_tag='Model',font='Label',font_color='Cream',back_color='Drawer',frame_color='Muted',tooltip='Choose the modeled circuit; switching fades through dry audio')
 add(view,'CTextButton',79,598,180,30,control_tag='Details',title='CIRCUIT DETAILS',font='Small',text_color='Cream',text_color_highlighted='Red',frame_color='Muted',kick_style='false',round_radius='4')
+add(view,'CTextButton',460,550,155,32,control_tag='TempoSync',title='TEMPO SYNC',font='Small',text_color='Cream',text_color_highlighted='Red',frame_color='Muted',kick_style='false',round_radius='4',tooltip='Follow host tempo (FL Studio / VST3). Off restores the original Delay control.')
+add(view,'COptionMenu',460,593,155,30,control_tag='Division',font='Label',font_color='Cream',back_color='Drawer',frame_color='Muted',tooltip='D = dotted; T = triplet. Sync extends the clock range for exact musical timing.')
 add(view,'MemoryFootswitch',650,525,112,112,control_tag='Bypass',tooltip='Effect bypass')
 add(view,'MemoryLed',690,494,30,30,control_tag='Bypass',mouse_enabled='false')
 # Local UI drawer: not a sound parameter and intentionally not saved in DAW state.

@@ -6,6 +6,25 @@ using namespace Jerzy;
 void check(bool ok,const char* message){if(!ok)throw std::runtime_error(message);}
 int main(){try{
     int cases=0;
+    for(double bpm:{60.,120.,180.})for(int note=0;note<int(divisions.size());++note){
+        const double division=double(note)/double(divisions.size()-1);
+        check(std::abs(syncedDelayMs(division,bpm)-60000./bpm*divisions[note].beats)<1e-9,"note division math");++cases;
+    }
+    check(syncedDelayMs(.3,std::numeric_limits<double>::quiet_NaN())==500.,"invalid tempo fallback");++cases;
+    for(int model=0;model<6;++model){
+        // A quarter note at 100 BPM is 600 ms: longer than every free-mode cap.
+        // Every circuit must honour the musical duration instead of truncating it.
+        Engine e;e.prepare(48000);Parameters p;p.set(Model,model/5.);p.set(TempoSync,1);p.set(Division,.3);
+        p.set(Blend,1);p.set(Feedback,0);p.set(Depth,0);p.set(Squelch,0);
+        int peakAt=0;double peak=0,early=0;
+        for(int i=0;i<34000;++i){double in[2]{i==0?.5:0,0},out[2]{};e.tick(in,out,2,p,100.);
+            if(i<28798)early+=std::abs(out[0]);
+            if(std::abs(out[0])>peak){peak=std::abs(out[0]);peakAt=i;}
+        }
+        check(peak>1e-10&&early<1e-12,"sync missing echo or capped to hardware range");
+        check(peakAt>=28798&&peakAt<29184,"sync impulse timing");++cases;
+        p.set(TempoSync,0);check(requestedDelayMs(p,1.,model,100.)==profiles[model].maxMs,"free-mode hardware range changed");++cases;
+    }
     for(double sr:{44100.,48000.,96000.})for(int model=0;model<6;++model){
         Engine e;e.prepare(sr);Parameters p;p.set(Model,model/5.);p.set(Blend,1);p.set(Feedback,0);p.set(Depth,0);p.set(Delay,80./530.);
         int peakAt=0;double peak=0,pre=0;

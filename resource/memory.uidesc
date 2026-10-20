@@ -25,6 +25,8 @@
     <control-tag name="Boost" tag="9" />
     <control-tag name="Squelch" tag="10" />
     <control-tag name="ModEnable" tag="11" />
+    <control-tag name="TempoSync" tag="12" />
+    <control-tag name="Division" tag="13" />
     <control-tag name="Overload" tag="100" />
     <control-tag name="Details" tag="900" />
   </control-tags>
@@ -52,6 +54,8 @@
     <view class="CTextLabel" origin="75, 554" size="75, 24" title="CIRCUIT" font="Label" font-color="Muted" transparent="true" mouse-enabled="false" text-alignment="center" />
     <view class="COptionMenu" origin="159, 550" size="270, 32" control-tag="Model" font="Label" font-color="Cream" back-color="Drawer" frame-color="Muted" tooltip="Choose the modeled circuit; switching fades through dry audio" />
     <view class="CTextButton" origin="79, 598" size="180, 30" control-tag="Details" title="CIRCUIT DETAILS" font="Small" text-color="Cream" text-color-highlighted="Red" frame-color="Muted" kick-style="false" round-radius="4" />
+    <view class="CTextButton" origin="460, 550" size="155, 32" control-tag="TempoSync" title="TEMPO SYNC" font="Small" text-color="Cream" text-color-highlighted="Red" frame-color="Muted" kick-style="false" round-radius="4" tooltip="Follow host tempo (FL Studio / VST3). Off restores the original Delay control." />
+    <view class="COptionMenu" origin="460, 593" size="155, 30" control-tag="Division" font="Label" font-color="Cream" back-color="Drawer" frame-color="Muted" tooltip="D = dotted; T = triplet. Sync extends the clock range for exact musical timing." />
     <view class="MemoryFootswitch" origin="650, 525" size="112, 112" control-tag="Bypass" tooltip="Effect bypass" />
     <view class="MemoryLed" origin="690, 494" size="30, 30" control-tag="Bypass" mouse-enabled="false" />
     <view class="CViewContainer" origin="77, 634" size="540, 85" background-color="Drawer" editor-role="details">

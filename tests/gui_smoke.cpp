@@ -95,6 +95,10 @@ int main(int argc,char** argv){try{
  auto click=[&](int x,int y){motion(display,-1,x,y,0);button(display,1,True,0);button(display,1,False,0);XFlush(display);host->pump(150);};
  click(705,580);check(controller->getParamNormalized(Jerzy::Bypass)>.5&&host->edited==Jerzy::Bypass,"footswitch did not automate bypass");
  click(705,580);check(controller->getParamNormalized(Jerzy::Bypass)<.5,"footswitch did not re-enable effect");
+ click(535,566);check(controller->getParamNormalized(Jerzy::TempoSync)>.5&&host->edited==Jerzy::TempoSync,"tempo sync button did not automate");
+ int beforeFreeKnob=host->edits;click(925,180);check(host->edits==beforeFreeKnob,"free delay knob active during sync");
+ host->capture((std::string(argv[2])+"-sync.ppm").c_str(),size.getWidth(),size.getHeight());
+ click(535,566);check(controller->getParamNormalized(Jerzy::TempoSync)<.5,"tempo sync did not disable");
  click(170,613);host->capture((std::string(argv[2])+"-details.ppm").c_str(),size.getWidth(),size.getHeight());
  controller->setParamNormalized(Jerzy::Model,0);host->pump(150);
  int edits=host->edits;click(110,681);check(host->edits>edits&&host->edited==Jerzy::Boost,"EH7500 boost unavailable");

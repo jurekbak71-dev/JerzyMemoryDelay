@@ -2,6 +2,7 @@
 #include "vstgui/plugin-bindings/vst3editor.h"
 #include "vstgui/lib/controls/cknob.h"
 #include "vstgui/lib/controls/cbuttons.h"
+#include "vstgui/lib/controls/ctextlabel.h"
 #include "vstgui/lib/cdrawcontext.h"
 #include "vstgui/lib/cgraphicspath.h"
 #include "vstgui/lib/cgradient.h"
@@ -11,6 +12,7 @@
 #include "vstgui/uidescription/iviewcreator.h"
 #include "vstgui/uidescription/uiattributes.h"
 #include <vector>
+#include <cstdio>
 namespace Jerzy {
 using namespace VSTGUI;
 namespace {
@@ -128,7 +130,19 @@ class Editor final:public VST3Editor {
  std::vector<CControl*> controls;CView* details=nullptr;SharedPointer<CVSTGUITimer> timer;
  void refresh(){
   int model=std::clamp(int(std::lround(getController()->getParamNormalized(Model)*5)),0,5);
+  const bool sync=getController()->getParamNormalized(TempoSync)>=.5;
   for(auto* c:controls){auto tag=c->getTag();bool enabled=true;
+   if(auto* label=dynamic_cast<CTextLabel*>(c)){
+    if(tag==Delay){
+     char text[32]{};
+     if(sync)std::snprintf(text,sizeof(text),"%s",divisions[divisionIndex(getController()->getParamNormalized(Division))].name);
+     else std::snprintf(text,sizeof(text),"%.0f ms",delayMs(getController()->getParamNormalized(Delay)));
+     label->setText(text);
+    }
+    continue;
+   }
+   if(tag==Delay)enabled=!sync;
+   if(tag==Division)enabled=sync;
    if(tag==ModRate||tag==Depth||tag==Wave||tag==ModEnable)enabled=model>=3;
    if(tag==Boost)enabled=model==0;if(tag==Squelch)enabled=model==1||model==2;
    bool led=dynamic_cast<Led*>(c)!=nullptr;if(led)enabled=false;

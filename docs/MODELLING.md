@@ -24,3 +24,9 @@ Rekonstrukcja nie obejmuje tolerancji poszczególnych kondensatorów, biasu każ
 ## Co wymaga porównania ze sprzętem
 
 Maksymalne czasy SAD, punkty filtrów, headroom, progi Squelch, charakterystyka LFO oraz współczesne profile Boy/Toy pozostają wartościami projektowymi. Nie należy opisywać ich jako pomierzonych. Wierność wymaga referencyjnych nagrań: sweep przy kilku czasach, impulsy, poziomy wejścia, przebiegi modulacji i narastanie sprzężenia. Kod i testy potwierdzają działanie wtyczki, nie historyczną zgodność brzmienia.
+
+## Synchronizacja tempa — 0.1.1
+
+Opcjonalny Sync pobiera BPM z VST3 ProcessContext (w tym od FL Studio). Czas wynosi `60000 / BPM × liczba ćwierćnut` dla wybranego podziału; D mnoży czas przez 1.5, T przez 2/3. Tryb Free zachowuje dotychczasowe limity i algorytm. Tryb Sync rozszerza zakres zegara, aby nawet długie nuty pozostawały w tempie. W tym trybie filtr wejściowy i wyjściowy są dodatkowo ograniczone do 22% częstotliwości transferu komórek. To rozszerzenie cyfrowe, a nie dodatkowa funkcja oryginalnych kostek. Zmiany BPM i podziału zachowują wygładzenie oraz efekt przestrajania BBD.
+
+Identyfikatory starych parametrów i obu klas VST3 pozostały bez zmian. Stan wersji 1 i 2 jest odczytywany z domyślnym Sync OFF; nowy stan wersji 3 przechowuje także Sync i podział.
