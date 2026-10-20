@@ -54,3 +54,37 @@ jobs:
             JerzyMemoryDelay-Linux-x64.tar.gz
             build/memory-delay*.ppm
           if-no-files-found: error
+  release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [windows, linux]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: JerzyMemoryDelay-Windows-x64
+          path: release-files
+      - uses: actions/download-artifact@v4
+        with:
+          name: JerzyMemoryDelay-Linux-x64
+          path: release-files
+      - name: Publish tested VST3 packages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="v$(sed -nE 's/^project\(JerzyMemoryDelay VERSION ([0-9.]+).*/\1/p' CMakeLists.txt)"
+          test "$version" != v
+          if gh release view "$version" >/dev/null 2>&1; then
+            echo "Release $version already exists; preserving its files."
+          else
+            gh release create "$version" \
+              release-files/JerzyMemoryDelay-Windows-x64.zip \
+              release-files/JerzyMemoryDelay-Linux-x64.tar.gz \
+              --target "$GITHUB_SHA" \
+              --title "Jerzy Memory Delay $version" \
+              --notes "VST3: six BBD-inspired circuits and a hardware-style GUI. Native Windows and Linux builds, DSP tests, state/automation tests and Steinberg validation passed before packaging. Install the complete .vst3 bundle, including Contents/Resources. These are behavioral models; comparison with original hardware remains outstanding."
+          fi
