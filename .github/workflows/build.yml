@@ -1,0 +1,56 @@
+name: Build and validate Memory Delay
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure VST3
+        run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64
+      - name: Build plugin and tests
+        run: cmake --build build --config Release --target JerzyMemoryDelay MemoryDelayTests MemoryDelayHostTests --parallel 2
+      - name: Test DSP and host state
+        run: ctest --test-dir build -C Release --output-on-failure
+      - name: Package complete VST3 bundle
+        shell: pwsh
+        run: |
+          $bundle = Get-ChildItem build/VST3/Release -Directory -Filter 'JerzyMemoryDelay.vst3' | Select-Object -First 1
+          if (-not $bundle) { throw 'Plugin bundle missing' }
+          if (-not (Test-Path "$($bundle.FullName)/Contents/Resources/memory.uidesc")) { throw 'GUI resource missing' }
+          Compress-Archive -Path $bundle.FullName -DestinationPath JerzyMemoryDelay-Windows-x64.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: JerzyMemoryDelay-Windows-x64
+          path: JerzyMemoryDelay-Windows-x64.zip
+          if-no-files-found: error
+  linux:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GUI build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build libx11-dev libx11-xcb-dev libxcb-util-dev libxcb-cursor-dev libxcb-keysyms1-dev libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev libglib2.0-dev libcairo2-dev libpango1.0-dev libfontconfig1-dev libfreetype-dev libwayland-dev wayland-protocols xvfb xauth libxtst6 fonts-dejavu-core
+      - name: Configure and build
+        run: |
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --parallel 2
+      - name: Validate DSP, state and real GUI interactions
+        run: xvfb-run -a ctest --test-dir build --output-on-failure
+      - name: Package
+        run: tar -czf JerzyMemoryDelay-Linux-x64.tar.gz -C build/VST3/Release JerzyMemoryDelay.vst3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: JerzyMemoryDelay-Linux-x64
+          path: |
+            JerzyMemoryDelay-Linux-x64.tar.gz
+            build/memory-delay*.ppm
+          if-no-files-found: error

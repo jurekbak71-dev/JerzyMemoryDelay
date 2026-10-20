@@ -1,0 +1,68 @@
+<vstgui-ui-description version="1">
+  <fonts>
+    <font name="Label" font-name="Arial" size="12" bold="true" />
+    <font name="Small" font-name="Arial" size="10" bold="true" />
+    <font name="Value" font-name="Arial" size="13" bold="true" />
+  </fonts>
+  <colors>
+    <color name="Cream" rgba="#e8e5d4ff" />
+    <color name="Dark" rgba="#151719ff" />
+    <color name="Ink" rgba="#30332fff" />
+    <color name="Red" rgba="#c8322aff" />
+    <color name="Muted" rgba="#a8ad9bff" />
+    <color name="Drawer" rgba="#252a2bff" />
+  </colors>
+  <control-tags>
+    <control-tag name="Blend" tag="0" />
+    <control-tag name="Level" tag="1" />
+    <control-tag name="Feedback" tag="2" />
+    <control-tag name="Rate" tag="3" />
+    <control-tag name="Depth" tag="4" />
+    <control-tag name="Delay" tag="5" />
+    <control-tag name="Model" tag="6" />
+    <control-tag name="Wave" tag="7" />
+    <control-tag name="Bypass" tag="8" />
+    <control-tag name="Boost" tag="9" />
+    <control-tag name="Squelch" tag="10" />
+    <control-tag name="ModEnable" tag="11" />
+    <control-tag name="Overload" tag="100" />
+    <control-tag name="Details" tag="900" />
+  </control-tags>
+  <template name="view" class="CViewContainer" origin="0, 0" size="1080, 800" background-color="Dark">
+    <view class="MemoryPanel" origin="0, 0" size="1080, 800" mouse-enabled="false" />
+    <view class="MemoryKnob" origin="70, 105" size="150, 150" control-tag="Blend" wheel-inc-value=".005" tooltip="Drag to adjust; Shift: fine adjustment; right-click: reset" />
+    <view class="CTextLabel" origin="68, 260" size="154, 20" title="BLEND" font="Label" font-color="Cream" transparent="true" mouse-enabled="false" text-alignment="center" />
+    <view class="CTextLabel" origin="80, 284" size="130, 22" control-tag="Blend" font="Value" font-color="Cream" back-color="Dark" frame-color="Dark" transparent="false" text-alignment="center" mouse-enabled="false" />
+    <view class="MemoryKnob" origin="226, 105" size="150, 150" control-tag="Level" wheel-inc-value=".005" tooltip="Drag to adjust; Shift: fine adjustment; right-click: reset" />
+    <view class="CTextLabel" origin="224, 260" size="154, 20" title="LEVEL" font="Label" font-color="Cream" transparent="true" mouse-enabled="false" text-alignment="center" />
+    <view class="CTextLabel" origin="236, 284" size="130, 22" control-tag="Level" font="Value" font-color="Cream" back-color="Dark" frame-color="Dark" transparent="false" text-alignment="center" mouse-enabled="false" />
+    <view class="MemoryKnob" origin="382, 105" size="150, 150" control-tag="Feedback" wheel-inc-value=".005" tooltip="Drag to adjust; Shift: fine adjustment; right-click: reset" />
+    <view class="CTextLabel" origin="380, 260" size="154, 20" title="FEEDBACK" font="Label" font-color="Cream" transparent="true" mouse-enabled="false" text-alignment="center" />
+    <view class="CTextLabel" origin="392, 284" size="130, 22" control-tag="Feedback" font="Value" font-color="Cream" back-color="Dark" frame-color="Dark" transparent="false" text-alignment="center" mouse-enabled="false" />
+    <view class="MemoryKnob" origin="538, 105" size="150, 150" control-tag="Rate" wheel-inc-value=".005" tooltip="Drag to adjust; Shift: fine adjustment; right-click: reset" />
+    <view class="CTextLabel" origin="536, 260" size="154, 20" title="CHORUS / VIBRATO" font="Label" font-color="Ink" transparent="true" mouse-enabled="false" text-alignment="center" />
+    <view class="CTextLabel" origin="548, 284" size="130, 22" control-tag="Rate" font="Value" font-color="Cream" back-color="Dark" frame-color="Dark" transparent="false" text-alignment="center" mouse-enabled="false" />
+    <view class="MemoryKnob" origin="694, 105" size="150, 150" control-tag="Depth" wheel-inc-value=".005" tooltip="Drag to adjust; Shift: fine adjustment; right-click: reset" />
+    <view class="CTextLabel" origin="692, 260" size="154, 20" title="DEPTH" font="Label" font-color="Ink" transparent="true" mouse-enabled="false" text-alignment="center" />
+    <view class="CTextLabel" origin="704, 284" size="130, 22" control-tag="Depth" font="Value" font-color="Cream" back-color="Dark" frame-color="Dark" transparent="false" text-alignment="center" mouse-enabled="false" />
+    <view class="MemoryKnob" origin="850, 105" size="150, 150" control-tag="Delay" wheel-inc-value=".005" tooltip="Drag to adjust; Shift: fine adjustment; right-click: reset" />
+    <view class="CTextLabel" origin="848, 260" size="154, 20" title="DELAY" font="Label" font-color="Ink" transparent="true" mouse-enabled="false" text-alignment="center" />
+    <view class="CTextLabel" origin="860, 284" size="130, 22" control-tag="Delay" font="Value" font-color="Cream" back-color="Dark" frame-color="Dark" transparent="false" text-alignment="center" mouse-enabled="false" />
+    <view class="MemoryLed" origin="300, 320" size="30, 30" control-tag="Overload" mouse-enabled="false" />
+    <view class="CTextLabel" origin="75, 554" size="75, 24" title="CIRCUIT" font="Label" font-color="Muted" transparent="true" mouse-enabled="false" text-alignment="center" />
+    <view class="COptionMenu" origin="159, 550" size="270, 32" control-tag="Model" font="Label" font-color="Cream" back-color="Drawer" frame-color="Muted" tooltip="Choose the modeled circuit; switching fades through dry audio" />
+    <view class="CTextButton" origin="79, 598" size="180, 30" control-tag="Details" title="CIRCUIT DETAILS" font="Small" text-color="Cream" text-color-highlighted="Red" frame-color="Muted" kick-style="false" round-radius="4" />
+    <view class="MemoryFootswitch" origin="650, 525" size="112, 112" control-tag="Bypass" tooltip="Effect bypass" />
+    <view class="MemoryLed" origin="690, 494" size="30, 30" control-tag="Bypass" mouse-enabled="false" />
+    <view class="CViewContainer" origin="77, 634" size="540, 85" background-color="Drawer" editor-role="details">
+      <view class="CTextLabel" origin="10, 7" size="90, 18" title="BOOST" font="Label" font-color="Muted" transparent="true" mouse-enabled="false" text-alignment="center" />
+      <view class="CTextButton" origin="15, 33" size="80, 28" control-tag="Boost" title="BOOST" font="Small" kick-style="false" tooltip="EH7500 input boost" />
+      <view class="CTextLabel" origin="110, 7" size="100, 18" title="SQUELCH" font="Label" font-color="Muted" transparent="true" mouse-enabled="false" text-alignment="center" />
+      <view class="MemoryKnob" origin="132, 25" size="52, 52" control-tag="Squelch" wheel-inc-value=".01" />
+      <view class="CTextLabel" origin="225, 7" size="130, 18" title="LFO SHAPE" font="Label" font-color="Muted" transparent="true" mouse-enabled="false" text-alignment="center" />
+      <view class="COptionMenu" origin="225, 34" size="125, 28" control-tag="Wave" font="Small" font-color="Cream" back-color="Dark" frame-color="Muted" />
+      <view class="CTextLabel" origin="375, 7" size="145, 18" title="MODULATION" font="Label" font-color="Muted" transparent="true" mouse-enabled="false" text-alignment="center" />
+      <view class="CTextButton" origin="390, 34" size="110, 28" control-tag="ModEnable" title="MOD ON" font="Small" kick-style="false" />
+    </view>
+  </template>
+</vstgui-ui-description>
