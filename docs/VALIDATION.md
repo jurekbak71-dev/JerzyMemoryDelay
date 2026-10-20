@@ -2,7 +2,7 @@
 
 Lokalnie: 104 przypadki DSP, wszystkie 47 kontroli walidatora VST3, test hosta oraz GUI zakończone sukcesem. Nowe kontrole obejmują 21 podziałów przy 60/120/180 BPM, rzeczywisty impuls 600 ms we wszystkich sześciu modelach (bez przycinania do zakresów Free), BPM 100→150 przekazywane przez VST3 ProcessContext, odczyt starych sesji v1/v2 i klikanie Sync wraz z blokadą gałki ręcznego czasu.
 
-Nie wykonywano testu w zainstalowanym FL Studio; sprawdzono standardowy interfejs VST3 host tempo używany przez DAW. Natywny build Windows 0.1.1 zostanie zweryfikowany w GitHub Actions przed publikacją.
+Nie wykonywano testu w zainstalowanym FL Studio; sprawdzono standardowy interfejs VST3 host tempo używany przez DAW. Natywne kompilacje Windows x64 i Ubuntu 24.04, testy DSP i hosta, walidator VST3 oraz test GUI na Linux przeszły w [GitHub Actions 39471773350](https://github.com/jurekbak71-dev/JerzyMemoryDelay/actions/runs/39471773350), commit `91b7f82eec4fafbfecfcdea24960d65c6200914c`. Pakiety publikuje zadanie Release po zaliczeniu obu platform.
 
 # Walidacja 0.1.0 — 20.10.2026
 
