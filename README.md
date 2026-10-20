@@ -19,6 +19,13 @@ Zweryfikowany stan wydania i ograniczenia platform: [VALIDATION.md](docs/VALIDAT
 
 To modele behawioralne, a nie pomierzona rekonstrukcja każdego tranzystora. Parametry Boy/Toy oraz maksymalne czasy wczesnych układów są przybliżeniami. Zakres i źródła opisuje [MODELLING.md](docs/MODELLING.md).
 
+## Pobieranie VST3
+
+Gotowe paczki są publikowane automatycznie po pomyślnej kompilacji i testach obu platform: [GitHub Releases](https://github.com/jurekbak71-dev/JerzyMemoryDelay/releases).
+
+- [Windows x64 ZIP](https://github.com/jurekbak71-dev/JerzyMemoryDelay/releases/latest/download/JerzyMemoryDelay-Windows-x64.zip)
+- [Linux x64 tar.gz](https://github.com/jurekbak71-dev/JerzyMemoryDelay/releases/latest/download/JerzyMemoryDelay-Linux-x64.tar.gz)
+
 ## Obsługa
 
 - Blend: proporcja sygnału bezpośredniego i powtórek; Level: wejściowe wzmocnienie −12…+12 dB.
