@@ -1,0 +1,45 @@
+name: MultiFX v0.2 module CI
+on:
+  push:
+    branches: [feature/jerzy-multifx-v02]
+  pull_request:
+    paths:
+      - "multifx2/**"
+      - "CMakeLists.txt"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  module-build:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.platform }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install JACK build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build pkg-config libjack-jackd2-dev
+      - name: Configure host and modules
+        run: cmake -S . -B build-multifx2 -G Ninja -DCMAKE_BUILD_TYPE=Release -DJERZY_BUILD_PLUGIN=OFF -DJERZY_BUILD_JACK=OFF -DJERZY_BUILD_MULTIFX=OFF -DJERZY_BUILD_MULTIFX2=ON
+      - name: Build ARM64/x86 host and separate modules
+        run: cmake --build build-multifx2 --parallel 2
+      - name: Run existing DSP regression
+        run: ctest --test-dir build-multifx2 --output-on-failure
+      - name: Python panel syntax and API tests
+        run: |
+          python3 -m py_compile multifx2/web_panel.py multifx2/test_panel.py
+          python3 -m unittest discover -s multifx2 -p "test_*.py" -v
+      - name: Smoke test independently loaded modules
+        run: |
+          python3 - <<'PY'
+          import ctypes
+          from pathlib import Path
+          for name in ('compressor','overdrive','tremolo','memory_delay'):
+              dll=ctypes.CDLL(str((Path('build-multifx2/modules')/(name+'.so')).resolve()))
+              assert hasattr(dll, 'jfx_plugin'), name
+          print('All 4 modules export jfx_plugin')
+          PY
