@@ -110,3 +110,26 @@ if(BUILD_TESTING AND JERZY_BUILD_MULTIFX)
   target_include_directories(MultiFXDSPTests PRIVATE multifx source)
   add_test(NAME MultiFXDSP COMMAND MultiFXDSPTests)
 endif()
+
+
+# v0.2 host: .so effect modules can be added without rebuilding this executable.
+option(JERZY_BUILD_MULTIFX2 "Build modular JACK MultiFX v0.2 host and effect modules" OFF)
+if(JERZY_BUILD_MULTIFX2)
+  if(NOT UNIX OR APPLE)
+    message(FATAL_ERROR "MultiFX2 requires Linux JACK")
+  endif()
+  find_package(PkgConfig REQUIRED)
+  pkg_check_modules(JACK REQUIRED IMPORTED_TARGET jack)
+  add_executable(JerzyMultiFX2JACK multifx2/host.cpp)
+  target_link_libraries(JerzyMultiFX2JACK PRIVATE PkgConfig::JACK ${CMAKE_DL_LIBS})
+  target_include_directories(JerzyMultiFX2JACK PRIVATE multifx2 source)
+  foreach(module compressor overdrive tremolo memory_delay)
+    add_library(jfx_${module} MODULE multifx2/modules/${module}.cpp)
+    target_include_directories(jfx_${module} PRIVATE multifx2 source)
+    set_target_properties(jfx_${module} PROPERTIES
+      PREFIX "" OUTPUT_NAME ${module}
+      LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/modules")
+    configure_file("multifx2/manifests/${module}.json"
+      "${CMAKE_BINARY_DIR}/modules/${module}.json" COPYONLY)
+  endforeach()
+endif()
