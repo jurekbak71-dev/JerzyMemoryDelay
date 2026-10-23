@@ -44,7 +44,9 @@ jobs:
           print('All 13 modules export jfx_plugin')
           PY
 
-      - name: Package 11 standalone FX modules
+      - name: Verify complete touch parameter metadata
+        run: python3 multifx2/check_module_metadata.py build-multifx2/modules
+      - name: Package 13 standalone FX modules
         run: |
           mkdir -p dist/JerzyMultiFX-Modules
           cp build-multifx2/modules/*.so build-multifx2/modules/*.json dist/JerzyMultiFX-Modules/
