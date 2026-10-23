@@ -1,0 +1,34 @@
+{
+  "key": "compressor",
+  "name": "Compressor",
+  "category": "Dynamics",
+  "params": [
+    {
+      "key": "threshold",
+      "label": "Threshold",
+      "unit": "dB",
+      "def": 0.5,
+      "kind": "range",
+      "min": -6,
+      "max": -48
+    },
+    {
+      "key": "ratio",
+      "label": "Ratio",
+      "unit": ":1",
+      "def": 0.4,
+      "kind": "range",
+      "min": 1,
+      "max": 10
+    },
+    {
+      "key": "makeup",
+      "label": "Makeup",
+      "unit": "dB",
+      "def": 0.5,
+      "kind": "range",
+      "min": -6,
+      "max": 6
+    }
+  ]
+}
