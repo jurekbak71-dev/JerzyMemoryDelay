@@ -1,0 +1,52 @@
+{
+  "key": "lofi_crush",
+  "name": "Lo-Fi Crush",
+  "category": "Lo-Fi",
+  "params": [
+    {
+      "key": "bits",
+      "label": "Bit Depth",
+      "kind": "range",
+      "unit": "bit",
+      "min": 4,
+      "max": 16,
+      "def": 0.66
+    },
+    {
+      "key": "rate",
+      "label": "Sample Rate",
+      "kind": "range",
+      "unit": "Hz",
+      "min": 500,
+      "max": 44100,
+      "def": 0.5
+    },
+    {
+      "key": "mix",
+      "label": "Blend",
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "def": 0.65
+    },
+    {
+      "key": "tone",
+      "label": "Tone",
+      "kind": "range",
+      "unit": "Hz",
+      "min": 400,
+      "max": 15400,
+      "def": 0.55
+    },
+    {
+      "key": "drive",
+      "label": "Drive",
+      "kind": "range",
+      "unit": "x",
+      "min": 1,
+      "max": 13,
+      "def": 0.25
+    }
+  ]
+}
