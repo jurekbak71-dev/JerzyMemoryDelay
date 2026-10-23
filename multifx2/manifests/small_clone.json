@@ -1,0 +1,107 @@
+{
+  "key": "small_clone",
+  "name": "Small Clone / Mistress",
+  "category": "Modulation",
+  "params": [
+    {
+      "key": "rate",
+      "label": "LFO Rate",
+      "def": 0.3,
+      "kind": "range",
+      "unit": "Hz",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "depth",
+      "label": "Depth",
+      "def": 0.45,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "mix",
+      "label": "Mix",
+      "def": 0.5,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "color",
+      "label": "Color / Feedback",
+      "def": 0.25,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "level",
+      "label": "Output Level",
+      "def": 0.5,
+      "kind": "range",
+      "unit": "dB",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "model",
+      "label": "Circuit Model",
+      "def": 0,
+      "kind": "choice",
+      "choices": [
+        "Small Clone",
+        "Clone Theory SAD",
+        "Clone Theory MN",
+        "Electric Mistress V2",
+        "Electric Mistress V3",
+        "Electric Mistress V4",
+        "Electric Mistress V5",
+        "Electric Mistress V6",
+        "Deluxe Mistress V1",
+        "Deluxe Mistress V2",
+        "Deluxe Mistress V3",
+        "Deluxe Mistress V4",
+        "Deluxe Mistress V5",
+        "Stereo Mistress"
+      ]
+    },
+    {
+      "key": "stereo",
+      "label": "Stereo Motion",
+      "def": 0,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "filter",
+      "label": "Freeze LFO",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "bypass",
+      "label": "Circuit Bypass",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "sync",
+      "label": "Tempo Sync",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    }
+  ]
+}
