@@ -70,7 +70,9 @@ struct Engine {
  // Parallel generative synthesizer (reuses original BassAmbient DSP).
  mfx4::BassAmbient bass;
  std::atomic<bool> bassOn{false},padOn{false};
- std::atomic<int> root{40},bassStyle{2},bassScale{1},padMode{2};
+ std::atomic<int> root{40},bassStyle{5},bassScale{1},padMode{2},bassModel{0},padChord{1},padEngine1{0},padEngine2{1};
+ std::atomic<bool> synthSync{true};
+ std::atomic<float> freeBpm{120.f},evolution{.5f},bassFx{.15f},padFx{.4f};
  std::atomic<float> bassVolume{.6f},padVolume{.35f},density{.75f},synthVolume{.35f},synthPan{0.f};
  // CAB/IR runs exclusively on guitar path, BEFORE summing BassAmbient.
  std::array<std::atomic<mfx4::CabinetIR*>,2> cabs{};
@@ -123,6 +125,10 @@ struct Engine {
   // Snapshot coherent synth parameters once per callback.
   e.bass.bassOn=e.bassOn.load();e.bass.padOn=e.padOn.load();
   e.bass.settings.style=e.bassStyle.load();e.bass.settings.scale=e.bassScale.load();
+  e.bass.settings.model=e.bassModel.load();e.bass.settings.chord=e.padChord.load();
+  e.bass.settings.engine1=e.padEngine1.load();e.bass.settings.engine2=e.padEngine2.load();
+  e.bass.settings.evolution=1.+59.*e.evolution.load();
+  e.bass.settings.bassFX=e.bassFx.load();e.bass.settings.padFX=e.padFx.load();
   e.bass.settings.padMode=e.padMode.load();
   e.bass.settings.density=e.density.load();
   e.bass.settings.bassLevel=e.bassVolume.load();
@@ -166,14 +172,23 @@ struct Engine {
       else if(kind==8)e.cabHighCut.store(norm);
       else if(kind==9)e.bassOn.store(val>=64);
       else if(kind==10)e.padOn.store(val>=64);
-      else if(kind==11)e.root.store(24+int(norm*60.f));
-      else if(kind==12)e.bassStyle.store(int(norm*4.f));
+      else if(kind==11)e.root.store(24+int(std::lround(norm*60.f)));
+      else if(kind==12)e.bassStyle.store(int(norm*6.f));
       else if(kind==13)e.bassScale.store(int(norm*4.f));
       else if(kind==14)e.density.store(norm);
       else if(kind==15)e.bassVolume.store(norm);
       else if(kind==16)e.padVolume.store(norm);
       else if(kind==17)e.synthVolume.store(norm);
       else if(kind==18)e.synthPan.store(norm*2.f-1.f);
+      else if(kind==19)e.bassModel.store(std::min(2,int(norm*3.f)));
+      else if(kind==20)e.padChord.store(std::min(4,int(norm*5.f)));
+      else if(kind==21)e.padEngine1.store(std::min(4,int(norm*5.f)));
+      else if(kind==22)e.padEngine2.store(std::min(4,int(norm*5.f)));
+      else if(kind==23)e.evolution.store(norm);
+      else if(kind==24)e.bassFx.store(norm);
+      else if(kind==25)e.padFx.store(norm);
+      else if(kind==26)e.synthSync.store(val>=64);
+      else if(kind==27)e.freeBpm.store(20.f+280.f*norm);
      }
    }
    const float mono=input&&finite(input[n])?input[n]:0.f;
@@ -211,7 +226,7 @@ struct Engine {
     guitar[ch]=guitar[ch]*(1.f-wet*e.cabFade)+processed*(wet*e.cabFade);
    }
    float synth[2]{};
-   e.bass.process(synth,e.bpm.load(std::memory_order_relaxed));
+   e.bass.process(synth,e.synthSync.load()?e.bpm.load(std::memory_order_relaxed):e.freeBpm.load(std::memory_order_relaxed));
    y[0]=std::clamp(guitar[0]+synth[0],-8.f,8.f);
    y[1]=std::clamp(guitar[1]+synth[1],-8.f,8.f);
    e.level+=std::clamp(e.master.load(std::memory_order_relaxed)-e.level,-stepMaster,stepMaster);
@@ -369,7 +384,7 @@ struct Engine {
       if(key=="bass")v=bassOn.load()?1.f:0.f;
       else if(key=="pad")v=padOn.load()?1.f:0.f;
       else if(key=="root")v=float(root.load()-24)/60.f;
-      else if(key=="style")v=float(bassStyle.load())/4.f;
+      else if(key=="style")v=float(bassStyle.load())/6.f;
       else if(key=="scale")v=float(bassScale.load())/4.f;
       else if(key=="mode")v=float(padMode.load())/2.f;
       else if(key=="density")v=density.load();
@@ -377,6 +392,15 @@ struct Engine {
       else if(key=="padlevel")v=padVolume.load();
       else if(key=="level")v=synthVolume.load();
       else if(key=="pan")v=(synthPan.load()+1.f)/2.f;
+      else if(key=="model")v=bassModel.load()/2.f;
+      else if(key=="chord")v=padChord.load()/4.f;
+      else if(key=="engine1")v=padEngine1.load()/4.f;
+      else if(key=="engine2")v=padEngine2.load()/4.f;
+      else if(key=="evolution")v=evolution.load();
+      else if(key=="bassfx")v=bassFx.load();
+      else if(key=="padfx")v=padFx.load();
+      else if(key=="sync")v=synthSync.load()?1.f:0.f;
+      else if(key=="freebpm")v=(freeBpm.load()-20.f)/280.f;
       else return "ERR Bad synth key";
       return "OK "+std::to_string(v);
     }
@@ -388,7 +412,7 @@ struct Engine {
   if(type=="MIDI_BIND"){
     int ch,cc,kind,slotId,paramId;
     if(ss>>ch>>cc>>kind>>slotId>>paramId && !(ss>>extra) &&
-       ch>=1&&ch<=16&&cc>=0&&cc<=127&&kind>=0&&kind<=18){
+       ch>=1&&ch<=16&&cc>=0&&cc<=127&&kind>=0&&kind<=27){
      if(kind==0){
        Slot* fx=find(slotId);
        if(!fx||paramId<0||unsigned(paramId)>=fx->plugin->parameter_count)return "ERR Bad FX param";
@@ -429,8 +453,8 @@ struct Engine {
     if(ss>>field>>v && !(ss>>extra) && finite(v)&&v>=0&&v<=1){
       if(field=="bass")bassOn.store(v>=.5f);
       else if(field=="pad")padOn.store(v>=.5f);
-      else if(field=="root")root.store(24+int(v*60.f));
-      else if(field=="style")bassStyle.store(std::min(4,int(v*5.f)));
+      else if(field=="root")root.store(24+int(std::lround(v*60.f)));
+      else if(field=="style")bassStyle.store(std::min(6,int(v*7.f)));
       else if(field=="scale")bassScale.store(std::min(4,int(v*5.f)));
       else if(field=="mode")padMode.store(std::min(2,int(v*3.f)));
       else if(field=="density")density.store(v);
@@ -438,6 +462,15 @@ struct Engine {
       else if(field=="padlevel")padVolume.store(v);
       else if(field=="level")synthVolume.store(v);
       else if(field=="pan")synthPan.store(v*2.f-1.f);
+      else if(field=="model")bassModel.store(std::min(2,int(v*3.f)));
+      else if(field=="chord")padChord.store(std::min(4,int(v*5.f)));
+      else if(field=="engine1")padEngine1.store(std::min(4,int(v*5.f)));
+      else if(field=="engine2")padEngine2.store(std::min(4,int(v*5.f)));
+      else if(field=="evolution")evolution.store(v);
+      else if(field=="bassfx")bassFx.store(v);
+      else if(field=="padfx")padFx.store(v);
+      else if(field=="sync")synthSync.store(v>=.5f);
+      else if(field=="freebpm")freeBpm.store(20.f+280.f*v);
       else return "ERR Bad SYNTH key";
       return "OK";
     }
