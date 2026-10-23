@@ -421,9 +421,9 @@ function drawAll(){if(!S)return;showCatalog();drawChain();drawEffect();drawPrese
 
 const synthLabels={
  bass:["START / STOP BASU","switch"],pad:["START / STOP AMBIENTU","switch"],
- root:["Wysokość podstawowa / ROOT","range"],
- style:["Styl basu (Disco / Acid / Funk / Techno)","range"],
- scale:["Skala muzyczna","range"],mode:["Tryb ambient / Krell","range"],
+ root:["Wysokość podstawowa / ROOT","choice"],
+ style:["Styl basu","choice"],
+ scale:["Skala muzyczna","choice"],mode:["Tryb ambient","choice"],
  density:["Gęstość rytmu","range"],basslevel:["Głośność basu","range"],
  padlevel:["Głośność padów","range"],level:["Głośność BassAmbient","range"],
  pan:["Panorama instrumentu","range"]};
@@ -441,6 +441,18 @@ function extraRow(node,section,key){
   const button=make("button",value>=.5?"primary big":"danger big",value>=.5?"WŁĄCZONY":"WYŁĄCZONY");
   button.style.width="100%";button.onclick=()=>change("extra",{section,field:key,value:value>=.5?0:1});
   row.append(button);
+ }else if(spec[1]==="choice"){
+  const names={style:["Italo Disco","Disco Polo","Acid 303","Funk","Techno"],
+   scale:["Dur","Moll","Dorycka","Moll harmoniczna","Pentatonika moll"],
+   mode:["Hold","Flow","Krell"]};
+  const select=document.createElement("select");
+  const tones=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+  const labels=key==="root"?Array.from({length:61},(_,i)=>tones[(24+i)%12]+String(Math.floor((24+i)/12)-1)):names[key];
+  labels.forEach((title,i)=>selectOption(select,i/(labels.length-1),title));
+  select.selectedIndex=Math.round(value*(labels.length-1));
+  output.textContent=labels[select.selectedIndex];
+  select.onchange=()=>change("extra",{section,field:key,value:Number(select.value)});
+  row.append(select);
  }else{
   const input=document.createElement("input");input.type="range";input.min=0;input.max=1;input.step=.001;input.value=value;
   input.setAttribute("aria-label",spec[0]);
