@@ -1,0 +1,20 @@
+[Unit]
+Description=Jerzy Audio - MultiFX v0.2 mobile UI and preset storage
+Requires=jerzy-multifx2.service
+After=jerzy-multifx2.service NetworkManager.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=jerzy
+Group=audio
+WorkingDirectory=/home/jerzy/JerzyMultiFX2
+Environment=HOME=/home/jerzy
+Environment=JERZY_MULTIFX2_BIND=10.42.0.1
+Environment=JERZY_MULTIFX2_MODULE_DIR=/home/jerzy/JerzyMultiFX2/build-multifx2/modules
+ExecStart=/usr/bin/python3 /home/jerzy/JerzyMultiFX2/multifx2/web_panel.py
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

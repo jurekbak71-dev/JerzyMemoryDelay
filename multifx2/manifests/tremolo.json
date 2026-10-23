@@ -1,0 +1,25 @@
+{
+  "key": "tremolo",
+  "name": "Tremolo",
+  "category": "Modulation",
+  "params": [
+    {
+      "key": "rate",
+      "label": "Rate",
+      "unit": "Hz",
+      "def": 0.33,
+      "kind": "range",
+      "min": 0.3,
+      "max": 12
+    },
+    {
+      "key": "depth",
+      "label": "Depth",
+      "unit": "%",
+      "def": 0.55,
+      "kind": "range",
+      "min": 0,
+      "max": 100
+    }
+  ]
+}

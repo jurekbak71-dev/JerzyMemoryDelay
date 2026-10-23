@@ -1,0 +1,154 @@
+{
+  "key": "memory_delay",
+  "name": "Jerzy Memory Delay",
+  "category": "Delay",
+  "params": [
+    {
+      "key": "blend",
+      "label": "Blend (Dry / Wet)",
+      "unit": "%",
+      "def": 0.4,
+      "kind": "range",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "level",
+      "label": "Level / Gain",
+      "unit": "dB",
+      "def": 0.5,
+      "kind": "range",
+      "min": -12,
+      "max": 12
+    },
+    {
+      "key": "feedback",
+      "label": "Feedback",
+      "unit": "%",
+      "def": 0.35,
+      "kind": "range",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "mod_rate",
+      "label": "Modulation Rate",
+      "unit": "Hz",
+      "def": 0.15,
+      "kind": "range",
+      "min": 0.15,
+      "max": 8
+    },
+    {
+      "key": "depth",
+      "label": "Modulation Depth",
+      "unit": "%",
+      "def": 0.18,
+      "kind": "range",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "delay",
+      "label": "Delay Time",
+      "unit": "ms",
+      "def": 0.55,
+      "kind": "range",
+      "min": 20,
+      "max": 550
+    },
+    {
+      "key": "model",
+      "label": "BBD Model",
+      "kind": "choice",
+      "def": 0.6,
+      "choices": [
+        "EH7500 / SAD",
+        "Issue A / SAD",
+        "Squelch / SAD",
+        "Deluxe / MN",
+        "Boy / BL",
+        "Toy / BL"
+      ]
+    },
+    {
+      "key": "wave",
+      "label": "LFO Wave",
+      "kind": "switch",
+      "def": 0,
+      "off": "Sine",
+      "on": "Triangle"
+    },
+    {
+      "key": "bypass",
+      "label": "Circuit Bypass",
+      "kind": "switch",
+      "def": 0,
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "boost",
+      "label": "Input Boost",
+      "kind": "range",
+      "def": 0,
+      "min": 0,
+      "max": 100,
+      "unit": "%"
+    },
+    {
+      "key": "squelch",
+      "label": "Squelch / Noise Gate",
+      "kind": "range",
+      "def": 0.35,
+      "min": 0,
+      "max": 100,
+      "unit": "%"
+    },
+    {
+      "key": "mod_enable",
+      "label": "Modulation Enable",
+      "kind": "switch",
+      "def": 1,
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "tempo_sync",
+      "label": "Tempo Sync",
+      "kind": "switch",
+      "def": 0,
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "division",
+      "label": "Note Division",
+      "kind": "choice",
+      "def": 0.3,
+      "choices": [
+        "1/1",
+        "1/1 D",
+        "1/1 T",
+        "1/2",
+        "1/2 D",
+        "1/2 T",
+        "1/4",
+        "1/4 D",
+        "1/4 T",
+        "1/8",
+        "1/8 D",
+        "1/8 T",
+        "1/16",
+        "1/16 D",
+        "1/16 T",
+        "1/32",
+        "1/32 D",
+        "1/32 T",
+        "1/64",
+        "1/64 D",
+        "1/64 T"
+      ]
+    }
+  ]
+}

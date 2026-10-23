@@ -1,0 +1,34 @@
+{
+  "key": "overdrive",
+  "name": "Overdrive",
+  "category": "Drive",
+  "params": [
+    {
+      "key": "gain",
+      "label": "Gain",
+      "unit": "x",
+      "def": 0.35,
+      "kind": "range",
+      "min": 1,
+      "max": 36
+    },
+    {
+      "key": "tone",
+      "label": "Tone",
+      "unit": "Hz",
+      "def": 0.65,
+      "kind": "range",
+      "min": 350,
+      "max": 9350
+    },
+    {
+      "key": "output",
+      "label": "Output",
+      "unit": "%",
+      "def": 0.42,
+      "kind": "range",
+      "min": 8,
+      "max": 163
+    }
+  ]
+}

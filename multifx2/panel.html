@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#131a25">
+<title>Jerzy MultiFX 0.2</title>
+<style>
+:root{color-scheme:dark;background:#101620;color:#ebf0f8;font:15px system-ui,-apple-system,Arial,sans-serif}
+*{box-sizing:border-box}body{max-width:1100px;margin:0 auto;padding:14px 14px 44px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px}
+h1{font-size:24px;margin:8px 0 2px}.muted{font-size:12px;color:#b0baca;line-height:1.5}
+section,.card{background:#202b3b;border:1px solid #3a4c61;border-radius:13px;padding:13px;margin-top:12px}
+.actions{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+button,select,input{font:inherit;color:#f8fafc}
+button,select,input[type=text]{background:#34475b;border:1px solid #637891;border-radius:8px;padding:9px;min-height:42px}
+button{cursor:pointer}button.primary{background:#98612b;border-color:#d2965b}button:disabled{opacity:.32}
+select{max-width:100%;flex:1}input[type=text]{flex:1;min-width:130px}
+#chain{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:10px}
+.card{margin-top:0}.card.off{opacity:.72}.card>.title{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.card strong{font-size:17px}.card button{min-width:38px}
+.control{margin:15px 0 4px}
+.control label{font-size:13px;display:flex;justify-content:space-between;gap:5px}
+.control output{color:#ffca7e;font-variant-numeric:tabular-nums;text-align:right}
+input[type=range]{accent-color:#ffc078;width:100%;margin:9px 0 4px;touch-action:pan-y}
+.switch{width:100%}#status{font-size:12px;color:#f0c37e}
+footer{color:#aebacc;font-size:12px;margin-top:20px;line-height:1.6}
+</style></head><body>
+<header><div><h1>JERZY MULTIFX 0.2</h1><div class="muted">Raspberry Pi · HeadRush Core · dynamiczne efekty</div></div><span id="status">Start...</span></header>
+<section>
+<div class="actions"><select id="addSelect" aria-label="Katalog efektów"></select>
+<button class="primary" id="add">+ DODAJ FX</button><button id="refresh">Odśwież katalog</button></div>
+<div class="muted" style="padding-top:7px">Możesz dodać kilka instancji tego samego efektu i zmieniać kolejność. Nowe moduły instalujesz jako parę .so + .json, bez przebudowy głównego hosta.</div>
+</section>
+<section><div class="actions">
+<input id="presetName" type="text" maxlength="64" placeholder="Nazwa presetu">
+<button class="primary" id="save">Zapisz</button>
+<select id="presets" aria-label="Presety"></select>
+<button id="load">Wczytaj</button><button id="del">Usuń</button>
+</div></section>
+<section>
+<div class="actions"><label>Tempo <b id="bpmNum">120</b> BPM</label><button id="tap">TAP</button>
+<input id="bpm" type="range" min="20" max="300" step="1" style="flex:1;min-width:130px"></div>
+<div class="control"><label>MASTER LEVEL <output id="masterNum"></output></label>
+<input id="master" type="range" min="0" max="1" step=".001"></div>
+</section>
+<div id="chain"></div>
+<footer>Memory Delay: komplet 14 parametrów BBD DSP, w tym LFO Wave, Modulation, Boost, Squelch, Tempo Sync i Note Division.
+Łańcuch oraz ustawienia odzyskujemy po restarcie. Sam tor audio działa bez przeglądarki. Zmiana kolejności podczas gry może spowodować krótkie artefakty.</footer>
+<script>
+const $=sel=>document.querySelector(sel);
+let S=null,pending=new Map(),timer=0,taps=[];
+async function getState(){
+ const r=await fetch('/api/state',{cache:'no-store'});
+ if(!r.ok)throw Error(await r.text());return r.json();
+}
+async function post(endpoint,data){
+ try{
+  const r=await fetch('/api/'+endpoint,{
+   method:'POST',headers:{'Content-Type':'application/json'},
+   body:JSON.stringify(data)});
+  const out=await r.json();
+  if(!r.ok)throw Error(out.error||r.status);
+  $('#status').textContent='Połączono';return out;
+ }catch(e){$('#status').textContent='Błąd';alert('Błąd: '+e.message);throw e;}
+}
+function choice(select,value,text){
+ const o=document.createElement('option');o.value=value;o.textContent=text;select.append(o);
+}
+function drawCatalog(){
+ const list=$('#addSelect'),previous=list.value;
+ list.replaceChildren();
+ for(const p of Object.values(S.catalog).sort((a,b)=>a.name.localeCompare(b.name)))
+  choice(list,p.key,p.category+' — '+p.name);
+ if(S.catalog[previous])list.value=previous;
+ const ps=$('#presets'),old=ps.value;ps.replaceChildren();choice(ps,'','Wybierz preset');
+ S.presets.forEach(n=>choice(ps,n,n));ps.value=S.presets.includes(old)?old:'';
+}
+function labelValue(p,value){
+ if(p.kind==='switch')return value>=.5?(p.on||'ON'):(p.off||'OFF');
+ if(p.kind==='choice')return p.choices[Math.round(value*(p.choices.length-1))]||'';
+ const v=p.min+(p.max-p.min)*value;
+ return v.toFixed(p.unit==='Hz'?2:(p.unit==='dB'?1:0))+' '+(p.unit||'');
+}
+function queue(id,index,value){
+ const slot=S.chain.find(s=>s.id===id);
+ if(!slot)return;slot.params[index]=value;
+ pending.set(id+':'+index,{id,index,value});
+ clearTimeout(timer);
+ timer=setTimeout(async()=>{
+  const batch=[...pending.values()];pending.clear();
+  for(const item of batch){try{await post('param',item)}catch(e){break}}
+ },80);
+}
+function drawChain(){
+ const root=$('#chain');root.replaceChildren();
+ for(const [position,slot] of S.chain.entries()){
+  const meta=S.catalog[slot.key];if(!meta)continue;
+  const box=document.createElement('article');box.className='card'+(slot.enabled?'':' off');
+  const header=document.createElement('div');header.className='title';
+  const name=document.createElement('strong');name.textContent=(position+1)+'. '+meta.name;
+  const buttons=document.createElement('div');buttons.className='actions';
+  for(const [mark,target] of [['↑',position-1],['↓',position+1]]){
+   const b=document.createElement('button');b.textContent=mark;b.disabled=target<0||target>=S.chain.length;
+   b.onclick=async()=>{S=await post('move',{id:slot.id,position:target});drawAll()};
+   buttons.append(b);
+  }
+  const bypass=document.createElement('button');bypass.textContent=slot.enabled?'ON':'BYPASS';
+  bypass.onclick=async()=>{S=await post('enable',{id:slot.id,value:!slot.enabled});drawAll()};
+  buttons.append(bypass);
+  const del=document.createElement('button');del.textContent='×';del.title='Usuń z łańcucha';
+  del.onclick=async()=>{if(confirm('Usunąć '+meta.name+'?')){S=await post('remove',{id:slot.id});drawAll()}};
+  buttons.append(del);header.append(name,buttons);box.append(header);
+  meta.params.forEach((p,index)=>{
+   const control=document.createElement('div');control.className='control';
+   const label=document.createElement('label');
+   const n=document.createElement('span');n.textContent=p.label;
+   const out=document.createElement('output');out.textContent=labelValue(p,slot.params[index]);
+   label.append(n,out);control.append(label);
+   if(p.kind==='switch'){
+    const b=document.createElement('button');b.className='switch';
+    b.textContent=labelValue(p,slot.params[index]);
+    b.onclick=()=>{const v=slot.params[index]>=.5?0:1;out.textContent=labelValue(p,v);b.textContent=labelValue(p,v);queue(slot.id,index,v)};
+    control.append(b);
+   }else if(p.kind==='choice'){
+    const select=document.createElement('select');select.style.width='100%';
+    p.choices.forEach((option,i)=>choice(select,String(i),option));
+    select.value=String(Math.round(slot.params[index]*(p.choices.length-1)));
+    select.onchange=()=>{const v=Number(select.value)/(p.choices.length-1);out.textContent=labelValue(p,v);queue(slot.id,index,v)};
+    control.append(select);
+   }else{
+    const range=document.createElement('input');range.type='range';
+    range.min=0;range.max=1;range.step=.001;range.value=slot.params[index];
+    range.oninput=()=>{const v=Number(range.value);out.textContent=labelValue(p,v);queue(slot.id,index,v)};
+    control.append(range);
+   }
+   box.append(control);
+  });
+  root.append(box);
+ }
+ if(!S.chain.length){
+  const none=document.createElement('section');none.textContent='Brak efektów. Wybierz moduł i naciśnij DODAJ FX.';
+  root.append(none);
+ }
+}
+function drawAll(){
+ drawCatalog();drawChain();
+ $('#bpm').value=S.bpm;$('#bpmNum').textContent=Math.round(S.bpm);
+ $('#master').value=S.master;$('#masterNum').textContent=Math.round(S.master*140)+'%';
+}
+$('#refresh').onclick=async()=>{S=await getState();drawAll()};
+$('#add').onclick=async()=>{const key=$('#addSelect').value;if(key){S=await post('add',{key});drawAll()}};
+$('#bpm').oninput=e=>{$('#bpmNum').textContent=e.target.value};
+$('#bpm').onchange=async e=>{S=await post('bpm',{value:Number(e.target.value)});drawAll()};
+$('#master').oninput=e=>{$('#masterNum').textContent=Math.round(e.target.value*140)+'%'};
+$('#master').onchange=async e=>{S=await post('master',{value:Number(e.target.value)});drawAll()};
+$('#tap').onclick=async()=>{
+ const now=performance.now();taps.push(now);taps=taps.filter(t=>now-t<3000).slice(-6);
+ if(taps.length>1){
+  const intervals=taps.slice(1).map((t,i)=>t-taps[i]);
+  const bpm=Math.round(60000/(intervals.reduce((a,b)=>a+b,0)/intervals.length));
+  if(bpm>=20&&bpm<=300){S=await post('bpm',{value:bpm});drawAll()}
+ }
+};
+$('#save').onclick=async()=>{
+ const name=$('#presetName').value.trim();
+ if(!name){alert('Podaj nazwę presetu');return}
+ S=await post('preset/save',{name});drawAll()
+};
+$('#load').onclick=async()=>{const name=$('#presets').value;if(name){S=await post('preset/load',{name});drawAll()}};
+$('#del').onclick=async()=>{
+ const name=$('#presets').value;
+ if(name&&confirm('Usunąć '+name+'?')){S=await post('preset/delete',{name});drawAll()}
+};
+(async()=>{
+ try{S=await getState();drawAll();$('#status').textContent='Połączono'}
+ catch(e){$('#status').textContent='Brak połączenia'}
+})();
+</script></body></html>
