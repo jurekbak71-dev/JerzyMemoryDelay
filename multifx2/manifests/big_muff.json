@@ -1,0 +1,57 @@
+{
+  "key": "big_muff",
+  "name": "Big Muff Collection",
+  "category": "Drive",
+  "params": [
+    {
+      "key": "model",
+      "label": "Muff Model",
+      "def": 0,
+      "kind": "choice",
+      "choices": [
+        "Triangle",
+        "Ram's Head",
+        "Civil War",
+        "Green Russian",
+        "Black Russian",
+        "Op-Amp"
+      ]
+    },
+    {
+      "key": "sustain",
+      "label": "Sustain / Gain",
+      "def": 0.45,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "tone",
+      "label": "Tone",
+      "def": 0.5,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "output",
+      "label": "Output",
+      "def": 0.5,
+      "kind": "range",
+      "unit": "dB",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "mix",
+      "label": "Blend",
+      "def": 1,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    }
+  ]
+}
