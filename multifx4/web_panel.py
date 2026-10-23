@@ -342,7 +342,18 @@ class Handler(BaseHTTPRequestHandler):
             data=json.loads(self.rfile.read(count))
             if type(data) is not dict:raise ValueError("Bad request")
             with LOCK:
-                if path=="/api/extra":
+                if path=="/api/ir/select":
+                    slot,name=data.get("slot"),data.get("name")
+                    if type(slot) is not int or slot not in (0,1):
+                        raise ValueError("Invalid IR slot")
+                    if type(name) is not str or not re.fullmatch(r"[A-Za-z0-9_.-]{1,100}[.]wav",name):
+                        raise ValueError("Invalid WAV name")
+                    if not (IR_DIR/name).is_file():
+                        raise ValueError("IR unavailable")
+                    rpc("IR_LOAD %d %s"%(slot,name))
+                    extra["cab"]["ir"+str(slot)]=name
+                    current_preset=None
+                elif path=="/api/extra":
                     section,field,value=data.get("section"),data.get("field"),data.get("value")
                     defaults={"cab":DEFAULT_CAB,"synth":DEFAULT_SYNTH}
                     if section not in defaults or field not in defaults[section] or field in ("ir0","ir1"):
