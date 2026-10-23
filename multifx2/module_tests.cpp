@@ -11,7 +11,7 @@
 int main(int argc,char** argv){
  if(argc!=2)return 2;
  const std::string folder=argv[1];
- for(const std::string& key:{"compressor","overdrive","tremolo","memory_delay","small_clone","big_muff","attack_decay","tape_drive","mx_analog_delay","atomic_cluster","reel_echo"}){
+ for(const std::string& key:{"compressor","overdrive","tremolo","memory_delay","small_clone","big_muff","attack_decay","tape_drive","mx_analog_delay","atomic_cluster","reel_echo","oil_drum_echo"}){
   const std::string file=folder+"/"+key+".so";
   void* library=dlopen(file.c_str(),RTLD_NOW|RTLD_LOCAL);
   if(!library){std::cerr<<"Unable to load "<<file<<": "<<dlerror()<<"\n";return 1;}
@@ -44,5 +44,5 @@ int main(int argc,char** argv){
   d->destroy(instance);
   dlclose(library);
  }
- std::cout<<"All 11 separate .so modules loaded, all audio finite, Memory Delay has 14 controls\n";
+ std::cout<<"All 12 separate .so modules loaded, all audio finite, Memory Delay has 14 controls\n";
 }
