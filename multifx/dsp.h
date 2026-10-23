@@ -23,7 +23,7 @@ inline constexpr std::array<double, Params> defaults {{
 // All parameters are normalized to [0, 1].
 struct State {
     std::array<double, Params> values = defaults;
-    std::array<bool, Effects> enabled {{ true,true,true,true }};
+    std::array<bool, Effects> enabled {{ false,false,false,true }};
     std::array<int, Effects> order {{ Compressor,Drive,Tremolo,MemoryDelay }};
     double bpm = 120.;
 };
@@ -40,7 +40,7 @@ public:
         compA_=std::exp(-1./(.008*sr_));
         compR_=std::exp(-1./(.110*sr_));
         delay_.prepare(sr_);
-        compEnv_=phase_=0.; tone_.fill(0.);active_.fill(1.);
+        compEnv_=phase_=0.; tone_.fill(0.);active_.fill(0.); active_[MemoryDelay]=1.;
     }
     static bool validOrder(const std::array<int,Effects>& order) {
         unsigned mask=0;
