@@ -436,11 +436,38 @@ const cabLabels={
  on:["CAB / IR ON / OFF","switch"],mix:["DRY / WET","range"],
  blend:["Proporcja IR A / IR B","range"],level:["Poziom wyjściowy IR","range"],
  lowcut:["Low Cut","range"],highcut:["High Cut","range"]};
+function extraValue(section,key,value){
+ if(section==="synth"){
+  if(key==="freebpm")return String(Math.round(20+280*value))+" BPM";
+  if(key==="evolution")return (1+59*value).toFixed(1)+" s";
+  if(key==="root"){
+   const n=Math.round(24+60*value),tones=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+   return tones[n%12]+String(Math.floor(n/12)-1);
+  }
+  const options={
+   style:["Italo Disco","Disco Polo","Acid 303","Funk","Techno","Rock","Post-Punk"],
+   scale:["Dur","Moll","Dorycka","Moll harmoniczna","Pentatonika moll"],
+   model:["Acid 303","Sub 808","Classic Analog"],
+   chord:["Dur","Moll","Power 5","Sus4","Moll7"],
+   mode:["Hold","Flow","Krell"],
+   engine1:["Analog Saw","Analog PWM","Spectral","FM","Grain"],
+   engine2:["Analog Saw","Analog PWM","Spectral","FM","Grain"]
+  };
+  if(options[key]){const a=options[key];return a[Math.round(value*(a.length-1))]}
+ }
+ if(section==="cab"){
+  if(key==="level")return (-18+36*value).toFixed(1)+" dB";
+  if(key==="lowcut")return String(Math.round(30*Math.pow(10,value*1.6)))+" Hz";
+  if(key==="highcut")return String(Math.round(1000*Math.pow(10,value*1.45)))+" Hz";
+  if(key==="blend")return "A "+Math.round(100*(1-value))+"% / B "+Math.round(100*value)+"%";
+ }
+ return Math.round(value*100)+"%";
+}
 function extraRow(node,section,key){
  const spec=(section==="synth"?synthLabels:cabLabels)[key];if(!spec)return;
  const row=make("div","control");
  const label=make("label");label.append(make("span","",spec[0]));
- const value=S[section][key];const output=make("output","",spec[1]==="switch"?(value>=.5?"WŁ.":"WYŁ."):(Math.round(value*100)+"%"));
+ const value=S[section][key];const output=make("output","",spec[1]==="switch"?(value>=.5?"WŁ.":"WYŁ."):extraValue(section,key,value));
  label.append(output);row.append(label);
  if(spec[1]==="switch"){
   const button=make("button",value>=.5?"primary big":"danger big",value>=.5?"WŁĄCZONY":"WYŁĄCZONY");
@@ -464,7 +491,7 @@ function extraRow(node,section,key){
  }else{
   const input=document.createElement("input");input.type="range";input.min=0;input.max=1;input.step=.001;input.value=value;
   input.setAttribute("aria-label",spec[0]);
-  input.oninput=()=>{output.textContent=Math.round(Number(input.value)*100)+"%"};
+  input.oninput=()=>{output.textContent=extraValue(section,key,Number(input.value))};
   input.onchange=()=>change("extra",{section,field:key,value:Number(input.value)});
   row.append(input);
  }
