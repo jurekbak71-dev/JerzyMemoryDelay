@@ -1,0 +1,114 @@
+{
+  "key": "atomic_cluster",
+  "name": "Atomic Cluster",
+  "category": "Experimental",
+  "params": [
+    {
+      "key": "volume",
+      "label": "Output Volume",
+      "def": 0.5,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "blend",
+      "label": "Blend",
+      "def": 1,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "speed",
+      "label": "Speed",
+      "def": 0.4,
+      "kind": "range",
+      "unit": "",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "atoms",
+      "label": "Atom Count",
+      "def": 0.666,
+      "kind": "range",
+      "unit": "",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "smooth",
+      "label": "Smooth / Gate",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "flat",
+      "label": "Pitch Mode",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "bypass",
+      "label": "Circuit Bypass",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "sync",
+      "label": "Tempo Sync",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "division",
+      "label": "Division",
+      "def": 0.5,
+      "kind": "choice",
+      "choices": [
+        "1/16",
+        "1/8",
+        "1/4",
+        "1/2",
+        "1 bar"
+      ]
+    },
+    {
+      "key": "tap",
+      "label": "Tap Enabled",
+      "def": 1,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "motion",
+      "label": "Motion",
+      "def": 0,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "stereo",
+      "label": "Stereo Spread",
+      "def": 1,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    }
+  ]
+}
