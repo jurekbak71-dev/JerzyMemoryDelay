@@ -1,0 +1,17 @@
+[Unit]
+Description=Jerzy Audio - connect HeadRush Core to MultiFX v0.2
+Requires=jerzy-multifx2.service
+After=jerzy-multifx2.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+User=jerzy
+Group=audio
+WorkingDirectory=/home/jerzy/JerzyMultiFX2
+Environment=HOME=/home/jerzy
+ExecStart=/bin/sh /home/jerzy/JerzyMultiFX2/deploy/multifx2/connect.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
