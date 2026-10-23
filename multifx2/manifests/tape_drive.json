@@ -1,0 +1,172 @@
+{
+  "key": "tape_drive",
+  "name": "Tape Drive",
+  "category": "Tape",
+  "params": [
+    {
+      "key": "saturation",
+      "label": "Saturation",
+      "def": 0.35,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "level",
+      "label": "Output Level",
+      "def": 0.5,
+      "kind": "range",
+      "unit": "dB",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "dry",
+      "label": "Dry Level",
+      "def": 0,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "gain_mode",
+      "label": "Gain Mode",
+      "def": 0,
+      "kind": "choice",
+      "choices": [
+        "Normal",
+        "High"
+      ]
+    },
+    {
+      "key": "shift",
+      "label": "Tape Shift",
+      "def": 0.5,
+      "kind": "choice",
+      "choices": [
+        "Low",
+        "Center",
+        "High"
+      ]
+    },
+    {
+      "key": "drive_bypass",
+      "label": "Drive Bypass",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "hpf",
+      "label": "High Pass Frequency",
+      "def": 0,
+      "kind": "range",
+      "unit": "Hz",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "hpf_q",
+      "label": "High Pass Resonance",
+      "def": 0.018,
+      "kind": "range",
+      "unit": "",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "lpf",
+      "label": "Low Pass Frequency",
+      "def": 1,
+      "kind": "range",
+      "unit": "Hz",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "lpf_q",
+      "label": "Low Pass Resonance",
+      "def": 0.018,
+      "kind": "range",
+      "unit": "",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "wow",
+      "label": "Wow",
+      "def": 0,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "preamp_mode",
+      "label": "Preamp Mode",
+      "def": 0,
+      "kind": "choice",
+      "choices": [
+        "Clean",
+        "Tube",
+        "Transistor"
+      ]
+    },
+    {
+      "key": "preamp_drive",
+      "label": "Preamp Drive",
+      "def": 0.2,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "flutter",
+      "label": "Flutter",
+      "def": 0,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "tape_age",
+      "label": "Tape Age",
+      "def": 0,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "opto_amount",
+      "label": "Optical Comp",
+      "def": 0.35,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "opto_makeup",
+      "label": "Optical Makeup",
+      "def": 0.5,
+      "kind": "range",
+      "unit": "dB",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "opto_bypass",
+      "label": "Opto Bypass",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    }
+  ]
+}
