@@ -1,0 +1,22 @@
+[Unit]
+Description=Jerzy MultiFX 0.4 - smartphone touch GUI
+Requires=jerzy-multifx4.service
+After=jerzy-multifx4.service NetworkManager.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=jerzy
+Group=audio
+WorkingDirectory=/home/jerzy/JerzyMultiFX4
+Environment=HOME=/home/jerzy
+Environment=JERZY_MULTIFX2_BIND=10.42.0.1
+Environment=JERZY_MULTIFX2_PORT=8092
+Environment=JERZY_MULTIFX2_MODULE_DIR=/home/jerzy/JerzyMultiFX4/build-multifx2/modules
+Environment=JERZY_MULTIFX2_DATA_DIR=/home/jerzy/.config/jerzy-multifx4
+ExecStart=/usr/bin/python3 /home/jerzy/JerzyMultiFX4/multifx4/web_panel.py
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
