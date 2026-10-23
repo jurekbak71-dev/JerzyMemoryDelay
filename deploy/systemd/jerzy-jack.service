@@ -1,0 +1,19 @@
+[Unit]
+Description=Jerzy Audio - JACK on HeadRush Core
+After=sound.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=jerzy
+Group=audio
+WorkingDirectory=/home/jerzy/JerzyMemoryDelay
+Environment=HOME=/home/jerzy
+LimitRTPRIO=95
+LimitMEMLOCK=infinity
+Restart=on-failure
+RestartSec=3
+ExecStart=/usr/bin/jackd -R -P 70 -d alsa -d hw:CARD=Core,DEV=0 -r 44100 -p 64 -n 3 -i 6 -o 4
+
+[Install]
+WantedBy=multi-user.target
