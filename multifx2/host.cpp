@@ -60,6 +60,8 @@ struct Engine {
  std::atomic<bool> processing{false};
  std::atomic<bool> jackLost{false};
  std::atomic<double> bpm{120.};
+ std::atomic<float> master{.7f};
+ float level=0.7f; // JACK-thread only smooth master value
  std::vector<std::unique_ptr<Slot>> owned;
  int nextId=1;
  Engine(const std::string& directory):moduleDir(directory){
@@ -89,6 +91,9 @@ struct Engine {
     block[k].p[j]=block[k].slot->params[j].load(std::memory_order_relaxed);
   }
   const double tempo=e.bpm.load(std::memory_order_relaxed);
+  const float targetMaster=e.master.load(std::memory_order_relaxed);
+  const float stepMaster=1.f/(.010f*float(jack_get_sample_rate(e.jack)));
+  const float step=stepMaster;
   for(jack_nframes_t n=0;n<frames;++n){
    const float mono=input&&finite(input[n])?input[n]:0.f;
    float y[2]{mono,mono};
@@ -98,7 +103,6 @@ struct Engine {
     // Process while bypassed so reactivation preserves effect history.
     slot->plugin->process(slot->instance,dry,wet,item.p.data(),tempo);
     const float target=item.enabled?1.f:0.f;
-    const float step=1.f/(.010f*float(jack_get_sample_rate(e.jack)));
     slot->fade+=std::clamp(target-slot->fade,-step,step);
     const float mix=slot->fade;
     for(unsigned c=0;c<2;++c){
@@ -106,7 +110,9 @@ struct Engine {
      y[c]=finite(value)?std::clamp(value,-8.f,8.f):0.f;
     }
    }
-   l[n]=std::clamp(y[0],-1.f,1.f);r[n]=std::clamp(y[1],-1.f,1.f);
+   e.level+=std::clamp(targetMaster-e.level,-stepMaster,stepMaster);
+   const float vol=1.4f*e.level;
+   l[n]=std::clamp(y[0]*vol,-1.f,1.f);r[n]=std::clamp(y[1]*vol,-1.f,1.f);
   }
   e.processing.store(false);
   return 0;
@@ -123,7 +129,7 @@ struct Engine {
   const auto path=std::filesystem::path(moduleDir)/(key+".so");
   if(!std::filesystem::is_regular_file(path)){error="Module file unavailable";return nullptr;}
   void* lib=dlopen(path.c_str(),RTLD_NOW|RTLD_LOCAL);
-  if(!lib){error=dlerror()?dlerror():"dlopen failed";return nullptr;}
+  if(!lib){const char* info=dlerror();error=info?info:"dlopen failed";return nullptr;}
   auto entry=reinterpret_cast<JfxEntryPoint>(dlsym(lib,"jfx_plugin"));
   const JfxDescriptor* d=entry?entry():nullptr;
   if(!d||d->abi_version!=JFX_ABI_VERSION||!d->key||key!=d->key||
@@ -212,6 +218,10 @@ struct Engine {
    if(!slot||index<0||unsigned(index)>=slot->plugin->parameter_count||!finite(value)||value<0||value>1)
     return "ERR Bad parameter";
    slot->params[index].store(value);return "OK";
+  }
+  if(type=="MASTER"&&(ss>>value)&&!(ss>>extra)){
+   if(!finite(value)||value<0||value>1)return "ERR Bad master";
+   master.store(value);return "OK";
   }
   if(type=="BPM"&&(ss>>tempo)&&!(ss>>extra)){
    if(!std::isfinite(tempo)||tempo<20||tempo>300)return "ERR Bad tempo";
