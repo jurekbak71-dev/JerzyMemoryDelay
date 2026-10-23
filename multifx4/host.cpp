@@ -80,6 +80,7 @@ struct Engine {
  std::atomic<bool> cabOn{false};
  std::atomic<float> cabMix{1.f},cabBlend{0.f},cabLevel{.5f},cabLowCut{.12f},cabHighCut{.85f};
  float cabFade=0.f;
+ float synthFade=0.f;
  struct MidiBinding {
   std::atomic<int> channel{-1},cc{-1},kind{-1},id{-1},index{-1};
  };
@@ -226,9 +227,13 @@ struct Engine {
     guitar[ch]=guitar[ch]*(1.f-wet*e.cabFade)+processed*(wet*e.cabFade);
    }
    float synth[2]{};
-   e.bass.process(synth,e.synthSync.load()?e.bpm.load(std::memory_order_relaxed):e.freeBpm.load(std::memory_order_relaxed));
-   y[0]=std::clamp(guitar[0]+synth[0],-8.f,8.f);
-   y[1]=std::clamp(guitar[1]+synth[1],-8.f,8.f);
+   const float synthTarget=(e.bass.bassOn||e.bass.padOn)?1.f:0.f;
+   e.synthFade+=std::clamp(synthTarget-e.synthFade,-step,step);
+   // No expensive synth DSP when both engines are off and fade has reached zero.
+   if(synthTarget>0.f || e.synthFade>0.f)
+      e.bass.process(synth,e.synthSync.load()?e.bpm.load(std::memory_order_relaxed):e.freeBpm.load(std::memory_order_relaxed));
+   y[0]=std::clamp(guitar[0]+synth[0]*e.synthFade,-8.f,8.f);
+   y[1]=std::clamp(guitar[1]+synth[1]*e.synthFade,-8.f,8.f);
    e.level+=std::clamp(e.master.load(std::memory_order_relaxed)-e.level,-stepMaster,stepMaster);
    const float vol=1.4f*e.level;
    l[n]=std::clamp(y[0]*vol,-1.f,1.f);r[n]=std::clamp(y[1]*vol,-1.f,1.f);
