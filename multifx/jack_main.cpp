@@ -97,7 +97,7 @@ int main(){
     ::setsockopt(fd,SOL_SOCKET,SO_RCVTIMEO,&timeout,sizeof(timeout));
     App app;
     jack_status_t status{};
-    app.client=jack_client_open("JerzyMultiFX",JackNoStartServer|JackUseExactName,&status);
+    app.client=jack_client_open("JerzyMultiFX",static_cast<jack_options_t>(JackNoStartServer|JackUseExactName),&status);
     if(!app.client){
         std::cerr<<"Cannot connect to existing JACK server\n";::close(fd);return 1;
     }
