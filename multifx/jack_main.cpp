@@ -30,7 +30,8 @@ struct App {
     App(){
         for(int i=0;i<JerzyMultiFX::Params;++i)
             p[i].store(JerzyMultiFX::defaults[i]);
-        for(auto& item:on)item.store(1);
+        for(auto& item:on)item.store(0);
+        on[JerzyMultiFX::MemoryDelay].store(1);
     }
     static int process(jack_nframes_t n,void* opaque){
         auto& a=*static_cast<App*>(opaque);
