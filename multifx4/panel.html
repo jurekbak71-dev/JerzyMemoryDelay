@@ -165,11 +165,11 @@ p{line-height:1.5;margin:8px 0}
  <div class="panel ir-slot"><h3>IR A — kolumna 1</h3>
  <p id="irName0" class="sub">Brak pliku</p>
  <input id="irInput0" type="file" accept=".wav,audio/wav" style="width:100%;min-height:54px" aria-label="Wybierz IR A"/>
- <button id="irUpload0" class="primary big" style="width:100%">WCZYTAJ IR A</button></div>
+ <button id="irUpload0" class="primary big" style="width:100%">WCZYTAJ IR A</button><div class="gap"></div><label for="irLibrary0" class="sub">Lub wybierz impuls z biblioteki</label><select id="irLibrary0"></select><div class="gap"></div><button id="irSelect0" class="big" style="width:100%">WYBIERZ Z BIBLIOTEKI</button></div>
  <div class="panel ir-slot"><h3>IR B — kolumna 2</h3>
  <p id="irName1" class="sub">Brak pliku</p>
  <input id="irInput1" type="file" accept=".wav,audio/wav" style="width:100%;min-height:54px" aria-label="Wybierz IR B"/>
- <button id="irUpload1" class="primary big" style="width:100%">WCZYTAJ IR B</button></div>
+ <button id="irUpload1" class="primary big" style="width:100%">WCZYTAJ IR B</button><div class="gap"></div><label for="irLibrary1" class="sub">Lub wybierz impuls z biblioteki</label><select id="irLibrary1"></select><div class="gap"></div><button id="irSelect1" class="big" style="width:100%">WYBIERZ Z BIBLIOTEKI</button></div>
  <div class="panel"><h3>Regulacja CAB</h3><div id="cabControls"></div></div>
 </div>
 <div class="screen" id="screen-midi" hidden>
@@ -513,7 +513,14 @@ function drawExtra(){
    const node=$(id);node.querySelectorAll(".control").forEach(x=>x.remove());
    fields.forEach(k=>extraRow(node,section,k));
  }
- for(let i=0;i<2;++i)$("irName"+i).textContent=S.cab["ir"+i]||"Nie załadowano";
+ for(let i=0;i<2;++i){
+   $("irName"+i).textContent=S.cab["ir"+i]||"Nie załadowano";
+   const select=$("irLibrary"+i),old=select.value;select.replaceChildren();
+   selectOption(select,"","Wybierz IR");
+   (S.irs||[]).forEach(name=>selectOption(select,name,name));
+   if((S.irs||[]).includes(old))select.value=old;
+   else if((S.irs||[]).includes(S.cab["ir"+i]))select.value=S.cab["ir"+i];
+ }
  const select=$("midiTarget");let previous=select.value;select.replaceChildren();
  selectOption(select,"master","MASTER — głośność");
  selectOption(select,"bpm","Tempo BPM");
@@ -563,6 +570,12 @@ async function startLearn(target,label){
 }
 $("irUpload0").onclick=()=>uploadIr(0);
 $("irUpload1").onclick=()=>uploadIr(1);
+for(let i=0;i<2;++i)$("irSelect"+i).onclick=async()=>{
+  const name=$("irLibrary"+i).value;
+  if(!name){textStatus("Wybierz IR z listy");return}
+  const result=await change("ir/select",{slot:i,name});
+  if(result)textStatus("Załadowano "+name);
+};
 $("beginLearn").onclick=()=>startLearn({kind:$("midiTarget").value},$("midiTarget").selectedOptions[0].textContent);
 $("cancelLearn").onclick=stopLearn;
 $("clearMidi").onclick=async()=>{if(confirm("Usunąć wszystkie przypisania MIDI?")){stopLearn();await change("midi/clear",{})}};
