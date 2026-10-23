@@ -1,0 +1,186 @@
+{
+  "key": "attack_decay",
+  "name": "EHX Attack Decay",
+  "category": "Dynamics",
+  "params": [
+    {
+      "key": "attack",
+      "label": "Attack Time",
+      "def": 0.4,
+      "kind": "range",
+      "unit": "s",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "decay",
+      "label": "Decay Time",
+      "def": 1,
+      "kind": "range",
+      "unit": "s",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "blend",
+      "label": "Blend",
+      "def": 1,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "volume",
+      "label": "Volume",
+      "def": 0.5,
+      "kind": "range",
+      "unit": "dB",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "sensitivity",
+      "label": "Trigger Sensitivity",
+      "def": 0.5,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "harmonix",
+      "label": "Harmonix Gain",
+      "def": 0.3,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "tone",
+      "label": "Fuzz Tone",
+      "def": 0.5,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "harmonix_vol",
+      "label": "Harmonix Volume",
+      "def": 0.25,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "harmonix_blend",
+      "label": "Harmonix Blend",
+      "def": 1,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "return_blend",
+      "label": "Return Blend",
+      "def": 1,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "poly",
+      "label": "Poly Mode",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "fuzz",
+      "label": "Harmonix Fuzz",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "mono_comp",
+      "label": "Mono Compressor",
+      "def": 1,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "poly_comp",
+      "label": "Poly Compressor",
+      "def": 1,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "continuous_mono",
+      "label": "Continuous Mono",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "continuous_poly",
+      "label": "Continuous Poly",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "circuit_bypass",
+      "label": "Circuit Bypass",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "attack_shape",
+      "label": "Attack Shape",
+      "def": 0.5,
+      "kind": "choice",
+      "choices": [
+        "Linear",
+        "Exponential",
+        "S-Curve"
+      ]
+    },
+    {
+      "key": "decay_shape",
+      "label": "Decay Shape",
+      "def": 0.5,
+      "kind": "choice",
+      "choices": [
+        "Linear",
+        "Exponential",
+        "S-Curve"
+      ]
+    },
+    {
+      "key": "trigger_mode",
+      "label": "Trigger Mode",
+      "def": 0,
+      "kind": "choice",
+      "choices": [
+        "Auto",
+        "Manual",
+        "MIDI"
+      ]
+    }
+  ]
+}
