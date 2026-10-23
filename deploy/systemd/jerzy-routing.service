@@ -1,0 +1,17 @@
+[Unit]
+Description=Jerzy Audio - connect Memory Delay audio ports
+Requires=jerzy-delay.service
+After=jerzy-delay.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+User=jerzy
+Group=audio
+WorkingDirectory=/home/jerzy/JerzyMemoryDelay
+Environment=HOME=/home/jerzy
+ExecStart=/home/jerzy/JerzyMemoryDelay/deploy/connect-delay.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
