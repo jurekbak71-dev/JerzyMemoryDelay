@@ -32,13 +32,18 @@ state={"chain":[],"bpm":120.,"master":.7}
 presets={}
 current_preset=None
 DEFAULT_CAB={"on":0.0,"mix":1.0,"blend":0.0,"level":0.5,"lowcut":0.12,"highcut":0.85,"ir0":"","ir1":""}
-DEFAULT_SYNTH={"bass":0.0,"pad":0.0,"root":(40-24)/60,"style":0.5,"scale":0.25,"mode":1.0,
-               "density":0.75,"basslevel":0.6,"padlevel":0.35,"level":0.35,"pan":0.5}
+DEFAULT_SYNTH={"bass":0.0,"pad":0.0,"root":(40-24)/60,"style":5/6,"scale":0.25,"mode":1.0,
+               "density":0.75,"basslevel":0.6,"padlevel":0.35,"level":0.35,"pan":0.5,
+               "model":0.0,"chord":0.25,"engine1":0.0,"engine2":0.25,
+               "evolution":0.35,"bassfx":0.15,"padfx":0.4,"sync":1.0,"freebpm":100/280}
 extra={"cab":dict(DEFAULT_CAB),"synth":dict(DEFAULT_SYNTH),"midi":[]}
 MIDI_KIND={"master":1,"bpm":2,"cab.on":3,"cab.mix":4,"cab.blend":5,"cab.level":6,
            "cab.lowcut":7,"cab.highcut":8,"synth.bass":9,"synth.pad":10,"synth.root":11,
            "synth.style":12,"synth.scale":13,"synth.density":14,"synth.basslevel":15,
-           "synth.padlevel":16,"synth.level":17,"synth.pan":18}
+           "synth.padlevel":16,"synth.level":17,"synth.pan":18,
+           "synth.model":19,"synth.chord":20,"synth.engine1":21,"synth.engine2":22,
+           "synth.evolution":23,"synth.bassfx":24,"synth.padfx":25,
+           "synth.sync":26,"synth.freebpm":27}
 
 def rpc(line):
     with socket.create_connection(CONTROL,timeout=2) as sock:
