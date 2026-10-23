@@ -1,7 +1,7 @@
 name: MultiFX v0.2 module CI
 on:
   push:
-    branches: [feature/jerzy-multifx-v02]
+    branches: [feature/jerzy-multifx-v02, feature/jerzy-multifx-v03-library-ui]
   pull_request:
     paths:
       - "multifx2/**"
@@ -43,3 +43,14 @@ jobs:
               assert hasattr(dll, 'jfx_plugin'), name
           print('All 11 modules export jfx_plugin')
           PY
+
+      - name: Package 11 standalone FX modules
+        run: |
+          mkdir -p dist/JerzyMultiFX-Modules
+          cp build-multifx2/modules/*.so build-multifx2/modules/*.json dist/JerzyMultiFX-Modules/
+          tar -czf dist/JerzyMultiFX-Modules-${{ matrix.platform }}.tar.gz -C dist JerzyMultiFX-Modules
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jerzy-multifx-modules-${{ matrix.platform }}
+          path: dist/JerzyMultiFX-Modules-*.tar.gz
+          retention-days: 30
