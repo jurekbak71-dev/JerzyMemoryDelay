@@ -14,6 +14,7 @@ int main(){
     Engine e;
     e.prepare(44100.);
     State state;
+    state.enabled={{true,true,true,true}};
     constexpr int rate=44100;
     // Exercise all four DSP blocks and note long delay tail; assert finite audio.
     for(int n=0;n<rate;++n) {
