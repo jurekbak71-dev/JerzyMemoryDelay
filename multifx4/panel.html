@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=yes">
+<meta name="theme-color" content="#111a24">
+<title>Jerzy MultiFX 0.4 — Touch</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#0b121b;color:#f0f3f7}
+*{box-sizing:border-box}
+body{max-width:940px;margin:0 auto;padding:12px 12px calc(92px + env(safe-area-inset-bottom));font-size:16px}
+h1{font-size:22px;letter-spacing:.05em;margin:0}h2{font-size:19px;margin:4px 0 13px}
+h3{font-size:16px;margin:0}.sub{color:#aebfd0;font-size:13px;line-height:1.4}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:5px 2px 13px}
+header strong{display:block}#connection{font-size:12px;border:1px solid #627589;border-radius:999px;padding:7px 9px;white-space:nowrap}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:3;background:#172434ee;backdrop-filter:blur(12px);border-top:1px solid #46576b;display:flex;justify-content:center;padding:5px max(8px,env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))}
+nav button{flex:1;max-width:186px;border:0;min-height:58px;border-radius:9px;background:transparent;font-size:12px;padding:4px 1px;line-height:1.4}
+nav button b{display:block;font-size:21px;font-weight:500}
+nav button.active{background:#d88a45;color:#101723;font-weight:750}
+button,select,input{font:inherit;color:#f2f5f8}
+button{background:#344b61;border:1px solid #607892;min-height:52px;padding:9px 13px;border-radius:12px;touch-action:manipulation;cursor:pointer;font-weight:600}
+button:active{filter:brightness(1.2)}
+button:disabled{opacity:.3}
+button.primary{background:#d18a47;border-color:#d18a47;color:#151b22}
+button.danger{border-color:#a26767;background:#462c36}
+button.big{min-height:60px}
+select,input[type=text],input[type=number]{min-height:52px;min-width:0;background:#253648;border:1px solid #5b7189;border-radius:11px;padding:10px;width:100%}
+input[type=range]{display:block;width:100%;height:57px;margin:0;accent-color:#f8ad63;touch-action:pan-y}
+input[type=range]::-webkit-slider-runnable-track{height:12px;background:#465970;border-radius:12px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;height:38px;width:38px;background:#f8bb75;border-radius:50%;border:3px solid #2c3544;margin-top:-13px;box-shadow:0 0 0 2px #f8bb7577}
+input[type=range]{-webkit-appearance:none;appearance:none}
+input[type=range]::-moz-range-track{height:12px;background:#465970;border-radius:12px}
+input[type=range]::-moz-range-thumb{height:34px;width:34px;background:#f8bb75;border:3px solid #2c3544;border-radius:50%}
+.panel,.fx-card{background:#1d2b3b;border:1px solid #3c5269;border-radius:16px;padding:15px;margin:11px 0}
+.panel.highlight{border-color:#b88b5f}
+.row{display:flex;align-items:center;gap:10px}.row.wrap{flex-wrap:wrap}
+.row>*{min-width:0}.row.grow>*:first-child{flex:1}
+.gap{height:12px}.two{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+h4{margin:0}.tag{font-size:12px;color:#b7c7d7}
+.fx-card .name{font-size:17px;font-weight:750}.fx-card .buttonrow{display:grid;grid-template-columns:1fr 1fr 1fr 1.4fr;gap:8px;margin-top:13px}
+.fx-card .buttonrow button{min-width:0;padding:8px 2px;font-size:15px}
+.fx-card.off{border-style:dashed;opacity:.73}
+.screen[hidden]{display:none!important}
+.control{border-bottom:1px solid #43516655;padding:13px 0 6px}
+.control:last-child{border-bottom:0}
+.control label{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;font-size:15px}
+.control label output{font-variant-numeric:tabular-nums;color:#fac283;font-weight:700;text-align:right}
+.control select{margin-top:9px}.control .switch{width:100%;margin:10px 0;font-size:17px}
+details{border:1px solid #3d546a;background:#182635;border-radius:13px;margin:11px 0;padding:8px 14px}
+summary{cursor:pointer;padding:13px 2px;font-weight:750;font-size:16px;min-height:50px;list-style-position:inside}
+details[open] summary{border-bottom:1px solid #516477}
+.library-card{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#213245;border:1px solid #3d5570;border-radius:14px;padding:12px;margin:10px 0}
+.library-card button{min-width:106px}
+.library-card .details{flex:1;min-width:0}
+.library-card .details b{display:block;font-size:16px}
+.preset-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#hint{min-height:22px;color:#f5bb82;font-size:13px}
+.statusrow{display:flex;justify-content:space-between;gap:16px;align-items:center}
+p{line-height:1.5;margin:8px 0}
+@media(min-width:700px){
+ body{padding-left:20px;padding-right:20px}
+ .library-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+ .library-card{margin:0}
+ .fx-card{max-width:760px;margin-inline:auto}
+}
+.learn{width:100%;min-height:48px;margin-top:7px;font-size:14px;background:#234c57;border-color:#508396}
+#screen-synth .panel,#screen-cab .panel{max-width:760px;margin-inline:auto}
+#learnStatus{font-size:17px;font-weight:650;color:#f5bb82}
+.ir-slot{border-left:4px solid #e99d54}
+.navMore{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.navMore button{min-height:78px}
+</style>
+</head>
+<body>
+<header><div><h1>JERZY MULTIFX <span style="color:#f8ad63">0.4</span></h1>
+<div class="sub">Raspberry Pi 4B · HeadRush Core</div></div>
+<span id="connection" aria-live="polite">Łączenie...</span></header>
+<div id="hint" role="status" aria-live="polite"></div>
+
+<main>
+<div class="screen" id="screen-chain">
+ <h2>Łańcuch efektów</h2>
+ <div class="panel">
+  <div class="statusrow"><b>Poziom MASTER</b><output id="masterView">—</output></div>
+  <input id="master" type="range" min="0" max="1" step=".001" aria-label="Głośność wyjściowa">
+  <div class="gap"></div>
+  <div class="statusrow"><b>Tempo</b><b><span id="bpmView">120</span> BPM</b></div>
+  <input id="bpm" type="range" min="20" max="300" step="1" aria-label="Tempo w BPM">
+  <button id="tap" class="big" style="width:100%">TAP TEMPO</button>
+ </div>
+ <div id="chainCards"></div>
+ <button id="goLibrary" class="primary big" style="width:100%">+ DODAJ NOWY EFEKT</button>
+</div>
+
+<div class="screen" id="screen-effect" hidden>
+ <h2>Edycja efektu</h2>
+ <div class="panel"><label for="effectSelect" class="sub">Wybierz efekt z łańcucha</label>
+  <select id="effectSelect"></select></div>
+ <div id="effectEditor"></div>
+</div>
+
+<div class="screen" id="screen-library" hidden>
+ <h2>Biblioteka efektów</h2>
+ <div class="panel">
+  <p>Każdy efekt jest osobnym modułem ARM64. Można dodać kilka kopii tego samego efektu.</p>
+  <div class="row">
+   <button id="refreshLibrary" style="flex:1">Odśwież katalog</button>
+   <span id="libraryCount" class="tag"></span>
+  </div>
+ </div>
+ <div id="libraryList" class="library-list"></div>
+</div>
+
+<div class="screen" id="screen-presets" hidden>
+ <h2>Presety</h2>
+ <div class="panel">
+  <label for="presetName">Nazwa nowego presetu</label>
+  <input id="presetName" type="text" maxlength="64" placeholder="Np. Ambient Guitar">
+  <div class="gap"></div>
+  <button id="savePreset" class="primary big" style="width:100%">ZAPISZ AKTUALNY ŁAŃCUCH</button>
+ </div>
+ <div class="panel">
+  <label for="presetSelect">Zapisane presety</label>
+  <select id="presetSelect"></select>
+  <div class="gap"></div>
+  <div class="preset-grid">
+   <button id="loadPreset" class="primary">WCZYTAJ</button>
+   <button id="deletePreset" class="danger">USUŃ</button>
+  </div>
+ </div>
+ <div class="panel sub">Presety i ostatni łańcuch przechowywane są na Raspberry Pi. Zawartość wraca po restarcie usług.</div>
+</div>
+
+<div class="screen" id="screen-system" hidden>
+ <h2>System</h2>
+ <div class="panel">
+  <h3>Automatyczny start</h3>
+  <p>FX uruchamiają się razem z Raspberry Pi. Przeglądarka jest tylko pilotem — nie jest potrzebna do przetwarzania dźwięku.</p>
+  <p id="systemInfo" class="sub"></p>
+  <button id="refreshSystem" class="big" style="width:100%">SPRAWDŹ POŁĄCZENIE</button>
+ </div>
+ <div class="panel">
+  <h3>Instalowanie nowych modułów</h3>
+  <p>Umieść zgodne pliki <code>.so</code> i <code>.json</code> w katalogu modułów, potem w Bibliotece wybierz „Odśwież katalog”. Nie trzeba przebudowywać hosta.</p>
+  <p class="sub">Instaluj tylko zaufane moduły przeznaczone dla ARM64. VST3 i efekty Korg Drumlogue wymagają osobnego portowania.</p>
+ </div>
+ <div class="panel"><h3>Adres panelu</h3><p><b>http://10.42.0.1:8090/</b></p>
+  <p class="sub">Panel dostępny w sieci Jerzy-MultiFX, bez połączenia z Internetem.</p>
+ </div>
+</div>
+
+<div class="screen" id="screen-synth" hidden>
+ <h2>BassAmbient — instrument generatywny</h2>
+ <div class="panel highlight"><h3>Osobny silnik audio</h3>
+ <p class="sub">Bas, pady i Krell grają równolegle do gitary. Wspólne tempo, osobne START / STOP, poziomy i panorama. CAB/IR przetwarza wyłącznie gitarę.</p></div>
+ <div id="synthBass" class="panel"><h3>BAS / START-STOP</h3></div>
+ <div id="synthPad" class="panel"><h3>AMBIENT / KRELL</h3></div>
+ <div id="synthMix" class="panel"><h3>MIKSER INSTRUMENTU</h3></div>
+</div>
+<div class="screen" id="screen-cab" hidden>
+ <h2>CAB / IR Loader</h2>
+ <div class="panel highlight"><h3>Kolumna na końcu toru gitary</h3>
+ <p class="sub">Dwa WAV mono lub stereo, 16/24-bit PCM albo 32-bit float. Konwolucja FFT. IR A i B można mieszać. Tor BassAmbient nie jest filtrowany kolumną.</p>
+ <div id="cabPower"></div></div>
+ <div class="panel ir-slot"><h3>IR A — kolumna 1</h3>
+ <p id="irName0" class="sub">Brak pliku</p>
+ <input id="irInput0" type="file" accept=".wav,audio/wav" style="width:100%;min-height:54px" aria-label="Wybierz IR A"/>
+ <button id="irUpload0" class="primary big" style="width:100%">WCZYTAJ IR A</button></div>
+ <div class="panel ir-slot"><h3>IR B — kolumna 2</h3>
+ <p id="irName1" class="sub">Brak pliku</p>
+ <input id="irInput1" type="file" accept=".wav,audio/wav" style="width:100%;min-height:54px" aria-label="Wybierz IR B"/>
+ <button id="irUpload1" class="primary big" style="width:100%">WCZYTAJ IR B</button></div>
+ <div class="panel"><h3>Regulacja CAB</h3><div id="cabControls"></div></div>
+</div>
+<div class="screen" id="screen-midi" hidden>
+ <h2>MIDI Learn</h2>
+ <div class="panel highlight"><h3>Przypisz pokrętło / suwak</h3>
+ <p class="sub">Naciśnij UCZ MIDI przy wybranym parametrze, potem porusz suwakiem kontrolera. MIDI CC musi trafić do portu JACK JerzyMultiFX4:midi_in.</p>
+ <p id="learnStatus" aria-live="polite">Gotowy do uczenia MIDI.</p>
+ <button id="cancelLearn" style="width:100%">ANULUJ</button></div>
+ <div class="panel"><h3>Szybkie przypisanie</h3>
+ <select id="midiTarget"></select><div class="gap"></div>
+ <button id="beginLearn" class="primary big" style="width:100%">UCZ MIDI</button></div>
+ <div class="panel"><h3>Zapamiętane kontrolery</h3><div id="midiMappings"></div>
+ <button id="clearMidi" class="danger big" style="width:100%">WYCZYŚĆ PRZYPISANIA</button></div>
+</div>
+<div class="screen" id="screen-more" hidden>
+ <h2>Więcej</h2>
+ <div class="navMore">
+ <button data-open="library" class="primary">+ Biblioteka FX</button>
+ <button data-open="presets">Presety</button>
+ <button data-open="midi">MIDI Learn</button>
+ <button data-open="system">System</button>
+ </div>
+</div>
+</main>
+<nav aria-label="Menu główne">
+ <button data-tab="chain" class="active"><b>≡</b>Łańcuch</button>
+ <button data-tab="effect"><b>◎</b>Efekt</button>
+ <button data-tab="synth"><b>♫</b>Bass/Amb</button>
+ <button data-tab="cab"><b>▣</b>CAB/IR</button>
+ <button data-tab="more"><b>•••</b>Więcej</button>
+</nav>
+<script>
+const $=id=>document.getElementById(id);
+let S=null,selectedId=null,activeTab="chain",taps=[],pending=new Map(),sendTimer=null,sendLock=Promise.resolve(),learnTimer=null;
+const title=n=>n||"";
+const make=(tag,cls,content)=>{
+ const el=document.createElement(tag);
+ if(cls)el.className=cls;
+ if(content!==undefined)el.textContent=String(content);
+ return el;
+};
+function textStatus(message){$("hint").textContent=message;}
+function selectOption(select,value,label) {
+ const item=document.createElement("option");item.value=String(value);item.textContent=String(label);select.append(item);
+}
+function switchTab(next){
+ activeTab=next;
+ document.querySelectorAll(".screen").forEach(el=>el.hidden=(el.id!=="screen-"+next));
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===next||(b.dataset.tab==="more"&&["library","presets","system","midi"].includes(next))));
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+async function load(){
+ const response=await fetch("/api/state",{cache:"no-store"});
+ if(!response.ok)throw Error("Brak odpowiedzi panelu");
+ return response.json();
+}
+async function command(endpoint,payload) {
+ const response=await fetch("/api/"+endpoint,{
+  method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+ let answer;
+ try{answer=await response.json()}catch(_){throw Error("Niepoprawna odpowiedź silnika")}
+ if(!response.ok)throw Error(answer.error||"Błąd "+response.status);
+ return answer;
+}
+async function change(endpoint,payload){
+ try{
+  await flushControls();
+  const result=await command(endpoint,payload);
+  S=result;
+  $("connection").textContent="Połączono";
+  textStatus("");
+  drawAll();
+  return result;
+ }catch(e){
+  textStatus("Błąd: "+e.message);$("connection").textContent="Błąd";
+  return null;
+ }
+}
+function queueControl(id,index,value){
+ const slot=S.chain.find(s=>s.id===id);if(!slot)return;
+ slot.params[index]=value;
+ pending.set(String(id)+":"+index,{id,index,value});
+ clearTimeout(sendTimer);
+ sendTimer=setTimeout(()=>{flushControls().catch(()=>{})},90);
+}
+async function flushControls(){
+ clearTimeout(sendTimer);
+ const updates=[...pending.values()];pending.clear();
+ sendLock=sendLock.then(async()=>{
+  for(const item of updates){
+   await command("param",item);
+  }
+ }).catch(e=>{textStatus("Zmiana parametru: "+e.message);});
+ await sendLock;
+}
+function display(meta,value){
+ if(meta.kind==="switch")return value>=.5?(meta.on||"ON"):(meta.off||"OFF");
+ if(meta.kind==="choice")return meta.choices[Math.min(meta.choices.length-1,Math.round(value*(meta.choices.length-1)))]||"";
+ const min=meta.min??0,max=meta.max??100;
+ let z=value;
+ if(typeof meta.skew==="number"&&meta.skew>0)z=Math.pow(z,meta.skew);
+ const amount=min+(max-min)*z;
+ const digits=(Math.abs(max-min)<25||meta.unit==="dB")?1:0;
+ return amount.toFixed(digits)+(meta.unit?" "+meta.unit:"");
+}
+function showCatalog(){
+ const options=Object.values(S.catalog).sort((a,b)=>(a.category+a.name).localeCompare(b.category+b.name));
+ $("libraryCount").textContent=options.length+" modułów";
+ const root=$("libraryList");root.replaceChildren();
+ if(!options.length){root.append(make("p","sub","Nie znaleziono zgodnych modułów .so + .json"));return}
+ let last=null;
+ options.forEach(meta=>{
+  const card=make("article","library-card");
+  const info=make("div","details");
+  info.append(make("b","",meta.name),make("div","tag",meta.category+" · "+meta.params.length+" kontrolek"));
+  const b=make("button","primary","+ DODAJ");
+  b.setAttribute("aria-label","Dodaj "+meta.name);
+  b.onclick=async()=>{
+   const before=new Set(S.chain.map(x=>x.id));
+   const next=await change("add",{key:meta.key});
+   if(next){const slot=S.chain.find(x=>!before.has(x.id));if(slot)selectedId=slot.id;drawAll();switchTab("effect")}
+  };
+  card.append(info,b);root.append(card)
+ })
+}
+function drawChain(){
+ const root=$("chainCards");root.replaceChildren();
+ if(!S.chain.length){
+  const empty=make("div","panel");
+  empty.append(make("h3","","Łańcuch jest pusty."),make("p","sub","W Bibliotece wybierz efekt i naciśnij DODAJ."));
+  root.append(empty);
+ }
+ S.chain.forEach((slot,index)=>{
+  const meta=S.catalog[slot.key];if(!meta)return;
+  const card=make("article","fx-card"+(slot.enabled?"":" off"));
+  const top=make("div","statusrow");
+  const info=make("div","");
+  info.append(make("div","name",String(index+1)+". "+meta.name),make("div","tag",meta.category+" · "+(slot.enabled?"AKTYWNY":"BYPASS")));
+  top.append(info);card.append(top);
+  const buttons=make("div","buttonrow");
+  const up=make("button","","↑"),down=make("button","","↓");
+  up.disabled=index===0;down.disabled=index===S.chain.length-1;
+  up.title="Przesuń w górę";down.title="Przesuń w dół";
+  up.onclick=()=>change("move",{id:slot.id,position:index-1});
+  down.onclick=()=>change("move",{id:slot.id,position:index+1});
+  const bypass=make("button",slot.enabled?"":"danger",slot.enabled?"ON":"OFF");
+  bypass.onclick=()=>change("enable",{id:slot.id,value:!slot.enabled});
+  const edit=make("button","primary","EDYTUJ");
+  edit.onclick=()=>{selectedId=slot.id;drawAll();switchTab("effect")};
+  buttons.append(up,down,bypass,edit);
+  card.append(buttons);root.append(card)
+ });
+ $("master").value=S.master;
+ $("masterView").textContent=Math.round(S.master*140)+"%";
+ $("bpm").value=S.bpm;
+ $("bpmView").textContent=String(Math.round(S.bpm))
+}
+function group(meta,index){
+ if(meta.key==="reel_echo")return index<8?"01 · Taśma":index<19?"02 · Mechanika":index<27?"03 · Stereo i dynamika":index<35?"04 · Tryby specjalne":"05 · Zaawansowane";
+ if(meta.key==="mx_analog_delay")return index<7?"01 · Główne":index<15?"02 · Delay A":index<23?"03 · Delay B":"04 · Efekty dodatkowe";
+ if(meta.key==="memory_delay")return index<7?"01 · Delay i modulacja":"02 · BBD i synchronizacja";
+ if(meta.key==="attack_decay")return index<10?"01 · Obwiednia i brzmienie":"02 · Tryby i wyzwalanie";
+ if(meta.key==="tape_drive")return index<6?"01 · Drive":index<10?"02 · Filtry":"03 · Mechanika i kompresor";
+ if(meta.params.length>12)return index<7?"01 · Podstawowe":"02 · Pozostałe";
+ return "Parametry efektu";
+}
+function drawEffect(){
+ const select=$("effectSelect");select.replaceChildren();
+ S.chain.forEach((s,i)=>selectOption(select,s.id,String(i+1)+". "+(S.catalog[s.key]?.name||s.key)));
+ if(!S.chain.some(s=>s.id===selectedId))selectedId=S.chain[0]?.id??null;
+ select.value=String(selectedId??"");
+ const root=$("effectEditor");root.replaceChildren();
+ if(selectedId===null){
+  root.append(make("div","panel","Brak efektów. Otwórz Bibliotekę i dodaj pierwszy moduł."));
+  return;
+ }
+ const slot=S.chain.find(s=>s.id===selectedId);const meta=S.catalog[slot.key];if(!meta)return;
+ const head=make("div","panel highlight");
+ head.append(make("h3","",meta.name),make("p","sub",meta.category+" · "+meta.params.length+" parametrów"));
+ const by=make("button","big "+(slot.enabled?"primary":"danger"),slot.enabled?"EFEKT WŁĄCZONY — dotknij, aby wyłączyć":"EFEKT WYŁĄCZONY — dotknij, aby włączyć");
+ by.style.width="100%";by.onclick=()=>change("enable",{id:slot.id,value:!slot.enabled});
+ head.append(by);root.append(head);
+ const groupMap=new Map();
+ meta.params.forEach((p,index)=>{
+  const g=group(meta,index);
+  let details=groupMap.get(g);
+  if(!details){
+   details=document.createElement("details");details.open=groupMap.size===0;
+   const summary=document.createElement("summary");summary.textContent=g;
+   details.append(summary);groupMap.set(g,details);root.append(details);
+  }
+  const row=make("div","control");
+  const label=make("label");
+  const name=make("span","",p.label);
+  const output=make("output","",display(p,slot.params[index]));
+  label.append(name,output);row.append(label);
+  if(p.kind==="switch"){
+   const btn=make("button","switch primary",display(p,slot.params[index]));
+   btn.onclick=()=>{
+    const value=slot.params[index]>=.5?0:1;
+    btn.textContent=display(p,value);output.textContent=display(p,value);
+    queueControl(slot.id,index,value);
+   };
+   row.append(btn);
+  }else if(p.kind==="choice"){
+   const combo=document.createElement("select");
+   p.choices.forEach((s,i)=>selectOption(combo,i,s));
+   combo.value=String(Math.round(slot.params[index]*(p.choices.length-1)));
+   combo.onchange=()=>{
+    const value=Number(combo.value)/(p.choices.length-1);
+    output.textContent=display(p,value);queueControl(slot.id,index,value);
+   };
+   row.append(combo);
+  }else{
+   const range=document.createElement("input");
+   range.type="range";range.min=0;range.max=1;range.step=.001;range.value=slot.params[index];
+   range.setAttribute("aria-label",p.label);
+   range.oninput=()=>{
+    const value=Number(range.value);
+    output.textContent=display(p,value);
+    queueControl(slot.id,index,value);
+   };
+   range.onchange=()=>{flushControls().catch(()=>{})};
+   row.append(range)
+  }
+  const learn=make("button","learn","UCZ MIDI — "+p.label);
+  learn.onclick=()=>startLearn({kind:"fx",id:slot.id,index},meta.name+" / "+p.label);
+  row.append(learn);
+  details.append(row)
+ });
+ const remove=make("button","danger big","USUŃ EFEKT Z ŁAŃCUCHA");
+ remove.style.width="100%";
+ remove.onclick=async()=>{if(confirm("Usunąć "+meta.name+" z łańcucha?")){
+  const result=await change("remove",{id:slot.id});if(result)switchTab("chain");
+ }};
+ root.append(remove)
+}
+function drawPresets(){
+ const select=$("presetSelect"),old=select.value;
+ select.replaceChildren();selectOption(select,"","Wybierz zapisany preset");
+ S.presets.forEach(p=>selectOption(select,p,p));
+ if(S.presets.includes(old))select.value=old;
+ else if(S.active_preset&&S.presets.includes(S.active_preset))select.value=S.active_preset;
+}
+function drawSystem(){
+ $("systemInfo").textContent="Silnik online · "+S.chain.length+" instancji w łańcuchu · "+Object.keys(S.catalog).length+" modułów dostępnych";
+}
+function drawAll(){if(!S)return;showCatalog();drawChain();drawEffect();drawPresets();drawSystem();drawExtra()}
+
+const synthLabels={
+ bass:["START / STOP BASU","switch"],pad:["START / STOP AMBIENTU","switch"],
+ root:["Wysokość podstawowa / ROOT","range"],
+ style:["Styl basu (Disco / Acid / Funk / Techno)","range"],
+ scale:["Skala muzyczna","range"],mode:["Tryb ambient / Krell","range"],
+ density:["Gęstość rytmu","range"],basslevel:["Głośność basu","range"],
+ padlevel:["Głośność padów","range"],level:["Głośność BassAmbient","range"],
+ pan:["Panorama instrumentu","range"]};
+const cabLabels={
+ on:["CAB / IR ON / OFF","switch"],mix:["DRY / WET","range"],
+ blend:["Proporcja IR A / IR B","range"],level:["Poziom wyjściowy IR","range"],
+ lowcut:["Low Cut","range"],highcut:["High Cut","range"]};
+function extraRow(node,section,key){
+ const spec=(section==="synth"?synthLabels:cabLabels)[key];if(!spec)return;
+ const row=make("div","control");
+ const label=make("label");label.append(make("span","",spec[0]));
+ const value=S[section][key];const output=make("output","",spec[1]==="switch"?(value>=.5?"WŁ.":"WYŁ."):(Math.round(value*100)+"%"));
+ label.append(output);row.append(label);
+ if(spec[1]==="switch"){
+  const button=make("button",value>=.5?"primary big":"danger big",value>=.5?"WŁĄCZONY":"WYŁĄCZONY");
+  button.style.width="100%";button.onclick=()=>change("extra",{section,field:key,value:value>=.5?0:1});
+  row.append(button);
+ }else{
+  const input=document.createElement("input");input.type="range";input.min=0;input.max=1;input.step=.001;input.value=value;
+  input.setAttribute("aria-label",spec[0]);
+  input.oninput=()=>{output.textContent=Math.round(Number(input.value)*100)+"%"};
+  input.onchange=()=>change("extra",{section,field:key,value:Number(input.value)});
+  row.append(input);
+ }
+ if(!(section==="synth"&&key==="mode")){
+  const learn=make("button","learn","UCZ MIDI — "+spec[0]);
+  learn.onclick=()=>startLearn({kind:section+"."+key},spec[0]);
+  row.append(learn);
+ }
+ node.append(row);
+}
+function drawExtra(){
+ if(!S||!S.cab||!S.synth)return;
+ for(const [id,section,fields] of [
+  ["synthBass","synth",["bass","root","style","scale","density","basslevel"]],
+  ["synthPad","synth",["pad","mode","padlevel"]],
+  ["synthMix","synth",["level","pan"]],
+  ["cabPower","cab",["on"]],
+  ["cabControls","cab",["mix","blend","level","lowcut","highcut"]]]){
+   const node=$(id);node.querySelectorAll(".control").forEach(x=>x.remove());
+   fields.forEach(k=>extraRow(node,section,k));
+ }
+ for(let i=0;i<2;++i)$("irName"+i).textContent=S.cab["ir"+i]||"Nie załadowano";
+ const select=$("midiTarget");let previous=select.value;select.replaceChildren();
+ selectOption(select,"master","MASTER — głośność");
+ selectOption(select,"bpm","Tempo BPM");
+ for(const [key,v] of Object.entries(synthLabels))if(key!=="mode")selectOption(select,"synth."+key,"BassAmbient / "+v[0]);
+ for(const [key,v] of Object.entries(cabLabels))selectOption(select,"cab."+key,"CAB / "+v[0]);
+ if([...select.options].some(x=>x.value===previous))select.value=previous;
+ const map=$("midiMappings");map.replaceChildren();
+ if(!S.midi.length)map.append(make("p","sub","Brak przypisań"));
+ S.midi.forEach(m=>map.append(make("p","sub","Kanał "+m.channel+" • CC "+m.cc+" → "+(m.target.kind==="fx"?"FX: "+m.target.key+" / "+m.target.index:m.target.kind))));
+}
+async function uploadIr(index) {
+ const file=$("irInput"+index).files[0];
+ if(!file){textStatus("Wybierz plik WAV");return}
+ if(file.size>8*1024*1024){textStatus("Plik przekracza 8 MB");return}
+ const button=$("irUpload"+index);button.disabled=true;textStatus("Ładowanie IR…");
+ try{
+  const response=await fetch("/api/ir/upload?slot="+index,{method:"POST",headers:{"Content-Type":"audio/wav"},body:file});
+  const data=await response.json();
+  if(!response.ok)throw Error(data.error||"Ładowanie nieudane");
+  S=data;drawAll();textStatus("Wczytano IR: "+file.name);
+ }catch(err){textStatus(err.message)}finally{button.disabled=false}
+}
+function stopLearn(){
+ if(learnTimer){clearInterval(learnTimer);learnTimer=null}
+ $("learnStatus").textContent="Uczenie MIDI zatrzymane";
+}
+async function startLearn(target,label){
+ stopLearn();switchTab("midi");
+ try{
+  const response=await fetch("/api/midi/events",{cache:"no-store"});
+  if(!response.ok)throw Error("MIDI niedostępne");
+  let last=(await response.json()).seq;
+  $("learnStatus").textContent="PORUSZ KONTROLEREM MIDI — "+label;
+  learnTimer=setInterval(async()=>{
+   try{
+    const r=await fetch("/api/midi/events",{cache:"no-store"});
+    if(!r.ok)return;
+    const event=await r.json();
+    if(event.seq===last)return;
+    last=event.seq;
+    clearInterval(learnTimer);learnTimer=null;
+    const result=await change("midi/bind",{channel:event.channel,cc:event.cc,target});
+    if(result)$("learnStatus").textContent="ZAPAMIĘTANO: CH "+event.channel+" CC "+event.cc+" → "+label;
+   }catch(err){$("learnStatus").textContent=err.message}
+  },250);
+ }catch(err){$("learnStatus").textContent=err.message}
+}
+$("irUpload0").onclick=()=>uploadIr(0);
+$("irUpload1").onclick=()=>uploadIr(1);
+$("beginLearn").onclick=()=>startLearn({kind:$("midiTarget").value},$("midiTarget").selectedOptions[0].textContent);
+$("cancelLearn").onclick=stopLearn;
+$("clearMidi").onclick=async()=>{if(confirm("Usunąć wszystkie przypisania MIDI?")){stopLearn();await change("midi/clear",{})}};
+document.querySelectorAll("[data-open]").forEach(x=>x.onclick=()=>switchTab(x.dataset.open));
+
+document.querySelectorAll("nav button").forEach(button=>button.onclick=()=>switchTab(button.dataset.tab));
+$("goLibrary").onclick=()=>switchTab("library");
+$("effectSelect").onchange=()=>{
+ selectedId=Number($("effectSelect").value);drawEffect()
+};
+$("refreshLibrary").onclick=async()=>{try{S=await load();drawAll();textStatus("Katalog odświeżony")}catch(e){textStatus(e.message)}};
+$("master").oninput=e=>$("masterView").textContent=Math.round(Number(e.target.value)*140)+"%";
+$("master").onchange=e=>change("master",{value:Number(e.target.value)});
+$("bpm").oninput=e=>$("bpmView").textContent=e.target.value;
+$("bpm").onchange=e=>change("bpm",{value:Number(e.target.value)});
+$("tap").onclick=async()=>{
+ const now=performance.now();taps.push(now);taps=taps.filter(n=>now-n<3000).slice(-6);
+ if(taps.length>1){const intervals=taps.slice(1).map((x,i)=>x-taps[i]);
+  const value=Math.round(60000/(intervals.reduce((a,b)=>a+b,0)/intervals.length));
+  if(value>=20&&value<=300)await change("bpm",{value});
+ }
+};
+$("savePreset").onclick=async()=>{
+ const name=$("presetName").value.trim();
+ if(!name){textStatus("Wpisz nazwę presetu");return}
+ await change("preset/save",{name})
+};
+$("loadPreset").onclick=async()=>{
+ const name=$("presetSelect").value;
+ if(name){const r=await change("preset/load",{name});if(r)switchTab("chain")}
+};
+$("deletePreset").onclick=async()=>{
+ const name=$("presetSelect").value;
+ if(name&&confirm("Trwale usunąć preset "+name+"?"))await change("preset/delete",{name})
+};
+$("refreshSystem").onclick=async()=>{try{await flushControls();S=await load();drawAll();$("connection").textContent="Połączono";textStatus("Połączenie sprawne")}catch(e){$("connection").textContent="Błąd";textStatus(e.message)}};
+(async()=>{try{S=await load();drawAll();$("connection").textContent="Połączono"}catch(e){$("connection").textContent="Offline";textStatus(e.message)}})();
+</script>
+</body></html>
