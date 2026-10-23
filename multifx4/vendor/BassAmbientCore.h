@@ -109,19 +109,23 @@ inline Step makeStep(const Parameters& p,int64_t index,int count) {
     int k=int((index%count+count)%count), m=k%16;
     uint32_t cycle=p.evolve?uint32_t(index/count):0;
     uint32_t salt=uint32_t(p.seed)^hash(cycle);
-    static constexpr int motifs[5][16]={
+    static constexpr int motifs[7][16]={
         {0,0,0,4,0,0,2,0,0,0,4,0,0,2,4,6},
         {0,0,4,4,0,0,4,0,0,0,4,4,0,2,4,0},
         {0,0,2,0,4,0,6,2,0,4,0,2,6,0,4,2},
         {0,0,4,0,2,0,0,6,0,4,2,0,0,6,4,2},
-        {0,0,0,0,0,4,0,0,0,0,2,0,0,0,4,0}};
-    static constexpr double weights[5][16]={
+        {0,0,0,0,0,4,0,0,0,0,2,0,0,0,4,0},
+        {0,0,4,0,0,0,4,0,0,0,4,0,0,2,4,0},
+        {0,0,0,4,0,0,0,5,0,0,0,4,0,2,5,4}};
+    static constexpr double weights[7][16]={
         {1,.4,1,.6,1,.4,1,.6,1,.4,1,.6,1,.4,1,.8},
         {1,.25,.8,.25,1,.25,.8,.4,1,.25,.8,.25,1,.4,.8,.5},
         {1,.65,.8,.4,.85,.7,.5,.9,.8,.5,.9,.7,.5,.85,.6,.8},
         {1,.15,.45,.9,.2,.65,.95,.3,.7,.2,.85,.4,.15,.9,.3,.75},
-        {1,.2,.7,.2,1,.3,.65,.2,1,.2,.7,.2,1,.3,.7,.4}};
-    int style=clamp(p.style,0,4);
+        {1,.2,.7,.2,1,.3,.65,.2,1,.2,.7,.2,1,.3,.7,.4},
+        {1,.12,.75,.15,1,.12,.8,.15,1,.12,.75,.15,1,.25,.9,.25},
+        {1,.22,1,.7,1,.25,1,.75,1,.2,1,.7,1,.25,1,.8}};
+    int style=clamp(p.style,0,6);
     Step s; s.degree=unit(salt,k*11+1)<p.movement?motifs[style][m]:0;
     s.octave=(style==0 && m%4==2)?1:0;
     if(unit(salt,k*11+2)<p.variation*p.movement) s.degree=int(unit(salt,k*11+3)*7);
