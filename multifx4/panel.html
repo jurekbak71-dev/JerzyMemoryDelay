@@ -426,7 +426,12 @@ const synthLabels={
  scale:["Skala muzyczna","choice"],mode:["Tryb ambient","choice"],
  density:["Gęstość rytmu","range"],basslevel:["Głośność basu","range"],
  padlevel:["Głośność padów","range"],level:["Głośność BassAmbient","range"],
- pan:["Panorama instrumentu","range"]};
+ pan:["Panorama instrumentu","range"],
+ model:["Brzmienie basu","choice"],chord:["Rodzaj akordu","choice"],
+ engine1:["Generator padów 1","choice"],engine2:["Generator padów 2","choice"],
+ evolution:["Czas ewolucji","range"],bassfx:["Efekty basu","range"],
+ padfx:["Efekty ambient","range"],sync:["Wspólne tempo BPM / FREE","switch"],
+ freebpm:["Tempo FREE instrumentu","range"]};
 const cabLabels={
  on:["CAB / IR ON / OFF","switch"],mix:["DRY / WET","range"],
  blend:["Proporcja IR A / IR B","range"],level:["Poziom wyjściowy IR","range"],
@@ -442,9 +447,12 @@ function extraRow(node,section,key){
   button.style.width="100%";button.onclick=()=>change("extra",{section,field:key,value:value>=.5?0:1});
   row.append(button);
  }else if(spec[1]==="choice"){
-  const names={style:["Italo Disco","Disco Polo","Acid 303","Funk","Techno"],
+  const names={style:["Italo Disco","Disco Polo","Acid 303","Funk","Techno","Rock","Post-Punk"],
    scale:["Dur","Moll","Dorycka","Moll harmoniczna","Pentatonika moll"],
-   mode:["Hold","Flow","Krell"]};
+   mode:["Hold","Flow","Krell"],model:["ACID 303","SUB 808","Classic Analog"],
+ chord:["Dur","Moll","Power 5","Sus4","Moll7"],
+ engine1:["Analog Saw","Analog PWM","Spectral","FM","Grain"],
+ engine2:["Analog Saw","Analog PWM","Spectral","FM","Grain"]};
   const select=document.createElement("select");
   const tones=["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
   const labels=key==="root"?Array.from({length:61},(_,i)=>tones[(24+i)%12]+String(Math.floor((24+i)/12)-1)):names[key];
@@ -460,7 +468,7 @@ function extraRow(node,section,key){
   input.onchange=()=>change("extra",{section,field:key,value:Number(input.value)});
   row.append(input);
  }
- if(!(section==="synth"&&key==="mode")){
+ if(true){
   const learn=make("button","learn","UCZ MIDI — "+spec[0]);
   learn.onclick=()=>startLearn({kind:section+"."+key},spec[0]);
   row.append(learn);
@@ -470,9 +478,9 @@ function extraRow(node,section,key){
 function drawExtra(){
  if(!S||!S.cab||!S.synth)return;
  for(const [id,section,fields] of [
-  ["synthBass","synth",["bass","root","style","scale","density","basslevel"]],
-  ["synthPad","synth",["pad","mode","padlevel"]],
-  ["synthMix","synth",["level","pan"]],
+  ["synthBass","synth",["bass","root","model","style","scale","density","basslevel","bassfx"]],
+  ["synthPad","synth",["pad","mode","chord","engine1","engine2","evolution","padlevel","padfx"]],
+  ["synthMix","synth",["sync","freebpm","level","pan"]],
   ["cabPower","cab",["on"]],
   ["cabControls","cab",["mix","blend","level","lowcut","highcut"]]]){
    const node=$(id);node.querySelectorAll(".control").forEach(x=>x.remove());
@@ -482,7 +490,7 @@ function drawExtra(){
  const select=$("midiTarget");let previous=select.value;select.replaceChildren();
  selectOption(select,"master","MASTER — głośność");
  selectOption(select,"bpm","Tempo BPM");
- for(const [key,v] of Object.entries(synthLabels))if(key!=="mode")selectOption(select,"synth."+key,"BassAmbient / "+v[0]);
+ for(const [key,v] of Object.entries(synthLabels))selectOption(select,"synth."+key,"BassAmbient / "+v[0]);
  for(const [key,v] of Object.entries(cabLabels))selectOption(select,"cab."+key,"CAB / "+v[0]);
  if([...select.options].some(x=>x.value===previous))select.value=previous;
  const map=$("midiMappings");map.replaceChildren();
