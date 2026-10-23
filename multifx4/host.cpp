@@ -45,6 +45,7 @@ struct Slot {
  void* instance=nullptr;
  std::array<std::atomic<float>,PARAMS> params{};
  std::atomic<bool> enabled{true};
+ std::atomic<int> route{0}; // 0 guitar, 1 BassAmbient; duplicate module instances if needed
  // Only read/written by JACK callback.
  float fade=1.f;
  ~Slot(){
@@ -111,11 +112,12 @@ struct Engine {
   auto* l=static_cast<jack_default_audio_sample_t*>(jack_port_get_buffer(e.left,frames));
   auto* r=static_cast<jack_default_audio_sample_t*>(jack_port_get_buffer(e.right,frames));
   if(!l||!r||!graph){e.processing.store(false);return 0;}
-  struct Local {Slot* slot; std::array<float,PARAMS> p;bool enabled;};
+  struct Local {Slot* slot; std::array<float,PARAMS> p;bool enabled;int route;};
   std::array<Local,MAX> block{};
   for(unsigned k=0;k<graph->count;++k) {
    block[k].slot=graph->slots[k];
    block[k].enabled=block[k].slot->enabled.load(std::memory_order_relaxed);
+   block[k].route=block[k].slot->route.load(std::memory_order_relaxed);
    for(unsigned j=0;j<block[k].slot->plugin->parameter_count;++j)
     block[k].p[j]=block[k].slot->params[j].load(std::memory_order_relaxed);
   }
@@ -194,9 +196,17 @@ struct Engine {
    }
    const float mono=input&&finite(input[n])?input[n]:0.f;
    float y[2]{mono,mono};
+   // Original BassAmbient generator is a separate source. FX route selects
+   // guitar OR synth before the cabinet and before the shared stereo mix.
+   float synth[2]{};
+   const float synthTarget=(e.bass.bassOn||e.bass.padOn)?1.f:0.f;
+   e.synthFade+=std::clamp(synthTarget-e.synthFade,-step,step);
+   if(synthTarget>0.f||e.synthFade>0.f)
+    e.bass.process(synth,e.synthSync.load()?e.bpm.load(std::memory_order_relaxed):e.freeBpm.load(std::memory_order_relaxed));
    for(unsigned k=0;k<graph->count;++k){
     auto& item=block[k];Slot* slot=item.slot;
-    float dry[2]{y[0],y[1]},wet[2]{y[0],y[1]};
+    float* bus=item.route==1?synth:y;
+    float dry[2]{bus[0],bus[1]},wet[2]{bus[0],bus[1]};
     // Process while bypassed so reactivation preserves effect history.
     slot->plugin->process(slot->instance,dry,wet,item.p.data(),tempo);
     const float target=item.enabled?1.f:0.f;
@@ -204,7 +214,7 @@ struct Engine {
     const float mix=slot->fade;
     for(unsigned c=0;c<2;++c){
      const float value=dry[c]*(1.f-mix)+wet[c]*mix;
-     y[c]=finite(value)?std::clamp(value,-8.f,8.f):0.f;
+     bus[c]=finite(value)?std::clamp(value,-8.f,8.f):0.f;
     }
    }
    // True cabinet IR, two independent slots; guitar only.
@@ -226,12 +236,7 @@ struct Engine {
     const float processed=(a*(1.f-blend)+b*blend)*cabinetGain;
     guitar[ch]=guitar[ch]*(1.f-wet*e.cabFade)+processed*(wet*e.cabFade);
    }
-   float synth[2]{};
-   const float synthTarget=(e.bass.bassOn||e.bass.padOn)?1.f:0.f;
-   e.synthFade+=std::clamp(synthTarget-e.synthFade,-step,step);
-   // No expensive synth DSP when both engines are off and fade has reached zero.
-   if(synthTarget>0.f || e.synthFade>0.f)
-      e.bass.process(synth,e.synthSync.load()?e.bpm.load(std::memory_order_relaxed):e.freeBpm.load(std::memory_order_relaxed));
+   // Shared mixer is after guitar-only CAB; synth FX stay unfiltered.
    y[0]=std::clamp(guitar[0]+synth[0]*e.synthFade,-8.f,8.f);
    y[1]=std::clamp(guitar[1]+synth[1]*e.synthFade,-8.f,8.f);
    e.level+=std::clamp(e.master.load(std::memory_order_relaxed)-e.level,-stepMaster,stepMaster);
@@ -488,6 +493,12 @@ struct Engine {
    Slot* slot=find(id);
    if(!slot||index<0||index>1)return "ERR Bad toggle";
    slot->enabled.store(index!=0);return "OK";
+  }
+  if(type=="ROUTE"&&(ss>>id>>index)&&!(ss>>extra)){
+   Slot* slot=find(id);
+   if(!slot||index<0||index>1)return "ERR Bad FX route";
+   slot->route.store(index,std::memory_order_relaxed);
+   return "OK";
   }
   if(type=="SET"&&(ss>>id>>index>>value)&&!(ss>>extra)){
    Slot* slot=find(id);
