@@ -17,7 +17,7 @@ CONTROL = ("127.0.0.1", 9810)
 FILE = Path(os.environ.get("JERZY_MULTIFX_DATA_DIR", str(Path.home() / ".config/jerzy-multifx"))) / "presets.json"
 DEFAULT_PARAMS = [.50,.40,.50,.35,.65,.42,.33,.55,.50,.35,(350.-20.)/530.,.60,.70]
 LOCK = threading.RLock()
-state = {"params": DEFAULT_PARAMS[:], "enabled": [True]*4, "order": list(range(4)), "bpm":120.0}
+state = {"params": DEFAULT_PARAMS[:], "enabled": [False,False,False,True], "order": list(range(4)), "bpm":120.0}
 presets = {}
 active_preset = None
 
