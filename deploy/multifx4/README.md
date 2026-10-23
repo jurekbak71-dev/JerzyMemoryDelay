@@ -35,6 +35,7 @@ Self-generating BassAmbient       |      (original BassAmbient DSP source)
 - Source is resampled to JACK SR; up to 32768 samples per IR channel retained.
 - Partitioned 128-point FFT, 64-sample block and **64 samples of added algorithmic latency** in wet CAB path.
 - IR files persist under `~/.config/jerzy-multifx4/irs`; selected filenames save with presets and last state.
+- Two **synthetic demo/test** responses are generated during staging (Guitar 4x12 and Bass 1x15 examples); they are not captured or commercially modeled speaker cabinets. The panel can choose a file from its local IR library or upload your own WAV.
 
 ## BassAmbient
 - Uses original DSP source from [JerzyBassAmbientVST3](https://github.com/jurekbak71-dev/JerzyBassAmbientVST3).
