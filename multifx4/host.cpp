@@ -73,7 +73,7 @@ struct Engine {
  std::atomic<int> root{40},bassStyle{2},bassScale{1},padMode{2};
  std::atomic<float> bassVolume{.6f},padVolume{.35f},density{.75f},synthVolume{.35f},synthPan{0.f};
  // CAB/IR runs exclusively on guitar path, BEFORE summing BassAmbient.
- std::array<mfx4::CabinetIR*,2> cabs{nullptr,nullptr};
+ std::array<std::atomic<mfx4::CabinetIR*>,2> cabs{};
  std::array<std::array<mfx4::CabinetFilter,2>,2> cabFilters{};
  std::atomic<bool> cabOn{false};
  std::atomic<float> cabMix{1.f},cabBlend{0.f},cabLevel{.5f},cabLowCut{.12f},cabHighCut{.85f};
@@ -94,7 +94,7 @@ struct Engine {
  ~Engine() {
   delete current.exchange(nullptr);
   owned.clear();
-  for(auto*& c:cabs){delete c;c=nullptr;}
+  for(auto& c:cabs){delete c.exchange(nullptr);}
  }
  static void shutdown(void* opaque){
   static_cast<Engine*>(opaque)->jackLost.store(true);
@@ -195,13 +195,13 @@ struct Engine {
    float guitar[2]{y[0],y[1]};
    float cabinet[2][2]{{0,0},{0,0}};
    for(int i=0;i<2;++i){
-    if(e.cabs[size_t(i)]) {
-     e.cabs[size_t(i)]->tick(guitar,cabinet[i]);
+    if(auto* cab=e.cabs[size_t(i)].load(std::memory_order_acquire)) {
+     cab->tick(guitar,cabinet[i]);
      for(int ch=0;ch<2;++ch)
       cabinet[i][ch]=e.cabFilters[size_t(i)][size_t(ch)].tick(cabinet[i][ch],sr,lowCut,highCut);
     }
    }
-   const bool hasCab=e.cabs[0]||e.cabs[1];
+   const bool hasCab=e.cabs[0].load()||e.cabs[1].load();
    const float targetCab=irEnabled&&hasCab?1.f:0.f;
    e.cabFade+=std::clamp(targetCab-e.cabFade,-step,step);
    for(int ch=0;ch<2;++ch){
@@ -263,8 +263,7 @@ struct Engine {
   const auto path=std::filesystem::path(irRoot)/name;
   auto next=mfx4::CabinetIR::load(path.string(),jack_get_sample_rate(jack),error);
   if(!next)return "ERR "+error;
-  auto* old=cabs[size_t(which)];
-  cabs[size_t(which)]=next.release();
+  auto* old=cabs[size_t(which)].exchange(next.release(),std::memory_order_acq_rel);
   while(processing.load(std::memory_order_acquire))usleep(1000);
   delete old;
   return "OK";
@@ -328,6 +327,59 @@ struct Engine {
   if(type=="IR_LOAD"){
     int which;std::string name;
     if(ss>>which>>name && !(ss>>extra))return loadCab(which,name);
+  }
+
+  if(type=="IR_CLEAR"){
+    int which;
+    if(ss>>which && !(ss>>extra) && which>=0 && which<2) {
+      auto* old=cabs[size_t(which)].exchange(nullptr);
+      while(processing.load())usleep(1000);
+      delete old;
+      return "OK";
+    }
+  }
+  if(type=="GET"){
+    int slotId,index;
+    if(ss>>slotId>>index && !(ss>>extra)) {
+      Slot* fx=find(slotId);
+      if(!fx||index<0||unsigned(index)>=fx->plugin->parameter_count)return "ERR Bad FX target";
+      return "OK "+std::to_string(fx->params[unsigned(index)].load());
+    }
+  }
+  if(type=="GET_MASTER" && !(ss>>extra))return "OK "+std::to_string(master.load());
+  if(type=="GET_BPM" && !(ss>>extra))return "OK "+std::to_string(bpm.load());
+  if(type=="GET_CAB"){
+    std::string key;
+    if(ss>>key && !(ss>>extra)){
+      float v;
+      if(key=="on")v=cabOn.load()?1.f:0.f;
+      else if(key=="mix")v=cabMix.load();
+      else if(key=="blend")v=cabBlend.load();
+      else if(key=="level")v=cabLevel.load();
+      else if(key=="lowcut")v=cabLowCut.load();
+      else if(key=="highcut")v=cabHighCut.load();
+      else return "ERR Bad CAB key";
+      return "OK "+std::to_string(v);
+    }
+  }
+  if(type=="GET_SYNTH"){
+    std::string key;
+    if(ss>>key && !(ss>>extra)){
+      float v;
+      if(key=="bass")v=bassOn.load()?1.f:0.f;
+      else if(key=="pad")v=padOn.load()?1.f:0.f;
+      else if(key=="root")v=float(root.load()-24)/60.f;
+      else if(key=="style")v=float(bassStyle.load())/4.f;
+      else if(key=="scale")v=float(bassScale.load())/4.f;
+      else if(key=="mode")v=float(padMode.load())/2.f;
+      else if(key=="density")v=density.load();
+      else if(key=="basslevel")v=bassVolume.load();
+      else if(key=="padlevel")v=padVolume.load();
+      else if(key=="level")v=synthVolume.load();
+      else if(key=="pan")v=(synthPan.load()+1.f)/2.f;
+      else return "ERR Bad synth key";
+      return "OK "+std::to_string(v);
+    }
   }
   if(type=="MIDI_LAST"&&!(ss>>extra)){
     return "OK "+std::to_string(midiSequence.load())+" "+std::to_string(midiChannel.load())+
