@@ -38,8 +38,8 @@ jobs:
           python3 - <<'PY'
           import ctypes
           from pathlib import Path
-          for name in ('compressor','overdrive','tremolo','memory_delay'):
+          for name in ('compressor','overdrive','tremolo','memory_delay','small_clone','big_muff','attack_decay','tape_drive','mx_analog_delay','atomic_cluster','reel_echo'):
               dll=ctypes.CDLL(str((Path('build-multifx2/modules')/(name+'.so')).resolve()))
               assert hasattr(dll, 'jfx_plugin'), name
-          print('All 4 modules export jfx_plugin')
+          print('All 11 modules export jfx_plugin')
           PY
