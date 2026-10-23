@@ -1,0 +1,17 @@
+[Unit]
+Description=Jerzy Audio - Memory Delay web controller
+After=network.target jerzy-delay.service
+Requires=jerzy-delay.service
+
+[Service]
+Type=simple
+User=jerzy
+Group=audio
+WorkingDirectory=/home/jerzy/JerzyMemoryDelay
+Environment=HOME=/home/jerzy
+ExecStart=/usr/bin/python3 /home/jerzy/JerzyMemoryDelay/standalone/web_panel.py
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
