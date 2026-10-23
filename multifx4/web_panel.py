@@ -122,11 +122,37 @@ def rebind_midi():
 def apply_extra(load_ir=True):
     for k,v in extra["cab"].items():
         if k.startswith("ir"):
-            if load_ir and v and (IR_DIR/v).is_file():
-                rpc("IR_LOAD %d %s"%(int(k[2:]),v))
+            if not load_ir:continue
+            slot=int(k[2:])
+            if v and (IR_DIR/v).is_file():rpc("IR_LOAD %d %s"%(slot,v))
+            else:rpc("IR_CLEAR %d"%slot)
         else:rpc("CAB %s %.9g"%(k,v))
     for k,v in extra["synth"].items():rpc("SYNTH %s %.9g"%(k,v))
     rebind_midi()
+
+
+def sync_midi_controls():
+    """Read only mapped control targets; do not lose hardware changes before preset save."""
+    if not extra["midi"]:return
+    try:
+        for row in extra["midi"]:
+            t=row["target"];kind=t["kind"]
+            if kind=="fx":
+                pos=t["position"]
+                if pos>=len(state["chain"]) or state["chain"][pos]["key"]!=t["key"]:continue
+                fx=state["chain"][pos];idx=t["index"]
+                if idx<len(fx["params"]):
+                    fx["params"][idx]=float(rpc("GET %d %d"%(fx["id"],idx)))
+            elif kind=="master":state["master"]=float(rpc("GET_MASTER"))
+            elif kind=="bpm":state["bpm"]=float(rpc("GET_BPM"))
+            elif kind.startswith("synth."):
+                field=kind[6:]
+                extra["synth"][field]=float(rpc("GET_SYNTH "+field))
+            elif kind.startswith("cab."):
+                field=kind[4:]
+                extra["cab"][field]=float(rpc("GET_CAB "+field))
+    except (RuntimeError,OSError,ValueError):
+        pass
 
 def save_extra():
     save_json(EXTRA,extra)
@@ -159,6 +185,7 @@ def save_json(path,value):
     tmp.replace(path)
 
 def store():
+    sync_midi_controls()
     save_json(LAST,{**clean_snapshot(state),"cab":deepcopy(extra["cab"]),"synth":deepcopy(extra["synth"])})
     save_extra()
 
@@ -250,6 +277,7 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
     def snapshot(self):
+        sync_midi_controls()
         return {**deepcopy(state),"catalog":catalog(),
                 "cab":deepcopy(extra["cab"]),"synth":deepcopy(extra["synth"]),
                 "midi":deepcopy(extra["midi"]),
@@ -382,6 +410,7 @@ class Handler(BaseHTTPRequestHandler):
                 elif path=="/api/preset/save":
                     name=data.get("name")
                     if type(name) is not str or not 0<len(name.strip())<=64:raise ValueError("Invalid preset name")
+                    sync_midi_controls()
                     name=name.strip();presets[name]={**clean_snapshot(state),"cab":deepcopy(extra["cab"]),"synth":deepcopy(extra["synth"])}
                     save_json(PRESETS,presets);current_preset=name
                 elif path=="/api/preset/load":
