@@ -1,0 +1,36 @@
+name: MultiFX ARM64 and Linux checks
+on:
+  push:
+    branches: [feature/jerzy-multifx-v01]
+  pull_request:
+    paths:
+      - "multifx/**"
+      - "deploy/multifx/**"
+      - "CMakeLists.txt"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  host:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.platform }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install JACK build deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build pkg-config libjack-jackd2-dev
+      - name: Configure
+        run: cmake -S . -B build-multifx -G Ninja -DCMAKE_BUILD_TYPE=Release -DJERZY_BUILD_PLUGIN=OFF -DJERZY_BUILD_JACK=OFF -DJERZY_BUILD_MULTIFX=ON
+      - name: Build
+        run: cmake --build build-multifx --parallel 2
+      - name: C++ DSP test
+        run: ctest --test-dir build-multifx --output-on-failure
+      - name: Python syntax and preset tests
+        run: |
+          python3 -m py_compile multifx/web_panel.py multifx/test_panel.py
+          python3 -m unittest discover -s multifx -p "test_*.py" -v
