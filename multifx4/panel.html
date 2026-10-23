@@ -307,7 +307,7 @@ function drawChain(){
   const card=make("article","fx-card"+(slot.enabled?"":" off"));
   const top=make("div","statusrow");
   const info=make("div","");
-  info.append(make("div","name",String(index+1)+". "+meta.name),make("div","tag",meta.category+" · "+(slot.enabled?"AKTYWNY":"BYPASS")));
+  info.append(make("div","name",String(index+1)+". "+meta.name),make("div","tag",meta.category+" · "+(slot.enabled?"AKTYWNY":"BYPASS")+" · "+(slot.route===1?"TOR BASS/AMBIENT":"TOR GITARA")));
   top.append(info);card.append(top);
   const buttons=make("div","buttonrow");
   const up=make("button","","↑"),down=make("button","","↓");
@@ -320,7 +320,11 @@ function drawChain(){
   const edit=make("button","primary","EDYTUJ");
   edit.onclick=()=>{selectedId=slot.id;drawAll();switchTab("effect")};
   buttons.append(up,down,bypass,edit);
-  card.append(buttons);root.append(card)
+  card.append(buttons);
+  const route=make("button","big",slot.route===1?"TOR: BASSAMBIENT ↔ ZMIEŃ":"TOR: GITARA ↔ ZMIEŃ");
+  route.style.width="100%";route.style.marginTop="9px";
+  route.onclick=()=>change("route",{id:slot.id,route:slot.route===1?0:1});
+  card.append(route);root.append(card)
  });
  $("master").value=S.master;
  $("masterView").textContent=Math.round(S.master*140)+"%";
@@ -351,7 +355,11 @@ function drawEffect(){
  head.append(make("h3","",meta.name),make("p","sub",meta.category+" · "+meta.params.length+" parametrów"));
  const by=make("button","big "+(slot.enabled?"primary":"danger"),slot.enabled?"EFEKT WŁĄCZONY — dotknij, aby wyłączyć":"EFEKT WYŁĄCZONY — dotknij, aby włączyć");
  by.style.width="100%";by.onclick=()=>change("enable",{id:slot.id,value:!slot.enabled});
- head.append(by);root.append(head);
+ head.append(by);
+ const route=make("button","big",slot.route===1?"EFEKT NA TORZE BASSAMBIENT — ZMIEŃ":"EFEKT NA TORZE GITARY — ZMIEŃ");
+ route.style.width="100%";route.style.marginTop="9px";
+ route.onclick=()=>change("route",{id:slot.id,route:slot.route===1?0:1});
+ head.append(route);root.append(head);
  const groupMap=new Map();
  meta.params.forEach((p,index)=>{
   const g=group(meta,index);
