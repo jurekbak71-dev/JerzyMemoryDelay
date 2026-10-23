@@ -43,6 +43,7 @@ Self-generating BassAmbient       |      (original BassAmbient DSP source)
 - Independent BASS and PAD Start/Stop. Sync to shared BPM or FREE tempo.
 - Bass model, scale, style, root C2–C7, density, pad chord, two tone engines, evolution, independent internal FX sends, levels and stereo pan.
 - Synth is mixed after guitar CAB, bypassing guitar cabinet convolution.
+- Every plugin instance has its own **GUITAR / BASSAMBIENT route switch**. The same JFX effect can be added twice, once for guitar and once for synth. Both effect routes are independent; the synth effect return is never run through the guitar CAB.
 - CPU work is skipped when both synth layers are off. Real Pi4 JACK XRUN testing still required.
 - MIDI CC mappings can control transport switches and parameters; native MIDI note input for BassAmbient is **not yet implemented**. The instrument is autonomous without any MIDI.
 
@@ -52,7 +53,7 @@ Panel `http://10.42.0.1:8092/` has **five primary tabs**: Łańcuch, Efekt, Bass
 - Large 52–60px buttons and 38px slider thumbs for iPhone/iPad.
 - Named guitar FX parameters in accordion groups; no sprawling single screen.
 - Musical root notes (C, C#, D…), named scales/FX/models and units (Hz, dB, BPM, seconds).
-- Presets: chain + synth + CAB settings, including selected IR WAVs.
+- Presets: effect chain (including each effect bus route) + synth + CAB settings, including selected IR WAVs.
 
 ## MIDI Learn
 - JACK MIDI input port: `JerzyMultiFX4:midi_in`; USB MIDI must be bridged/routed to it.
