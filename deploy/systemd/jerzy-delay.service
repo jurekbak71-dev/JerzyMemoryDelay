@@ -1,0 +1,21 @@
+[Unit]
+Description=Jerzy Audio - Memory Delay DSP
+Requires=jerzy-jack.service
+After=jerzy-jack.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=jerzy
+Group=audio
+WorkingDirectory=/home/jerzy/JerzyMemoryDelay
+Environment=HOME=/home/jerzy
+LimitRTPRIO=95
+LimitMEMLOCK=infinity
+ExecStartPre=/bin/sh -c 'n=0; until /usr/bin/jack_lsp system:playback_1 >/dev/null 2>&1; do n=$((n+1)); [ "$n" -lt 40 ] || exit 1; sleep 1; done'
+ExecStart=/home/jerzy/JerzyMemoryDelay/build-rpi/JerzyMemoryDelayJACK --model 3 --blend 0.5 --feedback 0.35 --delay-ms 350
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
