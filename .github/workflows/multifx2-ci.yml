@@ -38,10 +38,10 @@ jobs:
           python3 - <<'PY'
           import ctypes
           from pathlib import Path
-          for name in ('compressor','overdrive','tremolo','memory_delay','small_clone','big_muff','attack_decay','tape_drive','mx_analog_delay','atomic_cluster','reel_echo','oil_drum_echo'):
+          for name in ('compressor','overdrive','tremolo','memory_delay','small_clone','big_muff','attack_decay','tape_drive','mx_analog_delay','atomic_cluster','reel_echo','oil_drum_echo','lofi_crush'):
               dll=ctypes.CDLL(str((Path('build-multifx2/modules')/(name+'.so')).resolve()))
               assert hasattr(dll, 'jfx_plugin'), name
-          print('All 12 modules export jfx_plugin')
+          print('All 13 modules export jfx_plugin')
           PY
 
       - name: Package 11 standalone FX modules
