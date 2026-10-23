@@ -8,6 +8,7 @@ cmake -S . -B build-multifx2 -G Ninja -DCMAKE_BUILD_TYPE=Release \
 cmake --build build-multifx2 --parallel 2
 ctest --test-dir build-multifx2 --output-on-failure
 python3 -m unittest discover -s multifx2 -p 'test_*.py' -v
+python3 multifx2/check_module_metadata.py build-multifx2/modules
 
 # Clone 0.2 user presets/chain once. Never overwrite v0.2 files.
 mkdir -p /home/jerzy/.config/jerzy-multifx3
