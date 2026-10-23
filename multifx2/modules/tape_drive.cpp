@@ -6,7 +6,7 @@ using Params=JerzyAudio::TapeDriveParams;
 struct State{JerzyAudio::TapeDriveDSP<float> dsp;explicit State(double sr){dsp.prepare(sr,2);}};
 void* create(double sr){return new(std::nothrow) State(sr);}
 void destroy(void* x){delete static_cast<State*>(x);}
-static const double Params::* members[]{
+static double Params::* const members[]{
  &Params::sat,&Params::level,&Params::dry,&Params::gainMode,
  &Params::shift,&Params::bypass,&Params::hpfCutoff,&Params::hpfRes,
  &Params::lpfCutoff,&Params::lpfRes,&Params::wowFlutter,
