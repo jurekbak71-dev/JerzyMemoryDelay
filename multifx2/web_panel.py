@@ -50,7 +50,7 @@ def catalog():
             params=meta["params"]
             if (meta.get("key")!=key or not isinstance(meta.get("name"),str) or
                 not isinstance(meta.get("category"),str) or type(params) is not list or
-                not 0<=len(params)<=24):continue
+                not 0<=len(params)<=48):continue
             valid=True
             for p in params:
                 if (not isinstance(p,dict) or not isinstance(p.get("key"),str) or

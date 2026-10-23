@@ -1,0 +1,290 @@
+{
+  "key": "mx_analog_delay",
+  "name": "MX Analog Delay",
+  "category": "Delay",
+  "params": [
+    {
+      "key": "mix",
+      "label": "Blend",
+      "def": 0.35,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "input",
+      "label": "Input Trim",
+      "def": 0.5,
+      "kind": "range",
+      "unit": "dB",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "output",
+      "label": "Output Trim",
+      "def": 0.5,
+      "kind": "range",
+      "unit": "dB",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "routing",
+      "label": "A/B Routing",
+      "def": 0,
+      "kind": "choice",
+      "choices": [
+        "Series",
+        "Parallel",
+        "Split L/R"
+      ]
+    },
+    {
+      "key": "bypass",
+      "label": "Circuit Bypass",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "spill",
+      "label": "Delay Trails",
+      "def": 1,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "condition",
+      "label": "Machine Wear",
+      "def": 0,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "a_model",
+      "label": "A · Delay Model",
+      "def": 0,
+      "kind": "choice",
+      "choices": [
+        "Volante",
+        "El Capistan",
+        "Olivera",
+        "EC1",
+        "Brig",
+        "Deco",
+        "DIG",
+        "Space Echo 202",
+        "DM101"
+      ]
+    },
+    {
+      "key": "a_enable",
+      "label": "A · Enabled",
+      "def": 1,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "a_sync",
+      "label": "A · Sync",
+      "def": 1,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "a_division",
+      "label": "A · Note Division",
+      "def": 0.5,
+      "kind": "range",
+      "unit": "",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "a_time",
+      "label": "A · Free Time",
+      "def": 0.2,
+      "kind": "range",
+      "unit": "ms",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "a_feedback",
+      "label": "A · Feedback",
+      "def": 0.42,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "a_level",
+      "label": "A · Level",
+      "def": 0.78,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "a_pan",
+      "label": "A · Pan",
+      "def": 0.5,
+      "kind": "range",
+      "unit": "",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "b_model",
+      "label": "B · Delay Model",
+      "def": 0.125,
+      "kind": "choice",
+      "choices": [
+        "Volante",
+        "El Capistan",
+        "Olivera",
+        "EC1",
+        "Brig",
+        "Deco",
+        "DIG",
+        "Space Echo 202",
+        "DM101"
+      ]
+    },
+    {
+      "key": "b_enable",
+      "label": "B · Enabled",
+      "def": 1,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "b_sync",
+      "label": "B · Sync",
+      "def": 1,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "b_division",
+      "label": "B · Note Division",
+      "def": 0.5,
+      "kind": "range",
+      "unit": "",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "b_time",
+      "label": "B · Free Time",
+      "def": 0.2,
+      "kind": "range",
+      "unit": "ms",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "b_feedback",
+      "label": "B · Feedback",
+      "def": 0.42,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "b_level",
+      "label": "B · Level",
+      "def": 0.78,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "b_pan",
+      "label": "B · Pan",
+      "def": 0.5,
+      "kind": "range",
+      "unit": "",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "wet_fx1",
+      "label": "Wet FX 1 Type",
+      "def": 0,
+      "kind": "choice",
+      "choices": [
+        "Off",
+        "Chorus",
+        "Flanger",
+        "LoFi",
+        "Overdrive",
+        "Granular"
+      ]
+    },
+    {
+      "key": "wet_fx1_amount",
+      "label": "Wet FX 1 Amount",
+      "def": 0,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "wet_fx1_rate",
+      "label": "Wet FX 1 Rate",
+      "def": 0.3,
+      "kind": "range",
+      "unit": "Hz",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "wet_fx1_depth",
+      "label": "Wet FX 1 Depth",
+      "def": 0.45,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "wet_fx2",
+      "label": "Wet FX 2 Type",
+      "def": 0,
+      "kind": "choice",
+      "choices": [
+        "Off",
+        "Chorus",
+        "Flanger",
+        "LoFi",
+        "Overdrive",
+        "Granular"
+      ]
+    },
+    {
+      "key": "wet_fx2_amount",
+      "label": "Wet FX 2 Amount",
+      "def": 0,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100
+    }
+  ]
+}

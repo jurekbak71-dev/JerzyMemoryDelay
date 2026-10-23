@@ -1,0 +1,429 @@
+{
+  "key": "oil_drum_echo",
+  "name": "Oil Drum Echo",
+  "category": "Tape",
+  "params": [
+    {
+      "key": "master",
+      "label": "Master Only",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "time",
+      "label": "Rotation / Time ms",
+      "def": 0.0552764,
+      "kind": "range",
+      "min": 40,
+      "max": 8000,
+      "unit": ""
+    },
+    {
+      "key": "sync",
+      "label": "BPM Sync",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "division",
+      "label": "Sync division",
+      "def": 0.4285714,
+      "kind": "choice",
+      "choices": [
+        "1/16",
+        "1/8 triplet",
+        "1/8",
+        "1/4",
+        "1/4 dotted",
+        "1/2",
+        "1 bar",
+        "2 bars"
+      ]
+    },
+    {
+      "key": "extended",
+      "label": "Time range",
+      "def": 1,
+      "kind": "choice",
+      "choices": [
+        "Vintage",
+        "Extended"
+      ]
+    },
+    {
+      "key": "heads",
+      "label": "Head count",
+      "def": 1,
+      "kind": "choice",
+      "choices": [
+        "2 HEADS",
+        "4 HEADS"
+      ]
+    },
+    {
+      "key": "feedback",
+      "label": "Feedback",
+      "def": 0.4285714,
+      "kind": "range",
+      "min": 0,
+      "max": 1.12,
+      "unit": ""
+    },
+    {
+      "key": "dry",
+      "label": "Dry Level",
+      "def": 0.6666667,
+      "kind": "range",
+      "min": 0,
+      "max": 1.5,
+      "unit": ""
+    },
+    {
+      "key": "wet",
+      "label": "Wet Level",
+      "def": 0.4,
+      "kind": "range",
+      "min": 0,
+      "max": 1.5,
+      "unit": ""
+    },
+    {
+      "key": "focus",
+      "label": "Echo Focus",
+      "def": 0.35,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "duck",
+      "label": "Dynamic Ducking",
+      "def": 0.1,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "stereo",
+      "label": "Stereo",
+      "def": 0.5,
+      "kind": "choice",
+      "choices": [
+        "Classic",
+        "Wide",
+        "Ping Pong"
+      ]
+    },
+    {
+      "key": "mono",
+      "label": "Mono compatibility",
+      "def": 0.3,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "h1on",
+      "label": "Head 1 On",
+      "def": 1,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "h1level",
+      "label": "Head 1 Level",
+      "def": 0.7,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "h1pan",
+      "label": "Head 1 Pan",
+      "def": 0.2,
+      "kind": "range",
+      "min": -1,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "h1send",
+      "label": "Head 1 Feedback Send",
+      "def": 0.5,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "h2on",
+      "label": "Head 2 On",
+      "def": 1,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "h2level",
+      "label": "Head 2 Level",
+      "def": 0.6,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "h2pan",
+      "label": "Head 2 Pan",
+      "def": 0.8,
+      "kind": "range",
+      "min": -1,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "h2send",
+      "label": "Head 2 Feedback Send",
+      "def": 0.6,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "h3on",
+      "label": "Head 3 On",
+      "def": 1,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "h3level",
+      "label": "Head 3 Level",
+      "def": 0.45,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "h3pan",
+      "label": "Head 3 Pan",
+      "def": 0.35,
+      "kind": "range",
+      "min": -1,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "h3send",
+      "label": "Head 3 Feedback Send",
+      "def": 0.7,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "h4on",
+      "label": "Head 4 On",
+      "def": 1,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "h4level",
+      "label": "Head 4 Level",
+      "def": 0.5,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "h4pan",
+      "label": "Head 4 Pan",
+      "def": 0.65,
+      "kind": "range",
+      "min": -1,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "h4send",
+      "label": "Head 4 Feedback Send",
+      "def": 0.8,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "age",
+      "label": "Age",
+      "def": 0.3,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "oil",
+      "label": "Oil",
+      "def": 0.45,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "motor",
+      "label": "Motor",
+      "def": 0.2,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "contact",
+      "label": "Contact",
+      "def": 0.2,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "decay",
+      "label": "Charge Decay",
+      "def": 0.25,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "noise",
+      "label": "Noise",
+      "def": 0,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "drift",
+      "label": "Drift",
+      "def": 0.15,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "wow",
+      "label": "Wow",
+      "def": 0.15,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "flutter",
+      "label": "Flutter",
+      "def": 0.08,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "mod",
+      "label": "Modulation",
+      "def": 0,
+      "kind": "choice",
+      "choices": [
+        "Off",
+        "Chorus",
+        "Ensemble",
+        "Vibrato"
+      ]
+    },
+    {
+      "key": "route",
+      "label": "Routing",
+      "def": 0,
+      "kind": "choice",
+      "choices": [
+        "Wet Only",
+        "Dry Only"
+      ]
+    },
+    {
+      "key": "depth",
+      "label": "Depth",
+      "def": 0.35,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "modmix",
+      "label": "Mix",
+      "def": 0.4,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "springon",
+      "label": "Spring Tank",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "springmix",
+      "label": "Spring Mix",
+      "def": 0.25,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    },
+    {
+      "key": "springdecay",
+      "label": "Spring Decay s",
+      "def": 0.3214286,
+      "kind": "range",
+      "min": 0.4,
+      "max": 6,
+      "unit": ""
+    },
+    {
+      "key": "springtone",
+      "label": "Spring Tone",
+      "def": 0.55,
+      "kind": "range",
+      "min": 0,
+      "max": 1,
+      "unit": ""
+    }
+  ]
+}

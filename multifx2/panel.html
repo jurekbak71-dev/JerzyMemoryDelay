@@ -1,177 +1,400 @@
 <!doctype html>
-<html lang="pl"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#131a25">
-<title>Jerzy MultiFX 0.2</title>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=yes">
+<meta name="theme-color" content="#111a24">
+<title>Jerzy MultiFX — Touch</title>
 <style>
-:root{color-scheme:dark;background:#101620;color:#ebf0f8;font:15px system-ui,-apple-system,Arial,sans-serif}
-*{box-sizing:border-box}body{max-width:1100px;margin:0 auto;padding:14px 14px 44px}
-header{display:flex;justify-content:space-between;align-items:center;gap:12px}
-h1{font-size:24px;margin:8px 0 2px}.muted{font-size:12px;color:#b0baca;line-height:1.5}
-section,.card{background:#202b3b;border:1px solid #3a4c61;border-radius:13px;padding:13px;margin-top:12px}
-.actions{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
-button,select,input{font:inherit;color:#f8fafc}
-button,select,input[type=text]{background:#34475b;border:1px solid #637891;border-radius:8px;padding:9px;min-height:42px}
-button{cursor:pointer}button.primary{background:#98612b;border-color:#d2965b}button:disabled{opacity:.32}
-select{max-width:100%;flex:1}input[type=text]{flex:1;min-width:130px}
-#chain{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:10px}
-.card{margin-top:0}.card.off{opacity:.72}.card>.title{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
-.card strong{font-size:17px}.card button{min-width:38px}
-.control{margin:15px 0 4px}
-.control label{font-size:13px;display:flex;justify-content:space-between;gap:5px}
-.control output{color:#ffca7e;font-variant-numeric:tabular-nums;text-align:right}
-input[type=range]{accent-color:#ffc078;width:100%;margin:9px 0 4px;touch-action:pan-y}
-.switch{width:100%}#status{font-size:12px;color:#f0c37e}
-footer{color:#aebacc;font-size:12px;margin-top:20px;line-height:1.6}
-</style></head><body>
-<header><div><h1>JERZY MULTIFX 0.2</h1><div class="muted">Raspberry Pi · HeadRush Core · dynamiczne efekty</div></div><span id="status">Start...</span></header>
-<section>
-<div class="actions"><select id="addSelect" aria-label="Katalog efektów"></select>
-<button class="primary" id="add">+ DODAJ FX</button><button id="refresh">Odśwież katalog</button></div>
-<div class="muted" style="padding-top:7px">Możesz dodać kilka instancji tego samego efektu i zmieniać kolejność. Nowe moduły instalujesz jako parę .so + .json, bez przebudowy głównego hosta.</div>
-</section>
-<section><div class="actions">
-<input id="presetName" type="text" maxlength="64" placeholder="Nazwa presetu">
-<button class="primary" id="save">Zapisz</button>
-<select id="presets" aria-label="Presety"></select>
-<button id="load">Wczytaj</button><button id="del">Usuń</button>
-</div></section>
-<section>
-<div class="actions"><label>Tempo <b id="bpmNum">120</b> BPM</label><button id="tap">TAP</button>
-<input id="bpm" type="range" min="20" max="300" step="1" style="flex:1;min-width:130px"></div>
-<div class="control"><label>MASTER LEVEL <output id="masterNum"></output></label>
-<input id="master" type="range" min="0" max="1" step=".001"></div>
-</section>
-<div id="chain"></div>
-<footer>Memory Delay: komplet 14 parametrów BBD DSP, w tym LFO Wave, Modulation, Boost, Squelch, Tempo Sync i Note Division.
-Łańcuch oraz ustawienia odzyskujemy po restarcie. Sam tor audio działa bez przeglądarki. Zmiana kolejności podczas gry może spowodować krótkie artefakty.</footer>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#0b121b;color:#f0f3f7}
+*{box-sizing:border-box}
+body{max-width:940px;margin:0 auto;padding:12px 12px calc(92px + env(safe-area-inset-bottom));font-size:16px}
+h1{font-size:22px;letter-spacing:.05em;margin:0}h2{font-size:19px;margin:4px 0 13px}
+h3{font-size:16px;margin:0}.sub{color:#aebfd0;font-size:13px;line-height:1.4}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:5px 2px 13px}
+header strong{display:block}#connection{font-size:12px;border:1px solid #627589;border-radius:999px;padding:7px 9px;white-space:nowrap}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:3;background:#172434ee;backdrop-filter:blur(12px);border-top:1px solid #46576b;display:flex;justify-content:center;padding:5px max(8px,env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))}
+nav button{flex:1;max-width:186px;border:0;min-height:58px;border-radius:9px;background:transparent;font-size:12px;padding:4px 1px;line-height:1.4}
+nav button b{display:block;font-size:21px;font-weight:500}
+nav button.active{background:#d88a45;color:#101723;font-weight:750}
+button,select,input{font:inherit;color:#f2f5f8}
+button{background:#344b61;border:1px solid #607892;min-height:52px;padding:9px 13px;border-radius:12px;touch-action:manipulation;cursor:pointer;font-weight:600}
+button:active{filter:brightness(1.2)}
+button:disabled{opacity:.3}
+button.primary{background:#d18a47;border-color:#d18a47;color:#151b22}
+button.danger{border-color:#a26767;background:#462c36}
+button.big{min-height:60px}
+select,input[type=text],input[type=number]{min-height:52px;min-width:0;background:#253648;border:1px solid #5b7189;border-radius:11px;padding:10px;width:100%}
+input[type=range]{display:block;width:100%;height:57px;margin:0;accent-color:#f8ad63;touch-action:pan-y}
+input[type=range]::-webkit-slider-runnable-track{height:12px;background:#465970;border-radius:12px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;height:38px;width:38px;background:#f8bb75;border-radius:50%;border:3px solid #2c3544;margin-top:-13px;box-shadow:0 0 0 2px #f8bb7577}
+input[type=range]{-webkit-appearance:none;appearance:none}
+input[type=range]::-moz-range-track{height:12px;background:#465970;border-radius:12px}
+input[type=range]::-moz-range-thumb{height:34px;width:34px;background:#f8bb75;border:3px solid #2c3544;border-radius:50%}
+.panel,.fx-card{background:#1d2b3b;border:1px solid #3c5269;border-radius:16px;padding:15px;margin:11px 0}
+.panel.highlight{border-color:#b88b5f}
+.row{display:flex;align-items:center;gap:10px}.row.wrap{flex-wrap:wrap}
+.row>*{min-width:0}.row.grow>*:first-child{flex:1}
+.gap{height:12px}.two{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+h4{margin:0}.tag{font-size:12px;color:#b7c7d7}
+.fx-card .name{font-size:17px;font-weight:750}.fx-card .buttonrow{display:grid;grid-template-columns:1fr 1fr 1fr 1.4fr;gap:8px;margin-top:13px}
+.fx-card .buttonrow button{min-width:0;padding:8px 2px;font-size:15px}
+.fx-card.off{border-style:dashed;opacity:.73}
+.screen[hidden]{display:none!important}
+.control{border-bottom:1px solid #43516655;padding:13px 0 6px}
+.control:last-child{border-bottom:0}
+.control label{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;font-size:15px}
+.control label output{font-variant-numeric:tabular-nums;color:#fac283;font-weight:700;text-align:right}
+.control select{margin-top:9px}.control .switch{width:100%;margin:10px 0;font-size:17px}
+details{border:1px solid #3d546a;background:#182635;border-radius:13px;margin:11px 0;padding:8px 14px}
+summary{cursor:pointer;padding:13px 2px;font-weight:750;font-size:16px;min-height:50px;list-style-position:inside}
+details[open] summary{border-bottom:1px solid #516477}
+.library-card{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#213245;border:1px solid #3d5570;border-radius:14px;padding:12px;margin:10px 0}
+.library-card button{min-width:106px}
+.library-card .details{flex:1;min-width:0}
+.library-card .details b{display:block;font-size:16px}
+.preset-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#hint{min-height:22px;color:#f5bb82;font-size:13px}
+.statusrow{display:flex;justify-content:space-between;gap:16px;align-items:center}
+p{line-height:1.5;margin:8px 0}
+@media(min-width:700px){
+ body{padding-left:20px;padding-right:20px}
+ .library-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+ .library-card{margin:0}
+ .fx-card{max-width:760px;margin-inline:auto}
+}
+</style>
+</head>
+<body>
+<header><div><h1>JERZY MULTIFX <span style="color:#f8ad63">0.3</span></h1>
+<div class="sub">Raspberry Pi 4B · HeadRush Core</div></div>
+<span id="connection" aria-live="polite">Łączenie...</span></header>
+<div id="hint" role="status" aria-live="polite"></div>
+
+<main>
+<div class="screen" id="screen-chain">
+ <h2>Łańcuch efektów</h2>
+ <div class="panel">
+  <div class="statusrow"><b>Poziom MASTER</b><output id="masterView">—</output></div>
+  <input id="master" type="range" min="0" max="1" step=".001" aria-label="Głośność wyjściowa">
+  <div class="gap"></div>
+  <div class="statusrow"><b>Tempo</b><b><span id="bpmView">120</span> BPM</b></div>
+  <input id="bpm" type="range" min="20" max="300" step="1" aria-label="Tempo w BPM">
+  <button id="tap" class="big" style="width:100%">TAP TEMPO</button>
+ </div>
+ <div id="chainCards"></div>
+ <button id="goLibrary" class="primary big" style="width:100%">+ DODAJ NOWY EFEKT</button>
+</div>
+
+<div class="screen" id="screen-effect" hidden>
+ <h2>Edycja efektu</h2>
+ <div class="panel"><label for="effectSelect" class="sub">Wybierz efekt z łańcucha</label>
+  <select id="effectSelect"></select></div>
+ <div id="effectEditor"></div>
+</div>
+
+<div class="screen" id="screen-library" hidden>
+ <h2>Biblioteka efektów</h2>
+ <div class="panel">
+  <p>Każdy efekt jest osobnym modułem ARM64. Można dodać kilka kopii tego samego efektu.</p>
+  <div class="row">
+   <button id="refreshLibrary" style="flex:1">Odśwież katalog</button>
+   <span id="libraryCount" class="tag"></span>
+  </div>
+ </div>
+ <div id="libraryList" class="library-list"></div>
+</div>
+
+<div class="screen" id="screen-presets" hidden>
+ <h2>Presety</h2>
+ <div class="panel">
+  <label for="presetName">Nazwa nowego presetu</label>
+  <input id="presetName" type="text" maxlength="64" placeholder="Np. Ambient Guitar">
+  <div class="gap"></div>
+  <button id="savePreset" class="primary big" style="width:100%">ZAPISZ AKTUALNY ŁAŃCUCH</button>
+ </div>
+ <div class="panel">
+  <label for="presetSelect">Zapisane presety</label>
+  <select id="presetSelect"></select>
+  <div class="gap"></div>
+  <div class="preset-grid">
+   <button id="loadPreset" class="primary">WCZYTAJ</button>
+   <button id="deletePreset" class="danger">USUŃ</button>
+  </div>
+ </div>
+ <div class="panel sub">Presety i ostatni łańcuch przechowywane są na Raspberry Pi. Zawartość wraca po restarcie usług.</div>
+</div>
+
+<div class="screen" id="screen-system" hidden>
+ <h2>System</h2>
+ <div class="panel">
+  <h3>Automatyczny start</h3>
+  <p>FX uruchamiają się razem z Raspberry Pi. Przeglądarka jest tylko pilotem — nie jest potrzebna do przetwarzania dźwięku.</p>
+  <p id="systemInfo" class="sub"></p>
+  <button id="refreshSystem" class="big" style="width:100%">SPRAWDŹ POŁĄCZENIE</button>
+ </div>
+ <div class="panel">
+  <h3>Instalowanie nowych modułów</h3>
+  <p>Umieść zgodne pliki <code>.so</code> i <code>.json</code> w katalogu modułów, potem w Bibliotece wybierz „Odśwież katalog”. Nie trzeba przebudowywać hosta.</p>
+  <p class="sub">Instaluj tylko zaufane moduły przeznaczone dla ARM64. VST3 i efekty Korg Drumlogue wymagają osobnego portowania.</p>
+ </div>
+ <div class="panel"><h3>Adres panelu</h3><p><b>http://10.42.0.1:8090/</b></p>
+  <p class="sub">Panel dostępny w sieci Jerzy-MultiFX, bez połączenia z Internetem.</p>
+ </div>
+</div>
+</main>
+<nav aria-label="Menu główne">
+ <button data-tab="chain" class="active"><b>≡</b>Łańcuch</button>
+ <button data-tab="effect"><b>◎</b>Efekt</button>
+ <button data-tab="library"><b>＋</b>Biblioteka</button>
+ <button data-tab="presets"><b>▣</b>Presety</button>
+ <button data-tab="system"><b>⚙</b>System</button>
+</nav>
 <script>
-const $=sel=>document.querySelector(sel);
-let S=null,pending=new Map(),timer=0,taps=[];
-async function getState(){
- const r=await fetch('/api/state',{cache:'no-store'});
- if(!r.ok)throw Error(await r.text());return r.json();
+const $=id=>document.getElementById(id);
+let S=null,selectedId=null,activeTab="chain",taps=[],pending=new Map(),sendTimer=null,sendLock=Promise.resolve();
+const title=n=>n||"";
+const make=(tag,cls,content)=>{
+ const el=document.createElement(tag);
+ if(cls)el.className=cls;
+ if(content!==undefined)el.textContent=String(content);
+ return el;
+};
+function textStatus(message){$("hint").textContent=message;}
+function selectOption(select,value,label) {
+ const item=document.createElement("option");item.value=String(value);item.textContent=String(label);select.append(item);
 }
-async function post(endpoint,data){
+function switchTab(next){
+ activeTab=next;
+ document.querySelectorAll(".screen").forEach(el=>el.hidden=(el.id!=="screen-"+next));
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===next));
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+async function load(){
+ const response=await fetch("/api/state",{cache:"no-store"});
+ if(!response.ok)throw Error("Brak odpowiedzi panelu");
+ return response.json();
+}
+async function command(endpoint,payload) {
+ const response=await fetch("/api/"+endpoint,{
+  method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+ let answer;
+ try{answer=await response.json()}catch(_){throw Error("Niepoprawna odpowiedź silnika")}
+ if(!response.ok)throw Error(answer.error||"Błąd "+response.status);
+ return answer;
+}
+async function change(endpoint,payload){
  try{
-  const r=await fetch('/api/'+endpoint,{
-   method:'POST',headers:{'Content-Type':'application/json'},
-   body:JSON.stringify(data)});
-  const out=await r.json();
-  if(!r.ok)throw Error(out.error||r.status);
-  $('#status').textContent='Połączono';return out;
- }catch(e){$('#status').textContent='Błąd';alert('Błąd: '+e.message);throw e;}
+  await flushControls();
+  const result=await command(endpoint,payload);
+  S=result;
+  $("connection").textContent="Połączono";
+  textStatus("");
+  drawAll();
+  return result;
+ }catch(e){
+  textStatus("Błąd: "+e.message);$("connection").textContent="Błąd";
+  return null;
+ }
 }
-function choice(select,value,text){
- const o=document.createElement('option');o.value=value;o.textContent=text;select.append(o);
+function queueControl(id,index,value){
+ const slot=S.chain.find(s=>s.id===id);if(!slot)return;
+ slot.params[index]=value;
+ pending.set(String(id)+":"+index,{id,index,value});
+ clearTimeout(sendTimer);
+ sendTimer=setTimeout(()=>{flushControls().catch(()=>{})},90);
 }
-function drawCatalog(){
- const list=$('#addSelect'),previous=list.value;
- list.replaceChildren();
- for(const p of Object.values(S.catalog).sort((a,b)=>a.name.localeCompare(b.name)))
-  choice(list,p.key,p.category+' — '+p.name);
- if(S.catalog[previous])list.value=previous;
- const ps=$('#presets'),old=ps.value;ps.replaceChildren();choice(ps,'','Wybierz preset');
- S.presets.forEach(n=>choice(ps,n,n));ps.value=S.presets.includes(old)?old:'';
+async function flushControls(){
+ clearTimeout(sendTimer);
+ const updates=[...pending.values()];pending.clear();
+ sendLock=sendLock.then(async()=>{
+  for(const item of updates){
+   await command("param",item);
+  }
+ }).catch(e=>{textStatus("Zmiana parametru: "+e.message);});
+ await sendLock;
 }
-function labelValue(p,value){
- if(p.kind==='switch')return value>=.5?(p.on||'ON'):(p.off||'OFF');
- if(p.kind==='choice')return p.choices[Math.round(value*(p.choices.length-1))]||'';
- const v=p.min+(p.max-p.min)*value;
- return v.toFixed(p.unit==='Hz'?2:(p.unit==='dB'?1:0))+' '+(p.unit||'');
+function display(meta,value){
+ if(meta.kind==="switch")return value>=.5?(meta.on||"ON"):(meta.off||"OFF");
+ if(meta.kind==="choice")return meta.choices[Math.min(meta.choices.length-1,Math.round(value*(meta.choices.length-1)))]||"";
+ const min=meta.min??0,max=meta.max??100;
+ let z=value;
+ if(typeof meta.skew==="number"&&meta.skew>0)z=Math.pow(z,meta.skew);
+ const amount=min+(max-min)*z;
+ const digits=(Math.abs(max-min)<25||meta.unit==="dB")?1:0;
+ return amount.toFixed(digits)+(meta.unit?" "+meta.unit:"");
 }
-function queue(id,index,value){
- const slot=S.chain.find(s=>s.id===id);
- if(!slot)return;slot.params[index]=value;
- pending.set(id+':'+index,{id,index,value});
- clearTimeout(timer);
- timer=setTimeout(async()=>{
-  const batch=[...pending.values()];pending.clear();
-  for(const item of batch){try{await post('param',item)}catch(e){break}}
- },80);
+function showCatalog(){
+ const options=Object.values(S.catalog).sort((a,b)=>(a.category+a.name).localeCompare(b.category+b.name));
+ $("libraryCount").textContent=options.length+" modułów";
+ const root=$("libraryList");root.replaceChildren();
+ if(!options.length){root.append(make("p","sub","Nie znaleziono zgodnych modułów .so + .json"));return}
+ let last=null;
+ options.forEach(meta=>{
+  const card=make("article","library-card");
+  const info=make("div","details");
+  info.append(make("b","",meta.name),make("div","tag",meta.category+" · "+meta.params.length+" kontrolek"));
+  const b=make("button","primary","+ DODAJ");
+  b.setAttribute("aria-label","Dodaj "+meta.name);
+  b.onclick=async()=>{
+   const before=new Set(S.chain.map(x=>x.id));
+   const next=await change("add",{key:meta.key});
+   if(next){const slot=S.chain.find(x=>!before.has(x.id));if(slot)selectedId=slot.id;drawAll();switchTab("effect")}
+  };
+  card.append(info,b);root.append(card)
+ })
 }
 function drawChain(){
- const root=$('#chain');root.replaceChildren();
- for(const [position,slot] of S.chain.entries()){
-  const meta=S.catalog[slot.key];if(!meta)continue;
-  const box=document.createElement('article');box.className='card'+(slot.enabled?'':' off');
-  const header=document.createElement('div');header.className='title';
-  const name=document.createElement('strong');name.textContent=(position+1)+'. '+meta.name;
-  const buttons=document.createElement('div');buttons.className='actions';
-  for(const [mark,target] of [['↑',position-1],['↓',position+1]]){
-   const b=document.createElement('button');b.textContent=mark;b.disabled=target<0||target>=S.chain.length;
-   b.onclick=async()=>{S=await post('move',{id:slot.id,position:target});drawAll()};
-   buttons.append(b);
-  }
-  const bypass=document.createElement('button');bypass.textContent=slot.enabled?'ON':'BYPASS';
-  bypass.onclick=async()=>{S=await post('enable',{id:slot.id,value:!slot.enabled});drawAll()};
-  buttons.append(bypass);
-  const del=document.createElement('button');del.textContent='×';del.title='Usuń z łańcucha';
-  del.onclick=async()=>{if(confirm('Usunąć '+meta.name+'?')){S=await post('remove',{id:slot.id});drawAll()}};
-  buttons.append(del);header.append(name,buttons);box.append(header);
-  meta.params.forEach((p,index)=>{
-   const control=document.createElement('div');control.className='control';
-   const label=document.createElement('label');
-   const n=document.createElement('span');n.textContent=p.label;
-   const out=document.createElement('output');out.textContent=labelValue(p,slot.params[index]);
-   label.append(n,out);control.append(label);
-   if(p.kind==='switch'){
-    const b=document.createElement('button');b.className='switch';
-    b.textContent=labelValue(p,slot.params[index]);
-    b.onclick=()=>{const v=slot.params[index]>=.5?0:1;out.textContent=labelValue(p,v);b.textContent=labelValue(p,v);queue(slot.id,index,v)};
-    control.append(b);
-   }else if(p.kind==='choice'){
-    const select=document.createElement('select');select.style.width='100%';
-    p.choices.forEach((option,i)=>choice(select,String(i),option));
-    select.value=String(Math.round(slot.params[index]*(p.choices.length-1)));
-    select.onchange=()=>{const v=Number(select.value)/(p.choices.length-1);out.textContent=labelValue(p,v);queue(slot.id,index,v)};
-    control.append(select);
-   }else{
-    const range=document.createElement('input');range.type='range';
-    range.min=0;range.max=1;range.step=.001;range.value=slot.params[index];
-    range.oninput=()=>{const v=Number(range.value);out.textContent=labelValue(p,v);queue(slot.id,index,v)};
-    control.append(range);
-   }
-   box.append(control);
-  });
-  root.append(box);
- }
+ const root=$("chainCards");root.replaceChildren();
  if(!S.chain.length){
-  const none=document.createElement('section');none.textContent='Brak efektów. Wybierz moduł i naciśnij DODAJ FX.';
-  root.append(none);
+  const empty=make("div","panel");
+  empty.append(make("h3","","Łańcuch jest pusty."),make("p","sub","W Bibliotece wybierz efekt i naciśnij DODAJ."));
+  root.append(empty);
  }
+ S.chain.forEach((slot,index)=>{
+  const meta=S.catalog[slot.key];if(!meta)return;
+  const card=make("article","fx-card"+(slot.enabled?"":" off"));
+  const top=make("div","statusrow");
+  const info=make("div","");
+  info.append(make("div","name",String(index+1)+". "+meta.name),make("div","tag",meta.category+" · "+(slot.enabled?"AKTYWNY":"BYPASS")));
+  top.append(info);card.append(top);
+  const buttons=make("div","buttonrow");
+  const up=make("button","","↑"),down=make("button","","↓");
+  up.disabled=index===0;down.disabled=index===S.chain.length-1;
+  up.title="Przesuń w górę";down.title="Przesuń w dół";
+  up.onclick=()=>change("move",{id:slot.id,position:index-1});
+  down.onclick=()=>change("move",{id:slot.id,position:index+1});
+  const bypass=make("button",slot.enabled?"":"danger",slot.enabled?"ON":"OFF");
+  bypass.onclick=()=>change("enable",{id:slot.id,value:!slot.enabled});
+  const edit=make("button","primary","EDYTUJ");
+  edit.onclick=()=>{selectedId=slot.id;drawAll();switchTab("effect")};
+  buttons.append(up,down,bypass,edit);
+  card.append(buttons);root.append(card)
+ });
+ $("master").value=S.master;
+ $("masterView").textContent=Math.round(S.master*140)+"%";
+ $("bpm").value=S.bpm;
+ $("bpmView").textContent=String(Math.round(S.bpm))
 }
-function drawAll(){
- drawCatalog();drawChain();
- $('#bpm').value=S.bpm;$('#bpmNum').textContent=Math.round(S.bpm);
- $('#master').value=S.master;$('#masterNum').textContent=Math.round(S.master*140)+'%';
+function group(meta,index){
+ if(meta.key==="reel_echo")return index<8?"01 · Taśma":index<19?"02 · Mechanika":index<27?"03 · Stereo i dynamika":index<35?"04 · Tryby specjalne":"05 · Zaawansowane";
+ if(meta.key==="mx_analog_delay")return index<7?"01 · Główne":index<15?"02 · Delay A":index<23?"03 · Delay B":"04 · Efekty dodatkowe";
+ if(meta.key==="memory_delay")return index<7?"01 · Delay i modulacja":"02 · BBD i synchronizacja";
+ if(meta.key==="attack_decay")return index<10?"01 · Obwiednia i brzmienie":"02 · Tryby i wyzwalanie";
+ if(meta.key==="tape_drive")return index<6?"01 · Drive":index<10?"02 · Filtry":"03 · Mechanika i kompresor";
+ if(meta.params.length>12)return index<7?"01 · Podstawowe":"02 · Pozostałe";
+ return "Parametry efektu";
 }
-$('#refresh').onclick=async()=>{S=await getState();drawAll()};
-$('#add').onclick=async()=>{const key=$('#addSelect').value;if(key){S=await post('add',{key});drawAll()}};
-$('#bpm').oninput=e=>{$('#bpmNum').textContent=e.target.value};
-$('#bpm').onchange=async e=>{S=await post('bpm',{value:Number(e.target.value)});drawAll()};
-$('#master').oninput=e=>{$('#masterNum').textContent=Math.round(e.target.value*140)+'%'};
-$('#master').onchange=async e=>{S=await post('master',{value:Number(e.target.value)});drawAll()};
-$('#tap').onclick=async()=>{
- const now=performance.now();taps.push(now);taps=taps.filter(t=>now-t<3000).slice(-6);
- if(taps.length>1){
-  const intervals=taps.slice(1).map((t,i)=>t-taps[i]);
-  const bpm=Math.round(60000/(intervals.reduce((a,b)=>a+b,0)/intervals.length));
-  if(bpm>=20&&bpm<=300){S=await post('bpm',{value:bpm});drawAll()}
+function drawEffect(){
+ const select=$("effectSelect");select.replaceChildren();
+ S.chain.forEach((s,i)=>selectOption(select,s.id,String(i+1)+". "+(S.catalog[s.key]?.name||s.key)));
+ if(!S.chain.some(s=>s.id===selectedId))selectedId=S.chain[0]?.id??null;
+ select.value=String(selectedId??"");
+ const root=$("effectEditor");root.replaceChildren();
+ if(selectedId===null){
+  root.append(make("div","panel","Brak efektów. Otwórz Bibliotekę i dodaj pierwszy moduł."));
+  return;
+ }
+ const slot=S.chain.find(s=>s.id===selectedId);const meta=S.catalog[slot.key];if(!meta)return;
+ const head=make("div","panel highlight");
+ head.append(make("h3","",meta.name),make("p","sub",meta.category+" · "+meta.params.length+" parametrów"));
+ const by=make("button","big "+(slot.enabled?"primary":"danger"),slot.enabled?"EFEKT WŁĄCZONY — dotknij, aby wyłączyć":"EFEKT WYŁĄCZONY — dotknij, aby włączyć");
+ by.style.width="100%";by.onclick=()=>change("enable",{id:slot.id,value:!slot.enabled});
+ head.append(by);root.append(head);
+ const groupMap=new Map();
+ meta.params.forEach((p,index)=>{
+  const g=group(meta,index);
+  let details=groupMap.get(g);
+  if(!details){
+   details=document.createElement("details");details.open=groupMap.size===0;
+   const summary=document.createElement("summary");summary.textContent=g;
+   details.append(summary);groupMap.set(g,details);root.append(details);
+  }
+  const row=make("div","control");
+  const label=make("label");
+  const name=make("span","",p.label);
+  const output=make("output","",display(p,slot.params[index]));
+  label.append(name,output);row.append(label);
+  if(p.kind==="switch"){
+   const btn=make("button","switch primary",display(p,slot.params[index]));
+   btn.onclick=()=>{
+    const value=slot.params[index]>=.5?0:1;
+    btn.textContent=display(p,value);output.textContent=display(p,value);
+    queueControl(slot.id,index,value);
+   };
+   row.append(btn);
+  }else if(p.kind==="choice"){
+   const combo=document.createElement("select");
+   p.choices.forEach((s,i)=>selectOption(combo,i,s));
+   combo.value=String(Math.round(slot.params[index]*(p.choices.length-1)));
+   combo.onchange=()=>{
+    const value=Number(combo.value)/(p.choices.length-1);
+    output.textContent=display(p,value);queueControl(slot.id,index,value);
+   };
+   row.append(combo);
+  }else{
+   const range=document.createElement("input");
+   range.type="range";range.min=0;range.max=1;range.step=.001;range.value=slot.params[index];
+   range.setAttribute("aria-label",p.label);
+   range.oninput=()=>{
+    const value=Number(range.value);
+    output.textContent=display(p,value);
+    queueControl(slot.id,index,value);
+   };
+   range.onchange=()=>{flushControls().catch(()=>{})};
+   row.append(range)
+  }
+  details.append(row)
+ });
+ const remove=make("button","danger big","USUŃ EFEKT Z ŁAŃCUCHA");
+ remove.style.width="100%";
+ remove.onclick=async()=>{if(confirm("Usunąć "+meta.name+" z łańcucha?")){
+  const result=await change("remove",{id:slot.id});if(result)switchTab("chain");
+ }};
+ root.append(remove)
+}
+function drawPresets(){
+ const select=$("presetSelect"),old=select.value;
+ select.replaceChildren();selectOption(select,"","Wybierz zapisany preset");
+ S.presets.forEach(p=>selectOption(select,p,p));
+ if(S.presets.includes(old))select.value=old;
+ else if(S.active_preset&&S.presets.includes(S.active_preset))select.value=S.active_preset;
+}
+function drawSystem(){
+ $("systemInfo").textContent="Silnik online · "+S.chain.length+" instancji w łańcuchu · "+Object.keys(S.catalog).length+" modułów dostępnych";
+}
+function drawAll(){if(!S)return;showCatalog();drawChain();drawEffect();drawPresets();drawSystem()}
+document.querySelectorAll("nav button").forEach(button=>button.onclick=()=>switchTab(button.dataset.tab));
+$("goLibrary").onclick=()=>switchTab("library");
+$("effectSelect").onchange=()=>{
+ selectedId=Number($("effectSelect").value);drawEffect()
+};
+$("refreshLibrary").onclick=async()=>{try{S=await load();drawAll();textStatus("Katalog odświeżony")}catch(e){textStatus(e.message)}};
+$("master").oninput=e=>$("masterView").textContent=Math.round(Number(e.target.value)*140)+"%";
+$("master").onchange=e=>change("master",{value:Number(e.target.value)});
+$("bpm").oninput=e=>$("bpmView").textContent=e.target.value;
+$("bpm").onchange=e=>change("bpm",{value:Number(e.target.value)});
+$("tap").onclick=async()=>{
+ const now=performance.now();taps.push(now);taps=taps.filter(n=>now-n<3000).slice(-6);
+ if(taps.length>1){const intervals=taps.slice(1).map((x,i)=>x-taps[i]);
+  const value=Math.round(60000/(intervals.reduce((a,b)=>a+b,0)/intervals.length));
+  if(value>=20&&value<=300)await change("bpm",{value});
  }
 };
-$('#save').onclick=async()=>{
- const name=$('#presetName').value.trim();
- if(!name){alert('Podaj nazwę presetu');return}
- S=await post('preset/save',{name});drawAll()
+$("savePreset").onclick=async()=>{
+ const name=$("presetName").value.trim();
+ if(!name){textStatus("Wpisz nazwę presetu");return}
+ await change("preset/save",{name})
 };
-$('#load').onclick=async()=>{const name=$('#presets').value;if(name){S=await post('preset/load',{name});drawAll()}};
-$('#del').onclick=async()=>{
- const name=$('#presets').value;
- if(name&&confirm('Usunąć '+name+'?')){S=await post('preset/delete',{name});drawAll()}
+$("loadPreset").onclick=async()=>{
+ const name=$("presetSelect").value;
+ if(name){const r=await change("preset/load",{name});if(r)switchTab("chain")}
 };
-(async()=>{
- try{S=await getState();drawAll();$('#status').textContent='Połączono'}
- catch(e){$('#status').textContent='Brak połączenia'}
-})();
-</script></body></html>
+$("deletePreset").onclick=async()=>{
+ const name=$("presetSelect").value;
+ if(name&&confirm("Trwale usunąć preset "+name+"?"))await change("preset/delete",{name})
+};
+$("refreshSystem").onclick=async()=>{try{await flushControls();S=await load();drawAll();$("connection").textContent="Połączono";textStatus("Połączenie sprawne")}catch(e){$("connection").textContent="Błąd";textStatus(e.message)}};
+(async()=>{try{S=await load();drawAll();$("connection").textContent="Połączono"}catch(e){$("connection").textContent="Offline";textStatus(e.message)}})();
+</script>
+</body></html>

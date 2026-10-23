@@ -1,0 +1,17 @@
+[Unit]
+Description=Jerzy Audio - HeadRush Core routing for v0.3
+Requires=jerzy-multifx3.service
+After=jerzy-multifx3.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+User=jerzy
+Group=audio
+WorkingDirectory=/home/jerzy/JerzyMultiFX3
+Environment=HOME=/home/jerzy
+ExecStart=/bin/sh /home/jerzy/JerzyMultiFX3/deploy/multifx2/connect.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

@@ -6,7 +6,7 @@
 extern "C" {
 #endif
 #define JFX_ABI_VERSION 2
-#define JFX_MAX_PARAMS 24
+#define JFX_MAX_PARAMS 48
 #define JFX_MAX_SLOTS 16
 typedef struct JfxParameter {
     const char* key;

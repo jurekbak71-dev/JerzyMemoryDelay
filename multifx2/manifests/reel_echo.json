@@ -1,0 +1,383 @@
+{
+  "key": "reel_echo",
+  "name": "Reel Echo",
+  "category": "Delay",
+  "params": [
+    {
+      "key": "mode",
+      "label": "Mode",
+      "def": 0,
+      "kind": "choice",
+      "choices": [
+        "Mode A",
+        "Mode B",
+        "Mode C"
+      ]
+    },
+    {
+      "key": "cassette",
+      "label": "Cassette",
+      "def": 0,
+      "kind": "choice",
+      "choices": [
+        "Cassette 1",
+        "Cassette 2",
+        "Cassette 3"
+      ]
+    },
+    {
+      "key": "enabled",
+      "label": "On",
+      "def": 1,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "level",
+      "label": "Delay level",
+      "def": 0.35,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "skew": 1
+    },
+    {
+      "key": "feedback",
+      "label": "Feedback",
+      "def": 0.38,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "skew": 1
+    },
+    {
+      "key": "time",
+      "label": "Long head time",
+      "def": 0.00285247,
+      "kind": "range",
+      "unit": "ms",
+      "min": 40,
+      "max": 4000,
+      "skew": 0.4
+    },
+    {
+      "key": "short",
+      "label": "Short head",
+      "def": 1,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "long",
+      "label": "Long head",
+      "def": 1,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "wow",
+      "label": "Wow",
+      "def": 0.12,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "skew": 1
+    },
+    {
+      "key": "flutter",
+      "label": "Flutter",
+      "def": 0.08,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "skew": 1
+    },
+    {
+      "key": "age",
+      "label": "Tape age",
+      "def": 0.15,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "skew": 1
+    },
+    {
+      "key": "motor",
+      "label": "Motor health",
+      "def": 0.9,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "skew": 1
+    },
+    {
+      "key": "head",
+      "label": "Head condition",
+      "def": 0.9,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "skew": 1
+    },
+    {
+      "key": "bias",
+      "label": "Bias",
+      "def": 0.5,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "skew": 1
+    },
+    {
+      "key": "saturation",
+      "label": "Saturation",
+      "def": 0.16666667,
+      "kind": "range",
+      "unit": "dB",
+      "min": 0,
+      "max": 24,
+      "skew": 1
+    },
+    {
+      "key": "splice",
+      "label": "Splice level",
+      "def": 0,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "skew": 1
+    },
+    {
+      "key": "dropout",
+      "label": "Dropout amount",
+      "def": 0,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "skew": 1
+    },
+    {
+      "key": "sync",
+      "label": "Tempo sync",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "division",
+      "label": "Note division",
+      "def": 0.42857143,
+      "kind": "choice",
+      "choices": [
+        "1/16",
+        "1/8T",
+        "1/8",
+        "1/4",
+        "1/4D",
+        "1/2",
+        "1/2D",
+        "1 bar"
+      ]
+    },
+    {
+      "key": "shortPan",
+      "label": "Short pan",
+      "def": 0.35,
+      "kind": "range",
+      "unit": "%",
+      "min": -100,
+      "max": 100,
+      "skew": 1
+    },
+    {
+      "key": "longPan",
+      "label": "Long pan",
+      "def": 0.65,
+      "kind": "range",
+      "unit": "%",
+      "min": -100,
+      "max": 100,
+      "skew": 1
+    },
+    {
+      "key": "width",
+      "label": "Stereo width",
+      "def": 0.66666667,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 150,
+      "skew": 1
+    },
+    {
+      "key": "duckAmount",
+      "label": "Ducking amount",
+      "def": 0,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "skew": 1
+    },
+    {
+      "key": "duckThreshold",
+      "label": "Ducking threshold",
+      "def": 0.6,
+      "kind": "range",
+      "unit": "dB",
+      "min": -60,
+      "max": 0,
+      "skew": 1
+    },
+    {
+      "key": "duckAttack",
+      "label": "Ducking attack",
+      "def": 0.0020454,
+      "kind": "range",
+      "unit": "ms",
+      "min": 1,
+      "max": 200,
+      "skew": 0.5
+    },
+    {
+      "key": "duckRelease",
+      "label": "Ducking release",
+      "def": 0.02123684,
+      "kind": "range",
+      "unit": "ms",
+      "min": 10,
+      "max": 2000,
+      "skew": 0.5
+    },
+    {
+      "key": "wetOnly",
+      "label": "Wet only",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "stop",
+      "label": "Tape stop",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "dub",
+      "label": "Dub push",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "sos",
+      "label": "Sound on sound",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "freeze",
+      "label": "Freeze",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "tails",
+      "label": "Bypass tails",
+      "def": 1,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "hiss",
+      "label": "Tape hiss",
+      "def": 0,
+      "kind": "range",
+      "unit": "dB",
+      "min": -100,
+      "max": -35,
+      "skew": 1
+    },
+    {
+      "key": "hum",
+      "label": "Mains hum",
+      "def": 0,
+      "kind": "range",
+      "unit": "dB",
+      "min": -100,
+      "max": -35,
+      "skew": 1
+    },
+    {
+      "key": "shortLevel",
+      "label": "Short level",
+      "def": 0.75,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "skew": 1
+    },
+    {
+      "key": "longLevel",
+      "label": "Long level",
+      "def": 0.75,
+      "kind": "range",
+      "unit": "%",
+      "min": 0,
+      "max": 100,
+      "skew": 1
+    },
+    {
+      "key": "shortRatio",
+      "label": "Short time ratio",
+      "def": 0.47058824,
+      "kind": "range",
+      "unit": "%",
+      "min": 10,
+      "max": 95,
+      "skew": 1
+    },
+    {
+      "key": "autoAge",
+      "label": "Automatic ageing",
+      "def": 0,
+      "kind": "switch",
+      "off": "OFF",
+      "on": "ON"
+    },
+    {
+      "key": "seed",
+      "label": "Tape seed",
+      "def": 0.03006073,
+      "kind": "range",
+      "unit": "",
+      "min": 1,
+      "max": 65535,
+      "skew": 1
+    }
+  ]
+}
