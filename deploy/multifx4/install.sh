@@ -10,6 +10,7 @@ ctest --test-dir build-multifx2 --output-on-failure
 python3 multifx2/check_module_metadata.py build-multifx2/modules
 python3 -m py_compile multifx4/web_panel.py
 mkdir -p /home/jerzy/.config/jerzy-multifx4/irs
+python3 multifx4/generate_demo_irs.py /home/jerzy/.config/jerzy-multifx4/irs
 # Copy previous presets/chain if available. Never change v0.2 or v0.3 files.
 for source in /home/jerzy/.config/jerzy-multifx3 /home/jerzy/.config/jerzy-multifx2; do
   if [ -f "$source/presets.json" ] && [ ! -f /home/jerzy/.config/jerzy-multifx4/presets.json ]; then
