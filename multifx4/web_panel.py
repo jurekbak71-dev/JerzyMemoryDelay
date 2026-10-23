@@ -174,7 +174,9 @@ def clean_snapshot(data,installed=None):
         if any(type(v) not in (int,float) or not math.isfinite(v) or not 0<=v<=1 for v in params):
             raise ValueError("Invalid parameter values")
         if type(entry.get("enabled")) is not bool:raise ValueError("Invalid bypass")
-        chain.append({"key":key,"enabled":entry["enabled"],"params":list(params)})
+        route=entry.get("route",0)
+        if type(route) is not int or route not in (0,1):raise ValueError("Invalid FX route")
+        chain.append({"key":key,"enabled":entry["enabled"],"params":list(params),"route":route})
     bpm=data.get("bpm",120)
     master=data.get("master",.7)
     if type(bpm) not in (int,float) or not math.isfinite(bpm) or not 20<=bpm<=300:raise ValueError("Invalid BPM")
@@ -204,6 +206,7 @@ def restore(data):
         for index,value in enumerate(item["params"]):
             rpc("SET %d %d %.9g"%(slot_id,index,value))
         rpc("ENABLE %d %d"%(slot_id,int(item["enabled"])))
+        rpc("ROUTE %d %d"%(slot_id,item.get("route",0)))
         chain.append({**deepcopy(item),"id":slot_id})
     rpc("BPM %.9g"%snapshot["bpm"])
     rpc("MASTER %.9g"%snapshot["master"])
@@ -384,7 +387,7 @@ class Handler(BaseHTTPRequestHandler):
                     key=data.get("key")
                     if type(key) is not str or key not in catalog() or len(state["chain"])>=16:raise ValueError("Unknown module or full chain")
                     ident=int(rpc("ADD "+key))
-                    state["chain"].append({"id":ident,"key":key,"enabled":True,
+                    state["chain"].append({"id":ident,"key":key,"enabled":True,"route":0,
                         "params":[float(p["def"]) for p in catalog()[key]["params"]]})
                     rebind_midi();current_preset=None
                 elif path=="/api/remove":
@@ -407,6 +410,14 @@ class Handler(BaseHTTPRequestHandler):
                     if slot is None:raise ValueError("Unknown instance")
                     rpc("ENABLE %d %d"%(ident,int(value)))
                     slot["enabled"]=value;current_preset=None
+                elif path=="/api/route":
+                    ident,route=data.get("id"),data.get("route")
+                    if type(ident) is not int or type(route) is not int or route not in (0,1):
+                        raise ValueError("Invalid FX routing")
+                    slot=next((s for s in state["chain"] if s["id"]==ident),None)
+                    if slot is None:raise ValueError("Unknown FX instance")
+                    rpc("ROUTE %d %d"%(ident,route))
+                    slot["route"]=route;current_preset=None
                 elif path=="/api/param":
                     ident,index,value=data.get("id"),data.get("index"),data.get("value")
                     slot=next((s for s in state["chain"] if type(ident) is int and s["id"]==ident),None)
