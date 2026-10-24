@@ -1,0 +1,21 @@
+[Unit]
+Description=Jerzy MultiFX 0.4 - Guitar + BassAmbient + CAB IR + MIDI
+Requires=jerzy-jack.service
+After=jerzy-jack.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=jerzy
+Group=audio
+WorkingDirectory=/home/jerzy/JerzyMultiFX4
+Environment=HOME=/home/jerzy
+LimitRTPRIO=95
+LimitMEMLOCK=infinity
+ExecStartPre=/bin/sh -c 'i=0; until /usr/bin/jack_lsp 2>/dev/null | /usr/bin/grep -qx system:playback_1; do i=$((i+1)); [ "$i" -lt 40 ] || exit 1; sleep 1; done'
+ExecStart=/home/jerzy/JerzyMultiFX4/build-multifx2/JerzyMultiFX4JACK --modules /home/jerzy/JerzyMultiFX4/build-multifx2/modules
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

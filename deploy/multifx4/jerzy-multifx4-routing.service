@@ -1,0 +1,15 @@
+[Unit]
+Description=Jerzy MultiFX 0.4 - HeadRush JACK wiring
+Requires=jerzy-multifx4.service
+After=jerzy-multifx4.service
+
+[Service]
+Type=oneshot
+User=jerzy
+Group=audio
+WorkingDirectory=/home/jerzy/JerzyMultiFX4
+ExecStart=/bin/sh /home/jerzy/JerzyMultiFX4/deploy/multifx4/connect.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

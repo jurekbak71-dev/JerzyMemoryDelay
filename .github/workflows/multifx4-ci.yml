@@ -1,0 +1,43 @@
+name: MultiFX v0.4 Dual Engine ARM64
+on:
+  push:
+    branches: [feature/jerzy-multifx-v04-dual-ir-midi]
+  workflow_dispatch:
+jobs:
+  multi-fx4:
+    strategy:
+      matrix:
+        runner: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dependencies
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build libjack-jackd2-dev
+      - name: Build
+        run: |
+          cmake -S . -B build4 -G Ninja -DCMAKE_BUILD_TYPE=Release -DJERZY_BUILD_PLUGIN=OFF -DJERZY_BUILD_MULTIFX2=ON -DJERZY_BUILD_MULTIFX4=ON
+          cmake --build build4 --parallel 2
+          ctest --test-dir build4 --output-on-failure
+      - name: Python panel validation
+        run: python3 -m py_compile multifx4/web_panel.py
+
+      - name: Verify module UI manifests
+        run: python3 multifx2/check_module_metadata.py build4/modules
+      - name: Validate touch GUI JavaScript syntax
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          source=Path("multifx4/panel.html").read_text()
+          script=source.split("<script>",1)[1].split("</script>",1)[0]
+          Path("/tmp/jfx-touch.js").write_text(script)
+          PY
+          node --check /tmp/jfx-touch.js
+      - name: Bundle standalone Raspberry Pi effects, engine and touch UI
+        run: |
+          mkdir -p dist
+          tar -czf dist/JerzyMultiFX4-${{ matrix.runner }}.tar.gz             build4/JerzyMultiFX4JACK build4/modules multifx4/panel.html multifx4/web_panel.py             deploy/multifx4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: JerzyMultiFX4-${{ matrix.runner }}
+          path: dist/*.tar.gz
+          retention-days: 30
