@@ -555,11 +555,11 @@ int control(Engine& engine){
 int main(int argc,char** argv){
  std::string moduleDir="./build-multifx2/modules";
  if(argc==3&&std::strcmp(argv[1],"--modules")==0)moduleDir=argv[2];
- else if(argc!=1){std::cerr<<"Usage: JerzyMultiFX2JACK [--modules MODULE_DIR]\n";return 2;}
+ else if(argc!=1){std::cerr<<"Usage: JerzyMultiFX4JACK [--modules MODULE_DIR]\n";return 2;}
  signal(SIGINT,signalHandler);signal(SIGTERM,signalHandler);
  Engine engine(moduleDir);
  jack_status_t status{};
- engine.jack=jack_client_open("JerzyMultiFX2",static_cast<jack_options_t>(JackNoStartServer|JackUseExactName),&status);
+ engine.jack=jack_client_open("JerzyMultiFX4",static_cast<jack_options_t>(JackNoStartServer|JackUseExactName),&status);
  if(!engine.jack){std::cerr<<"No JACK server available\n";return 1;}
  engine.in=jack_port_register(engine.jack,"in_1",JACK_DEFAULT_AUDIO_TYPE,JackPortIsInput,0);
  engine.left=jack_port_register(engine.jack,"out_1",JACK_DEFAULT_AUDIO_TYPE,JackPortIsOutput,0);
