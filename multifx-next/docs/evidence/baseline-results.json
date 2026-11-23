@@ -1,0 +1,407 @@
+[
+  {
+    "name": "build-MemoryDelayDSP",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-Isource",
+      "tests/dsp_tests.cpp",
+      "-o",
+      "/workspace/work/baseline/bin/MemoryDelayDSP"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "MemoryDelayDSP",
+    "command": [
+      "/workspace/work/baseline/bin/MemoryDelayDSP"
+    ],
+    "exit_code": 0,
+    "output": "104 DSP cases passed\n"
+  },
+  {
+    "name": "build-MultiFXDSP",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-Imultifx",
+      "multifx/tests.cpp",
+      "-o",
+      "/workspace/work/baseline/bin/MultiFXDSP"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "MultiFXDSP",
+    "command": [
+      "/workspace/work/baseline/bin/MultiFXDSP"
+    ],
+    "exit_code": 0,
+    "output": "MultiFX DSP finite, permutations and bypass OK\n"
+  },
+  {
+    "name": "build-MultiFX4DSP",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-Imultifx4",
+      "multifx4/tests.cpp",
+      "-o",
+      "/workspace/work/baseline/bin/MultiFX4DSP"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "MultiFX4DSP",
+    "command": [
+      "/workspace/work/baseline/bin/MultiFX4DSP"
+    ],
+    "exit_code": 0,
+    "output": "PASS Original BassAmbient standalone audio, 64-frame IR FFT, WAV loading\n"
+  },
+  {
+    "name": "build-atomic_cluster",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-fPIC",
+      "-shared",
+      "/workspace/work/JerzyMemoryDelay/multifx2/modules/atomic_cluster.cpp",
+      "-o",
+      "/workspace/work/baseline/modules/atomic_cluster.so"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "build-attack_decay",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-fPIC",
+      "-shared",
+      "/workspace/work/JerzyMemoryDelay/multifx2/modules/attack_decay.cpp",
+      "-o",
+      "/workspace/work/baseline/modules/attack_decay.so"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "build-big_muff",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-fPIC",
+      "-shared",
+      "/workspace/work/JerzyMemoryDelay/multifx2/modules/big_muff.cpp",
+      "-o",
+      "/workspace/work/baseline/modules/big_muff.so"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "build-compressor",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-fPIC",
+      "-shared",
+      "/workspace/work/JerzyMemoryDelay/multifx2/modules/compressor.cpp",
+      "-o",
+      "/workspace/work/baseline/modules/compressor.so"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "build-memory_delay",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-fPIC",
+      "-shared",
+      "/workspace/work/JerzyMemoryDelay/multifx2/modules/memory_delay.cpp",
+      "-o",
+      "/workspace/work/baseline/modules/memory_delay.so"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "build-mx_analog_delay",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-fPIC",
+      "-shared",
+      "/workspace/work/JerzyMemoryDelay/multifx2/modules/mx_analog_delay.cpp",
+      "-o",
+      "/workspace/work/baseline/modules/mx_analog_delay.so"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "build-oil_drum_echo",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-fPIC",
+      "-shared",
+      "/workspace/work/JerzyMemoryDelay/multifx2/modules/oil_drum_echo.cpp",
+      "-o",
+      "/workspace/work/baseline/modules/oil_drum_echo.so"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "build-overdrive",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-fPIC",
+      "-shared",
+      "/workspace/work/JerzyMemoryDelay/multifx2/modules/overdrive.cpp",
+      "-o",
+      "/workspace/work/baseline/modules/overdrive.so"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "build-reel_echo",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-fPIC",
+      "-shared",
+      "/workspace/work/JerzyMemoryDelay/multifx2/modules/reel_echo.cpp",
+      "multifx2/vendor/reel/TapeEngine.cpp",
+      "-o",
+      "/workspace/work/baseline/modules/reel_echo.so"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "build-small_clone",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-fPIC",
+      "-shared",
+      "/workspace/work/JerzyMemoryDelay/multifx2/modules/small_clone.cpp",
+      "-o",
+      "/workspace/work/baseline/modules/small_clone.so"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "build-tape_drive",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-fPIC",
+      "-shared",
+      "/workspace/work/JerzyMemoryDelay/multifx2/modules/tape_drive.cpp",
+      "-o",
+      "/workspace/work/baseline/modules/tape_drive.so"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "build-tremolo",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-fPIC",
+      "-shared",
+      "/workspace/work/JerzyMemoryDelay/multifx2/modules/tremolo.cpp",
+      "-o",
+      "/workspace/work/baseline/modules/tremolo.so"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "build-lofi_crush",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-fPIC",
+      "-shared",
+      "/workspace/work/JerzyMemoryDelay/multifx2/examples/lofi_crush.cpp",
+      "-o",
+      "/workspace/work/baseline/modules/lofi_crush.so"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "build-ModuleTests",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "multifx2/module_tests.cpp",
+      "-ldl",
+      "-o",
+      "/workspace/work/baseline/bin/ModuleTests"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "ModuleTests",
+    "command": [
+      "/workspace/work/baseline/bin/ModuleTests",
+      "/workspace/work/baseline/modules"
+    ],
+    "exit_code": 0,
+    "output": "All 13 separate .so modules loaded, all audio finite, Memory Delay has 14 controls\n"
+  },
+  {
+    "name": "metadata",
+    "command": [
+      "python3",
+      "multifx2/check_module_metadata.py",
+      "/workspace/work/baseline/modules"
+    ],
+    "exit_code": 0,
+    "output": "big_muff: validated 5 controls\nlofi_crush: validated 5 controls\ntremolo: validated 2 controls\noil_drum_echo: validated 46 controls\nmemory_delay: validated 14 controls\nmx_analog_delay: validated 29 controls\ntape_drive: validated 18 controls\noverdrive: validated 3 controls\nattack_decay: validated 20 controls\nsmall_clone: validated 11 controls\natomic_cluster: validated 12 controls\nreel_echo: validated 39 controls\ncompressor: validated 3 controls\nOK: 13 FX .so modules have matching, complete panel descriptors.\n"
+  },
+  {
+    "name": "multifx-panel",
+    "command": [
+      "python3",
+      "multifx/test_panel.py"
+    ],
+    "exit_code": 0,
+    "output": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.003s\n\nOK\n"
+  },
+  {
+    "name": "multifx2-panel",
+    "command": [
+      "python3",
+      "multifx2/test_panel.py"
+    ],
+    "exit_code": 0,
+    "output": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.003s\n\nOK\n"
+  },
+  {
+    "name": "build-MemoryDelayDSP-asan",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "-Isource",
+      "tests/dsp_tests.cpp",
+      "-o",
+      "/workspace/work/baseline/bin/MemoryDelayDSP-asan"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "MemoryDelayDSP-asan",
+    "command": [
+      "/workspace/work/baseline/bin/MemoryDelayDSP-asan"
+    ],
+    "exit_code": 0,
+    "output": "104 DSP cases passed\n"
+  },
+  {
+    "name": "build-MultiFXDSP-asan",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "-Imultifx",
+      "multifx/tests.cpp",
+      "-o",
+      "/workspace/work/baseline/bin/MultiFXDSP-asan"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "MultiFXDSP-asan",
+    "command": [
+      "/workspace/work/baseline/bin/MultiFXDSP-asan"
+    ],
+    "exit_code": 0,
+    "output": "MultiFX DSP finite, permutations and bypass OK\n"
+  },
+  {
+    "name": "build-MultiFX4DSP-asan",
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer",
+      "-Imultifx4",
+      "multifx4/tests.cpp",
+      "-o",
+      "/workspace/work/baseline/bin/MultiFX4DSP-asan"
+    ],
+    "exit_code": 0,
+    "output": ""
+  },
+  {
+    "name": "MultiFX4DSP-asan",
+    "command": [
+      "/workspace/work/baseline/bin/MultiFX4DSP-asan"
+    ],
+    "exit_code": 0,
+    "output": "PASS Original BassAmbient standalone audio, 64-frame IR FFT, WAV loading\n"
+  }
+]

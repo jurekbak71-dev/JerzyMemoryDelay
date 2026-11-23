@@ -1,0 +1,13 @@
+F...
+======================================================================
+FAIL: test_hidden_extension_budget (__main__.PackageTests.test_hidden_extension_budget)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/work/JerzyMemoryDelay/multifx-next/tests/package_test.py", line 37, in test_hidden_extension_budget
+    self.assertNotEqual(self.run_tool('install',package,temp/kind).returncode,0,kind+' extension bypassed archive budget')
+AssertionError: 0 == 0 : pax extension bypassed archive budget
+
+----------------------------------------------------------------------
+Ran 4 tests in 1.512s
+
+FAILED (failures=1)

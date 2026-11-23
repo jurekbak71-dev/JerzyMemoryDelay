@@ -1,0 +1,2 @@
+PASS audio allocation audit: C and C++ allocation/free calls = 0
+PASS graph audio/MIDI, bypass, compensation, bounded exchange and 2000 concurrent changes

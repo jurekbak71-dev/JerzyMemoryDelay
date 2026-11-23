@@ -1,0 +1,74 @@
+cmake version 4.4.5
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+Integrity and audio SDK metadata OK; compiler/build tools validated during configure. Target: /workspace/work/installed-final/alsa-6d7807b5b18ae243
+-- The C compiler identification is GNU 14.2.0
+-- The CXX compiler identification is GNU 14.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found PkgConfig: /usr/bin/pkg-config (found version "1.8.1")
+-- Checking for module 'alsa'
+--   Found alsa, version 1.2.8
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- Configuring done (0.4s)
+-- Generating done (0.0s)
+-- Build files have been written to: /workspace/work/jerzy-build-4lijnoo1/build
+[  5%] Building C object CMakeFiles/next_pffft.dir/vendor/pffft/src/pffft.c.o
+[ 10%] Building CXX object CMakeFiles/next_core.dir/src/plugin.cpp.o
+In file included from /workspace/work/final-install-test/alsa/jerzy-multifx-next-alsa/source/multifx-next/vendor/pffft/src/pffft.c:135:
+/workspace/work/final-install-test/alsa/jerzy-multifx-next-alsa/source/multifx-next/vendor/pffft/src/pffft_priv_impl.h: In function ‘passf8_ps’:
+/workspace/work/final-install-test/alsa/jerzy-multifx-next-alsa/source/multifx-next/vendor/pffft/src/pffft_priv_impl.h:341:50: warning: unused parameter ‘l1’ [-Wunused-parameter]
+  341 | static NEVER_INLINE(void) passf8_ps(int ido, int l1, const v4sf * RESTRICT cc, v4sf * RESTRICT ch, float fsign) {
+      |                                              ~~~~^~
+[ 15%] Building C object CMakeFiles/next_pffft.dir/vendor/pffft/src/pffft_common.c.o
+[ 20%] Linking C static library libnext_pffft.a
+[ 20%] Built target next_pffft
+[ 25%] Building CXX object CMakeFiles/next_core.dir/src/engine.cpp.o
+[ 30%] Building CXX object CMakeFiles/next_gain.dir/plugins/gain.cpp.o
+[ 35%] Linking CXX shared module plugins/gain/plugin.so
+[ 35%] Built target next_gain
+[ 40%] Building CXX object CMakeFiles/next_core.dir/src/session.cpp.o
+[ 45%] Building CXX object CMakeFiles/next_synth.dir/plugins/synth.cpp.o
+[ 50%] Linking CXX shared module plugins/synth/plugin.so
+[ 50%] Built target next_synth
+[ 55%] Building CXX object CMakeFiles/next_legacy.dir/plugins/legacy.cpp.o
+[ 60%] Linking CXX shared module plugins/legacy/plugin.so
+[ 60%] Built target next_legacy
+[ 65%] Building CXX object CMakeFiles/next_cab_dsp.dir/src/pffft_cab.cpp.o
+In file included from /workspace/work/final-install-test/alsa/jerzy-multifx-next-alsa/source/multifx-next/src/pffft_cab.cpp:2:
+/workspace/work/final-install-test/alsa/jerzy-multifx-next-alsa/source/multifx-next/src/../../multifx4/ir_cab.h: In function ‘bool mfx4::readWav(const std::string&, Wav&, std::string&)’:
+/workspace/work/final-install-test/alsa/jerzy-multifx-next-alsa/source/multifx-next/src/../../multifx4/ir_cab.h:87:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   87 |     if(v&0x800000)v|=~0xffffff;value=float(v)/8388608.f;}
+      |     ^~
+/workspace/work/final-install-test/alsa/jerzy-multifx-next-alsa/source/multifx-next/src/../../multifx4/ir_cab.h:87:32: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   87 |     if(v&0x800000)v|=~0xffffff;value=float(v)/8388608.f;}
+      |                                ^~~~~
+[ 70%] Linking CXX static library libnext_cab_dsp.a
+[ 70%] Built target next_cab_dsp
+[ 75%] Building CXX object CMakeFiles/next_cab.dir/plugins/cab.cpp.o
+[ 80%] Linking CXX shared module plugins/cab/plugin.so
+[ 80%] Built target next_cab
+[ 85%] Linking CXX static library libnext_core.a
+[ 85%] Built target next_core
+[ 95%] Building CXX object CMakeFiles/JerzyMultiFXNextALSA.dir/src/alsa_backend.cpp.o
+[ 95%] Building CXX object CMakeFiles/JerzyMultiFXNextALSA.dir/src/alsa_main.cpp.o
+[100%] Linking CXX executable JerzyMultiFXNextALSA
+[100%] Built target JerzyMultiFXNextALSA
+Direct ALSA host; commands on stdin; QUIT exits.
+--device hw:CARD=Core,DEV=0 --rate 44100 --period 64 --periods 3
+--capture-channels 6 --playback-channels 4
+--in-left 1 --in-right 2 --out-left 1 --out-right 2 (1-based)
+--midi auto|off|required (sequencer; events at next block boundary)
+INSTALLED: /workspace/work/installed-final/alsa-6d7807b5b18ae243
+Start explicitly: /workspace/work/installed-final/alsa-6d7807b5b18ae243/start.sh
+Plugins: /workspace/work/installed-final/alsa-6d7807b5b18ae243/plugins

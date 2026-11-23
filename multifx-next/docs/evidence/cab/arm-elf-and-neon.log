@@ -1,0 +1,17 @@
+/workspace/work/next-arm64/JerzyMultiFXNext:      ELF 64-bit LSB pie executable, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=7cbfb8c1eae61d543af1eb32c47fa3fc03d30aee, for GNU/Linux 3.7.0, not stripped
+/workspace/work/next-arm64/plugins/cab/plugin.so: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, BuildID[sha1]=becaf2159b936c0f0cc626753e8e4660d9a14420, not stripped
+
+{"glibc": ["GLIBC_2.17", "GLIBC_2.32", "GLIBC_2.34", "GLIBC_2.38"], "glibcxx": ["GLIBCXX_3.4", "GLIBCXX_3.4.9", "GLIBCXX_3.4.14", "GLIBCXX_3.4.20", "GLIBCXX_3.4.21", "GLIBCXX_3.4.26", "GLIBCXX_3.4.29", "GLIBCXX_3.4.31", "GLIBCXX_3.4.32"]}
+NEON vector instructions: 812
+    4338:	4e3ed41b 	fadd	v27.4s, v0.4s, v30.4s
+    433c:	4ebed400 	fsub	v0.4s, v0.4s, v30.4s
+    4340:	4e3fd7ba 	fadd	v26.4s, v29.4s, v31.4s
+    4344:	4ebdd7fd 	fsub	v29.4s, v31.4s, v29.4s
+    4348:	4e3bd75c 	fadd	v28.4s, v26.4s, v27.4s
+    434c:	4ebbd75a 	fsub	v26.4s, v26.4s, v27.4s
+    43b4:	4e20d7db 	fadd	v27.4s, v30.4s, v0.4s
+    43b8:	4ebed400 	fsub	v0.4s, v0.4s, v30.4s
+    43bc:	4e3dd7fa 	fadd	v26.4s, v31.4s, v29.4s
+    43c0:	4ebdd7fd 	fsub	v29.4s, v31.4s, v29.4s
+    43c4:	4e3ad77c 	fadd	v28.4s, v27.4s, v26.4s
+    43c8:	4ebbd75a 	fsub	v26.4s, v26.4s, v27.4s

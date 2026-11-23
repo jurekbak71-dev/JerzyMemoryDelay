@@ -1,0 +1,14 @@
+big_muff: validated 5 controls
+lofi_crush: validated 5 controls
+tremolo: validated 2 controls
+oil_drum_echo: validated 46 controls
+memory_delay: validated 14 controls
+mx_analog_delay: validated 29 controls
+tape_drive: validated 18 controls
+overdrive: validated 3 controls
+attack_decay: validated 20 controls
+small_clone: validated 11 controls
+atomic_cluster: validated 12 controls
+reel_echo: validated 39 controls
+compressor: validated 3 controls
+OK: 13 FX .so modules have matching, complete panel descriptors.

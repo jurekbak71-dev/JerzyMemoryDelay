@@ -1,0 +1,210 @@
+Start testing: Nov 17 12:12 CET
+----------------------------------------------------------
+1/12 Testing: NextConvolver
+1/12 Test: NextConvolver
+Command: "/workspace/work/next-release/next_convolver_test"
+Directory: /workspace/work/next-release
+"NextConvolver" start time: Nov 17 12:12 CET
+Output:
+----------------------------------------------------------
+PASS PFFFT reference/direct FIR and boundary lengths; max_abs=2.16067e-07 rms=4.28391e-08 samples=43328
+SIMD=SSE1 lanes=4
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"NextConvolver" end time: Nov 17 12:12 CET
+"NextConvolver" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/12 Testing: NextCabCompatibility
+2/12 Test: NextCabCompatibility
+Command: "/workspace/work/next-release/next_cab_compatibility_test" "/workspace/work/next-release/plugins"
+Directory: /workspace/work/next-release
+"NextCabCompatibility" start time: Nov 17 12:12 CET
+Output:
+----------------------------------------------------------
+PASS CAB stereo float WAV, 16 rate pairs and irregular frame counts; max_abs=5.06639e-07 samples=320000
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"NextCabCompatibility" end time: Nov 17 12:12 CET
+"NextCabCompatibility" time elapsed: 00:00:00
+----------------------------------------------------------
+
+11/12 Testing: NextPlugins
+11/12 Test: NextPlugins
+Command: "/workspace/work/next-release/next_plugin_test" "/workspace/work/next-release/plugins"
+Directory: /workspace/work/next-release
+"NextPlugins" start time: Nov 17 12:12 CET
+Output:
+----------------------------------------------------------
+PASS plugin ABI, stereo FX, MIDI instrument, shared libraries, CAB reference and dry alignment
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"NextPlugins" end time: Nov 17 12:12 CET
+"NextPlugins" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/12 Testing: NextEngine
+3/12 Test: NextEngine
+Command: "/workspace/work/next-release/next_engine_test" "/workspace/work/next-release/plugins"
+Directory: /workspace/work/next-release
+"NextEngine" start time: Nov 17 12:12 CET
+Output:
+----------------------------------------------------------
+PASS audio allocation audit: C and C++ allocation/free calls = 0
+PASS graph audio/MIDI, bypass, compensation, bounded exchange and 2000 concurrent changes
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"NextEngine" end time: Nov 17 12:12 CET
+"NextEngine" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/12 Testing: NextSession
+4/12 Test: NextSession
+Command: "/workspace/work/next-release/next_session_test" "/workspace/work/next-release/plugins"
+Directory: /workspace/work/next-release
+"NextSession" start time: Nov 17 12:12 CET
+Output:
+----------------------------------------------------------
+PASS session commands, reconnect MOVE, modes, preset atomic rollback, library release and clean instrument reactivation
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"NextSession" end time: Nov 17 12:12 CET
+"NextSession" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/12 Testing: NextPackages
+5/12 Test: NextPackages
+Command: "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12" "/workspace/work/JerzyMemoryDelay/multifx-next/tests/package_test.py" "/workspace/work/next-release/plugins"
+Directory: /workspace/work/next-release
+"NextPackages" start time: Nov 17 12:12 CET
+Output:
+----------------------------------------------------------
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 2.101s
+
+OK
+<end of output>
+Test time =   2.18 sec
+----------------------------------------------------------
+Test Passed.
+"NextPackages" end time: Nov 17 12:12 CET
+"NextPackages" time elapsed: 00:00:02
+----------------------------------------------------------
+
+6/12 Testing: NextLegacy
+6/12 Test: NextLegacy
+Command: "/workspace/work/next-release/next_legacy_test" "/workspace/work/next-release/plugins"
+Directory: /workspace/work/next-release
+"NextLegacy" start time: Nov 17 12:12 CET
+Output:
+----------------------------------------------------------
+PASS ABI2 migration bridge matches old stereo DSP sample for sample
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"NextLegacy" end time: Nov 17 12:12 CET
+"NextLegacy" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/12 Testing: NextResources
+7/12 Test: NextResources
+Command: "/workspace/work/next-release/next_resource_test" "/workspace/work/next-release/plugins"
+Directory: /workspace/work/next-release
+"NextResources" start time: Nov 17 12:12 CET
+Output:
+----------------------------------------------------------
+Before: OK {"bad_samples":0,"blocks":0,"deadline_misses":0,"latency_frames":0,"max_ns":0,"midi_overflows":0,"oversize_blocks":0,"owned_bytes_estimate":768,"pending":false,"rss_bytes":2015232,"slot_calls":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_ids":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_max_ns":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_total_ns":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total_ns":0}
+Loaded: OK {"bad_samples":0,"blocks":1,"deadline_misses":0,"latency_frames":64,"max_ns":36294,"midi_overflows":0,"oversize_blocks":0,"owned_bytes_estimate":1056596,"pending":false,"rss_bytes":3461120,"slot_calls":[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_ids":[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_max_ns":[34872,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_total_ns":[34872,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total_ns":36294}
+Unloaded: OK {"bad_samples":0,"blocks":2,"deadline_misses":0,"latency_frames":64,"max_ns":36294,"midi_overflows":0,"oversize_blocks":0,"owned_bytes_estimate":2628,"pending":false,"rss_bytes":2334720,"slot_calls":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_ids":[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_max_ns":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_total_ns":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total_ns":37176}
+Released tracked capacity bytes: 1053968
+Heap mmap before/after: 1064960/0
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"NextResources" end time: Nov 17 12:12 CET
+"NextResources" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/12 Testing: NextConvolverFailure
+8/12 Test: NextConvolverFailure
+Command: "/workspace/work/next-release/next_convolver_failure_test"
+Directory: /workspace/work/next-release
+"NextConvolverFailure" start time: Nov 17 12:12 CET
+Output:
+----------------------------------------------------------
+Injecting allocation failure 0
+Injecting allocation failure 1
+Injecting allocation failure 2
+Injecting allocation failure 3
+PASS setup struct, twiddle storage and both aligned spectrum allocation failures preserve live state
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"NextConvolverFailure" end time: Nov 17 12:12 CET
+"NextConvolverFailure" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/12 Testing: NextReviewRegressions
+9/12 Test: NextReviewRegressions
+Command: "/workspace/work/next-release/next_regressions_test" "/workspace/work/next-release/plugins"
+Directory: /workspace/work/next-release
+"NextReviewRegressions" start time: Nov 17 12:12 CET
+Output:
+----------------------------------------------------------
+PASS review regression 0
+PASS review regression 1
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"NextReviewRegressions" end time: Nov 17 12:12 CET
+"NextReviewRegressions" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/12 Testing: NextOverload
+10/12 Test: NextOverload
+Command: "/workspace/work/next-release/next_overload_test" "/workspace/work/next-release/plugins"
+Directory: /workspace/work/next-release
+"NextOverload" start time: Nov 17 12:12 CET
+Output:
+----------------------------------------------------------
+PASS bounded heavy DSP overload detected: callback_ns=3115648 budget_ns=5208 (192kHz, 1 frame); finite actual audio
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"NextOverload" end time: Nov 17 12:12 CET
+"NextOverload" time elapsed: 00:00:00
+----------------------------------------------------------
+
+12/12 Testing: NextJACK
+12/12 Test: NextJACK
+Command: "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12" "/workspace/work/JerzyMemoryDelay/multifx-next/tests/jack_integration.py" "/workspace/work/next-release/JerzyMultiFXNext" "/workspace/work/next-release/next_jack_probe" "/workspace/work/deps/jack/usr/bin/jackd" "/workspace/work/next-release/plugins"
+Directory: /workspace/work/next-release
+"NextJACK" start time: Nov 17 12:12 CET
+Output:
+----------------------------------------------------------
+PASS real JACK stereo passthrough/gain/MIDI audio, Note Off, 200 mode edits; stats={"bad_samples": 0, "blocks": 2873, "deadline_misses": 1, "latency_frames": 0, "max_ns": 2246923, "midi_overflows": 1, "oversize_blocks": 0, "owned_bytes_estimate": 174588, "pending": false, "rss_bytes": 4751360, "slot_calls": [3, 1730, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "slot_ids": [1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "slot_max_ns": [240, 79599, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "slot_total_ns": [470, 1419549, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "total_ns": 9826627, "xruns": 19}
+<end of output>
+Test time =   5.15 sec
+----------------------------------------------------------
+Test Passed.
+"NextJACK" end time: Nov 17 12:12 CET
+"NextJACK" time elapsed: 00:00:05
+----------------------------------------------------------
+
+End testing: Nov 17 12:12 CET

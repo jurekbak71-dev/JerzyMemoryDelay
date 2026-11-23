@@ -1,0 +1,28 @@
+INSTALACJA RPi Z WINDOWS
+
+1. Rozpakuj caly ZIP (prawy przycisk -> Wyodrebnij wszystkie).
+2. Polacz Windows z Wi-Fi Jerzy-MultiFX.
+3. Kliknij dwa razy START.cmd.
+4. Wpisz haslo uzytkownika jerzy na Raspberry Pi i kliknij Zainstaluj.
+5. Potwierdz klucz SSH tylko jesli laczysz sie ze swoim Pi.
+
+Adres 10.42.0.1 i uzytkownik jerzy pochodza z poprzedniej instrukcji repo.
+Mozesz je zmienic w oknie. Haslo nie jest zapisane w ZIP ani logu.
+Nie musisz wpisywac komend. Pi nie potrzebuje internetu; wykorzystuje juz
+zainstalowane narzedzia z poprzednich wersji. Brak zaleznosci oznacza blad,
+a nie automatyczne pobieranie lub zmiane systemu.
+
+Po instalacji w menu pulpitu RPi pojawi sie Jerzy MultiFX Next JACK2/ALSA.
+Otworz te ikone na Pi i kliknij Uruchom audio. To NIE jest panel dzialajacy
+w przegladarce Windows. Pelny panel poprzednich wersji pozostaje bez zmian.
+Nie zmieniamy uslug, starego MultiFX, Wi-Fi ani JACK-a podczas instalacji.
+Przed testowaniem ALSA trzeba zwolnic HeadRush przez zatrzymanie JACK-a.
+
+Windows 10/11 x64 z Windows PowerShell 5.1. Dolaczono oficjalne plink/pscp
+PuTTY 0.83 z licencja. Pliki skryptow nie sa podpisane certyfikatem wydawcy.
+Polityka firmowa blokujaca skrypty moze uniemożliwic start; instalator nie
+zmienia systemowej polityki. SmartScreen/antywirus moga pokazac ostrzezenie.
+
+NIEZWERYFIKOWANE: prawdziwy Windows, Twoje fizyczne RPi/HeadRush.
+W chmurze testujemy pakowanie, parser skryptu i zdalna czesc instalacyjna
+na Linuksie. Nie przedstawiamy tego jako przetestowanego wdrozenia sprzetowego.

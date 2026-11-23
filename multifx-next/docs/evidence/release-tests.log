@@ -1,0 +1,23 @@
+Test project /workspace/work/next-release
+    Start 8: NextPlugins
+1/9 Test #8: NextPlugins ......................   Passed    0.00 sec
+    Start 1: NextEngine
+2/9 Test #1: NextEngine .......................   Passed    0.01 sec
+    Start 2: NextSession
+3/9 Test #2: NextSession ......................   Passed    0.00 sec
+    Start 3: NextPackages
+4/9 Test #3: NextPackages .....................   Passed    1.81 sec
+    Start 4: NextLegacy
+5/9 Test #4: NextLegacy .......................   Passed    0.00 sec
+    Start 5: NextResources
+6/9 Test #5: NextResources ....................   Passed    0.01 sec
+    Start 6: NextReviewRegressions
+7/9 Test #6: NextReviewRegressions ............   Passed    0.00 sec
+    Start 7: NextOverload
+8/9 Test #7: NextOverload .....................   Passed    0.00 sec
+    Start 9: NextJACK
+9/9 Test #9: NextJACK .........................   Passed    5.22 sec
+
+100% tests passed out of 9
+
+Total Test time (real) =   7.08 sec

@@ -1,0 +1,25 @@
+Test project /workspace/work/next-arm64
+      Start  1: NextConvolver
+ 1/10 Test  #1: NextConvolver ....................   Passed    2.10 sec
+      Start  2: NextCabCompatibility
+ 2/10 Test  #2: NextCabCompatibility .............   Passed    2.07 sec
+      Start 10: NextPlugins
+ 3/10 Test #10: NextPlugins ......................   Passed    0.10 sec
+      Start  3: NextEngine
+ 4/10 Test  #3: NextEngine .......................   Passed    0.32 sec
+      Start  4: NextSession
+ 5/10 Test  #4: NextSession ......................   Passed    0.12 sec
+      Start  5: NextLegacy
+ 6/10 Test  #5: NextLegacy .......................   Passed    0.06 sec
+      Start  6: NextResources
+ 7/10 Test  #6: NextResources ....................   Passed    0.21 sec
+      Start  7: NextConvolverFailure
+ 8/10 Test  #7: NextConvolverFailure .............   Passed    0.05 sec
+      Start  8: NextReviewRegressions
+ 9/10 Test  #8: NextReviewRegressions ............   Passed    0.09 sec
+      Start  9: NextOverload
+10/10 Test  #9: NextOverload .....................   Passed    0.08 sec
+
+100% tests passed out of 10
+
+Total Test time (real) =   5.22 sec

@@ -1,0 +1,13 @@
+Test project /workspace/work/legacy-cmake
+    Start 1: MemoryDelayDSP
+1/4 Test #1: MemoryDelayDSP ...................   Passed    1.38 sec
+    Start 2: MultiFXDSP
+2/4 Test #2: MultiFXDSP .......................   Passed    0.09 sec
+    Start 3: MultiFX2Modules
+3/4 Test #3: MultiFX2Modules ..................   Passed    4.43 sec
+    Start 4: MultiFX4DualSynthIR
+4/4 Test #4: MultiFX4DualSynthIR ..............   Passed    0.52 sec
+
+100% tests passed out of 4
+
+Total Test time (real) =   6.42 sec

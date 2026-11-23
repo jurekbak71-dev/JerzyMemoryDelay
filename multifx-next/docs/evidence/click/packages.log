@@ -1,0 +1,7 @@
+/tmp/jerzy-deb-qek7o2ex/jerzy-multifx-next-jack2-source.tar.gz 861cc7dbd99ccb6f2fa75d4493786745636f18b033d4165d73c81a78faf82b8a
+/tmp/jerzy-deb-qek7o2ex/jerzy-multifx-next-alsa-source.tar.gz e7682ed3f5a6764f5c3c25d9c9c807a50b231cefc5069f13b82c1eb8ac90137a
+dpkg-deb: building package 'jerzy-multifx-next-jack2' in '/tmp/tmpyfvujemp/jerzy-multifx-next-jack2_0.2.0_all.deb'.
+dpkg-deb: building package 'jerzy-multifx-next-alsa' in '/tmp/tmpyfvujemp/jerzy-multifx-next-alsa_0.2.0_all.deb'.
+/tmp/tmpyfvujemp/jerzy-multifx-next-jack2_0.2.0_all.deb a33413dad15914fd4c177c3040ed1d59e4bff8c009c9f614b223359c0785517e
+/tmp/tmpyfvujemp/jerzy-multifx-next-alsa_0.2.0_all.deb e5bbd9d719716af14260d0f212c311b7077e73416a029d691f5e09e0e3a083cf
+two .deb packages: dependencies, no conflicts, valid GUI launchers: PASS

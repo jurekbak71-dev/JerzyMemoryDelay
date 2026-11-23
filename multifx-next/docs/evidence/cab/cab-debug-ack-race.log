@@ -1,0 +1,69 @@
+Test project /workspace/work/next-build
+      Start  1: NextConvolver
+ 1/12 Test  #1: NextConvolver ....................   Passed    2.19 sec
+      Start  2: NextCabCompatibility
+ 2/12 Test  #2: NextCabCompatibility .............   Passed    1.90 sec
+      Start 11: NextPlugins
+ 3/12 Test #11: NextPlugins ......................   Passed    0.01 sec
+      Start  3: NextEngine
+ 4/12 Test  #3: NextEngine .......................   Passed    0.03 sec
+      Start  4: NextSession
+ 5/12 Test  #4: NextSession ......................   Passed    0.01 sec
+      Start  5: NextPackages
+ 6/12 Test  #5: NextPackages .....................   Passed    2.92 sec
+      Start  6: NextLegacy
+ 7/12 Test  #6: NextLegacy .......................   Passed    0.00 sec
+      Start  7: NextResources
+ 8/12 Test  #7: NextResources ....................   Passed    0.01 sec
+      Start  8: NextConvolverFailure
+ 9/12 Test  #8: NextConvolverFailure .............   Passed    0.00 sec
+      Start  9: NextReviewRegressions
+10/12 Test  #9: NextReviewRegressions ............   Passed    0.00 sec
+      Start 10: NextOverload
+11/12 Test #10: NextOverload .....................   Passed    0.01 sec
+      Start 12: NextJACK
+12/12 Test #12: NextJACK .........................***Failed    4.33 sec
+Cannot connect to server socket err = No such file or directory
+Cannot connect to server request channel
+jack server is not running or cannot be started
+JackShmReadWritePtr::~JackShmReadWritePtr - Init not done for -1, skipping unlock
+JackShmReadWritePtr::~JackShmReadWritePtr - Init not done for -1, skipping unlock
+MultiFX Next: JACK server unavailable or client name already in use
+jackdmp 1.9.22
+Copyright 2001-2005 Paul Davis and others.
+Copyright 2004-2016 Grame.
+Copyright 2016-2023 Filipe Coelho.
+jackdmp comes with ABSOLUTELY NO WARRANTY
+This is free software, and you are welcome to redistribute it
+under certain conditions; see the file COPYING for details
+JACK server starting in non-realtime mode
+self-connect-mode is "Don't restrict self connect requests"
+Cannot lock down 107341340 byte memory area (Cannot allocate memory)
+Cannot lock down 107341340 byte memory area (Cannot allocate memory)
+JackTimedDriver::Process XRun = 22 usec
+JackTimedDriver::Process XRun = 9 usec
+JackEngine::XRun: client = JerzyMultiFXNext was not finished, state = Running
+JackAudioDriver::ProcessGraphAsyncMaster: Process error
+JackMidiBuffer::ReserveEvent - the buffer does not have enough room to enqueue a 3 byte event
+JackEngine::XRun: client = JerzyMultiFXNext was not finished, state = Triggered
+JackEngine::XRun: client = NextProbe was not finished, state = Triggered
+JackAudioDriver::ProcessGraphAsyncMaster: Process error
+JackTimedDriver::Process XRun = 101 usec
+JackTimedDriver::Process XRun = 1408 usec
+JackEngine::XRun: client = JerzyMultiFXNext was not finished, state = Running
+JackAudioDriver::ProcessGraphAsyncMaster: Process error
+
+Traceback (most recent call last):
+  File "/workspace/work/JerzyMemoryDelay/multifx-next/tests/jack_integration.py", line 45, in <module>
+    stats=json.loads(command('STATS')[3:]);assert stats['blocks']>500 and stats['slot_calls'][0]>0,stats
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'bad_samples': 0, 'blocks': 2846, 'deadline_misses': 0, 'latency_frames': 0, 'max_ns': 323229, 'midi_overflows': 1, 'oversize_blocks': 0, 'owned_bytes_estimate': 174588, 'pending': False, 'rss_bytes': 5177344, 'slot_calls': [0, 1694, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 'slot_ids': [1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 'slot_max_ns': [0, 279685, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 'slot_total_ns': [0, 4450999, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 'total_ns': 32106263, 'xruns': 8}
+
+
+92% tests passed, 1 tests failed out of 12
+
+Total Test time (real) =  11.43 sec
+
+The following tests FAILED:
+	 12 - NextJACK (Failed)
+Errors while running CTest

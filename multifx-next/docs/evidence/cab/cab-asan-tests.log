@@ -1,0 +1,27 @@
+Test project /workspace/work/next-asan
+      Start  1: NextConvolver
+ 1/11 Test  #1: NextConvolver ....................   Passed    3.42 sec
+      Start  2: NextCabCompatibility
+ 2/11 Test  #2: NextCabCompatibility .............   Passed    2.89 sec
+      Start 10: NextPlugins
+ 3/11 Test #10: NextPlugins ......................   Passed    0.04 sec
+      Start  3: NextEngine
+ 4/11 Test  #3: NextEngine .......................   Passed    0.19 sec
+      Start  4: NextSession
+ 5/11 Test  #4: NextSession ......................   Passed    0.04 sec
+      Start  5: NextPackages
+ 6/11 Test  #5: NextPackages .....................   Passed    2.44 sec
+      Start  6: NextLegacy
+ 7/11 Test  #6: NextLegacy .......................   Passed    0.01 sec
+      Start  7: NextResources
+ 8/11 Test  #7: NextResources ....................   Passed    0.04 sec
+      Start  8: NextReviewRegressions
+ 9/11 Test  #8: NextReviewRegressions ............   Passed    0.02 sec
+      Start  9: NextOverload
+10/11 Test  #9: NextOverload .....................   Passed    0.02 sec
+      Start 11: NextJACK
+11/11 Test #11: NextJACK .........................   Passed    5.28 sec
+
+100% tests passed out of 11
+
+Total Test time (real) =  14.40 sec
