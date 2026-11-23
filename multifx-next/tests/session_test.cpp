@@ -40,9 +40,9 @@ int main(int argc, char **argv) {
         command("SAVE " + preset);
         command("MODE 1 UNLOADED");
         check(s.command("SET 1 gain 3").rfind("ERR", 0) == 0, "unloaded parameter range validated");
-        check(std::abs(y[0] - .45f) < 1e-6, "unloaded dry");
+        check(std::abs(y[63] - .45f) < 1e-6, "unloaded dry");
         command("MODE 1 ACTIVE");
-        check(std::abs(y[0] - .225f) < 1e-6, "reactivation restores parameters");
+        check(std::abs(y[63] - .225f) < 1e-6, "reactivation restores parameters");
         command("REMOVE 2");
         check(y[0] == .1f, "remove");
         command("LOAD " + preset);

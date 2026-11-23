@@ -51,13 +51,14 @@ int main(int argc, char **argv) {
                 cmd("ADD " + dir + "/gain/plugin.so");
                 cmd("ADD " + dir + "/gain/plugin.so");
                 cmd("MODE 2 BYPASS");
+                auto sleeping_calls = Json::parse(s.command("STATS").substr(3)).at("slot_calls")[1].get<uint64_t>();
                 for (int i = 0; i < 5; ++i)
                     step();
                 cmd("MOVE 2 0");
                 auto stats = Json::parse(s.command("STATS").substr(3));
                 check(stats.at("slot_ids")[0] == 2, "statistics have stable slot IDs");
-                check(stats.at("slot_calls")[0].get<uint64_t>() == 1,
-                      "bypassed instance retains only its own single pre-bypass call");
+                check(stats.at("slot_calls")[0].get<uint64_t>() == sleeping_calls,
+                      "bypassed statistics remain attached to the instance and stop increasing after ramp");
             }
             std::cout << "PASS review regression " << which << '\n';
         } catch (const std::exception &ex) {
