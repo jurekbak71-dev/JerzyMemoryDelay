@@ -112,8 +112,16 @@ GraphSpec Session::graph(const Config &c) const {
   GraphSpec g;
   g.edges.clear();
   g.bpm = c.bpm;
-  for (const auto &e : c.slots)
-    g.slots.push_back(e.slot);
+  g.master = c.master;
+  g.master_update = c.master_update;
+  g.bpm_update = c.bpm_update;
+  g.bindings = c.bindings;
+  for (const auto &e : c.slots) {
+    auto slot = e.slot;
+    slot.parameter_ranges = e.ranges;
+    slot.parameter_keys = e.keys;
+    g.slots.push_back(std::move(slot));
+  }
   g.midi_routes = c.routes;
   if (!c.automatic) {
     g.edges = c.edges;
@@ -139,10 +147,34 @@ void Session::apply(Config c) {
     throw std::runtime_error("busy: await audio acknowledgement");
   config_ = std::move(c);
 }
+Session::Config Session::observed_config() const {
+  Config c = config_;
+  if (engine_.busy())
+    return c;
+  auto observed = engine_.observation();
+  c.master = observed.master;
+  c.bpm = observed.bpm;
+  for (auto &entry : c.slots)
+    for (size_t i = 0; i < observed.ids.size(); i++)
+      if (observed.ids[i] == entry.slot.id &&
+          observed.counts[i] == entry.slot.parameters.size())
+        for (size_t k = 0; k < entry.slot.parameters.size(); k++)
+          entry.slot.parameters[k] = observed.parameters[i][k];
+  return c;
+}
 Json Session::encode(const Config &c) const {
   Json j = {{"schema_version", 1},          {"bpm", c.bpm},
             {"automatic", c.automatic},     {"slots", Json::array()},
             {"audio_edges", Json::array()}, {"midi_routes", Json::array()}};
+  j["master"] = c.master;
+  j["midi_bindings"] = Json::array();
+  for (const auto &binding : c.bindings)
+    j["midi_bindings"].push_back({{"channel", binding.channel},
+                                  {"cc", binding.cc},
+                                  {"target", binding.target},
+                                  {"param", binding.parameter},
+                                  {"min", binding.minimum},
+                                  {"max", binding.maximum}});
   for (const auto &e : c.slots) {
     Json params = Json::object();
     Json ranges = Json::object();
@@ -169,6 +201,7 @@ Json Session::encode(const Config &c) const {
                           {"latency", e.slot.latency},
                           {"midi", e.slot.midi},
                           {"parameters", params},
+                          {"parameter_keys", e.keys},
                           {"ranges", ranges}});
   }
   for (const auto &e : c.edges)
@@ -184,6 +217,29 @@ void Session::restore(const Json &j) {
     throw std::runtime_error("invalid session schema");
   Config c;
   c.bpm = j.at("bpm");
+  c.master = j.value("master", 1.f);
+  if (j.contains("midi_bindings")) {
+    if (!j["midi_bindings"].is_array() || j["midi_bindings"].size() > 128)
+      throw std::runtime_error("invalid MIDI bindings");
+    for (const auto &binding : j["midi_bindings"]) {
+      for (const char *key : {"channel", "cc", "target", "param"}) {
+        const auto &value = binding.at(key);
+        if (!value.is_number_integer() ||
+            (value.is_number_unsigned() && value.get<uint64_t>() > 1000000000))
+          throw std::runtime_error("binding IDs must be integer");
+        auto number = value.get<int64_t>();
+        if ((std::string(key) == "channel" && (number < 1 || number > 16)) ||
+            (std::string(key) == "cc" && (number < 0 || number > 127)) ||
+            (std::string(key) == "param" && (number < 0 || number > 47)) ||
+            (std::string(key) == "target" &&
+             (number < -1 || number > 1000000000)))
+          throw std::runtime_error("invalid binding integer range");
+      }
+      c.bindings.push_back({binding.at("channel"), binding.at("cc"),
+                            binding.at("target"), binding.at("param"),
+                            binding.at("min"), binding.at("max")});
+    }
+  }
   c.automatic = j.at("automatic");
   int next_id = next_id_;
   for (const auto &item : j.at("slots")) {
@@ -208,16 +264,36 @@ void Session::restore(const Json &j) {
       if (!item.at("parameters").is_object() ||
           item.at("parameters").size() > 48)
         throw std::runtime_error("invalid unloaded parameter metadata");
-      for (auto it = item.at("parameters").begin();
-           it != item.at("parameters").end(); ++it) {
-        float value = it.value();
-        auto range = item.at("ranges").at(it.key()).get<std::array<float, 2>>();
+      const auto &parameters = item.at("parameters");
+      if (!item.at("ranges").is_object() ||
+          item.at("ranges").size() != parameters.size())
+        throw std::runtime_error("invalid unloaded ranges");
+      std::vector<std::string> ordered;
+      if (item.contains("parameter_keys")) {
+        if (!item.at("parameter_keys").is_array() ||
+            item.at("parameter_keys").size() != parameters.size())
+          throw std::runtime_error("invalid ordered parameter keys");
+        ordered = item.at("parameter_keys").get<std::vector<std::string>>();
+      } else {
+        for (const auto &binding : c.bindings)
+          if (binding.target == id)
+            throw std::runtime_error(
+                "unloaded MIDI preset requires ordered parameter_keys");
+        for (auto it = parameters.begin(); it != parameters.end(); ++it)
+          ordered.push_back(it.key());
+      }
+      for (const auto &key : ordered) {
+        if (!parameters.contains(key) ||
+            std::find(e.keys.begin(), e.keys.end(), key) != e.keys.end())
+          throw std::runtime_error("invalid parameter key mapping");
+        float value = parameters.at(key);
+        auto range = item.at("ranges").at(key).get<std::array<float, 2>>();
         if (!std::isfinite(value) || !std::isfinite(range[0]) ||
             !std::isfinite(range[1]) || range[0] > range[1] ||
             value < range[0] || value > range[1])
           throw std::runtime_error("invalid unloaded parameter range");
+        e.keys.push_back(key);
         e.ranges.push_back(range);
-        e.keys.push_back(it.key());
         e.slot.parameters.push_back(value);
       }
     } else {
@@ -252,6 +328,8 @@ void Session::restore(const Json &j) {
 std::string Session::command(const std::string &line) {
   try {
     collect();
+    if (!engine_.busy())
+      config_ = observed_config();
     std::istringstream ss(line);
     std::string op, extra;
     ss >> op;
@@ -275,6 +353,9 @@ std::string Session::command(const std::string &line) {
                 {"slot_calls", d.slot_calls},
                 {"slot_total_ns", d.slot_total_ns},
                 {"slot_max_ns", d.slot_max_ns}};
+      j["dsp_histogram"] = d.callback_histogram;
+      j["dsp_histogram_width_ns"] = 1000;
+      j["dsp_histogram_overflow_bin"] = 4095;
       std::ifstream stat("/proc/self/statm");
       uint64_t total = 0, resident = 0;
       if (stat >> total >> resident)
@@ -296,6 +377,9 @@ std::string Session::command(const std::string &line) {
       return "OK";
     }
     Config c = config_;
+    c.master_update = c.bpm_update = false;
+    for (auto &entry : c.slots)
+      entry.slot.parameter_updates = 0;
     auto entry = [&](int id) -> Entry & {
       for (auto &e : c.slots)
         if (e.slot.id == id)
@@ -303,7 +387,14 @@ std::string Session::command(const std::string &line) {
       throw std::runtime_error("unknown slot");
     };
     std::string result = "OK";
-    if (op == "ADD") {
+    if (op == "MASTER") {
+      float value;
+      if (!(ss >> value) || (ss >> extra) || !std::isfinite(value) ||
+          value < 0 || value > 1.4f)
+        throw std::runtime_error("MASTER gain 0..1.4");
+      c.master = value;
+      c.master_update = true;
+    } else if (op == "ADD") {
       std::string path, asset;
       if (!(ss >> std::quoted(path)))
         throw std::runtime_error("ADD path [asset]");
@@ -321,7 +412,12 @@ std::string Session::command(const std::string &line) {
     } else if (op == "CLEAR") {
       if (ss >> extra)
         throw std::runtime_error("extra arguments");
-      c = Config{};
+      c.slots.clear();
+      c.edges.clear();
+      c.routes.clear();
+      c.automatic = true;
+      std::erase_if(c.bindings,
+                    [](const auto &binding) { return binding.target > 0; });
     } else if (op == "REMOVE") {
       int id;
       if (!(ss >> id) || (ss >> extra))
@@ -331,6 +427,8 @@ std::string Session::command(const std::string &line) {
       std::erase_if(c.edges,
                     [&](const auto &e) { return e.from == id || e.to == id; });
       std::erase_if(c.routes, [&](const auto &r) { return r.to == id; });
+      std::erase_if(c.bindings,
+                    [&](const auto &binding) { return binding.target == id; });
     } else if (op == "MOVE") {
       int id, pos;
       if (!(ss >> id >> pos) || (ss >> extra) || pos < 0 ||
@@ -363,7 +461,8 @@ std::string Session::command(const std::string &line) {
         if (m == Mode::Unloaded)
           e.slot.instance.reset();
         else if (e.slot.mode == Mode::Unloaded ||
-                 (e.slot.mode == Mode::Bypass && m == Mode::Active)) {
+                 (e.slot.mode == Mode::Bypass && m == Mode::Active &&
+                  e.slot.midi)) {
           auto fresh = open(id, e.path, e.asset);
           if (fresh.id != e.id || fresh.version != e.version ||
               fresh.keys.size() != e.keys.size())
@@ -375,6 +474,17 @@ std::string Session::command(const std::string &line) {
             fresh.slot.parameters[i] =
                 e.slot.parameters[size_t(it - e.keys.begin())];
           }
+          for (auto &binding : c.bindings)
+            if (binding.target == id) {
+              if (binding.parameter >= e.keys.size())
+                throw std::runtime_error("invalid reactivation binding");
+              auto position = std::find(fresh.keys.begin(), fresh.keys.end(),
+                                        e.keys[binding.parameter]);
+              if (position == fresh.keys.end())
+                throw std::runtime_error("reactivation binding key missing");
+              binding.parameter = uint32_t(position - fresh.keys.begin());
+            }
+          fresh.slot.parameter_updates = 0;
           e = std::move(fresh);
         }
         e.slot.mode = m;
@@ -393,7 +503,9 @@ std::string Session::command(const std::string &line) {
       if (value < e.ranges[i][0] || value > e.ranges[i][1])
         throw std::runtime_error("parameter out of range");
       e.slot.parameters[i] = value;
+      e.slot.parameter_updates |= uint64_t(1) << i;
     } else if (op == "BPM") {
+      c.bpm_update = true;
       if (!(ss >> c.bpm) || (ss >> extra))
         throw std::runtime_error("BPM value");
     } else if (op == "AUTO") {

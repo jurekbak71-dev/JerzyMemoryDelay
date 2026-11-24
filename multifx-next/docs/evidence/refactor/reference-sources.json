@@ -1,0 +1,17 @@
+{
+  "jack-callback.html": {
+    "url": "https://jackaudio.org/api/group__ClientCallbacks.html",
+    "sha256": "2a93ba83545249d408be775fb2a4b9396ad5456cb0f9bfd22f795fc364a8fc58",
+    "bytes": 40879
+  },
+  "pipedal-latency.md": {
+    "url": "https://raw.githubusercontent.com/rerdavies/pipedal/main/docs/AudioLatency.md",
+    "sha256": "f35d2e0dc394b26a55d28d0581d9bbfa60947d1194931596b17868c4f40461d8",
+    "bytes": 6563
+  },
+  "jerzy-platform-main.cpp": {
+    "url": "https://raw.githubusercontent.com/jurekbak71-dev/JerzyAudioPlatform/main/core/main.cpp",
+    "sha256": "181f12c6e7cfa8e69589e0aac182b442271831dc4b18d49d57d3cd8c937f40cb",
+    "bytes": 26818
+  }
+}

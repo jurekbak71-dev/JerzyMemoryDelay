@@ -1,5 +1,6 @@
 #pragma once
 #include "engine.hpp"
+#include "rt_metrics.hpp"
 #include "session.hpp"
 #include <array>
 #include <atomic>
@@ -14,6 +15,7 @@ class JackBackend {
   uint32_t rate_ = 0, max_frames_ = 0;
   bool activated_ = false;
   std::atomic<uint64_t> xruns_{0};
+  TimeHistogram callback_time_;
   std::atomic<bool> lost_{false}, reconfigure_{false};
   static int audio(jack_nframes_t, void *) noexcept;
   static int xrun(void *) noexcept;
@@ -27,7 +29,13 @@ public:
   ~JackBackend();
   JackBackend(const JackBackend &) = delete;
   JackBackend &operator=(const JackBackend &) = delete;
-  void describe(Json &j) const { j["backend"] = "JACK2"; }
+  void describe(Json &j) const {
+    j["backend"] = "JACK2";
+    j["callback_histogram"] = callback_time_.snapshot();
+    j["callback_histogram_width_ns"] = 1000;
+    j["callback_histogram_overflow_bin"] = 4095;
+    j["timing_scope"] = "jack_process_callback";
+  }
   void start();
   void stop() noexcept;
   void update_latency();

@@ -1,0 +1,25 @@
+{
+  "load_prepare_and_8_blocks_ns": 2262043,
+  "modes": {
+    "ACTIVE": {
+      "blocks": 10000,
+      "owned_bytes_estimate": 1058552,
+      "process_cpu_ns_per_block": 34562.0,
+      "slot_calls": 10000
+    },
+    "BYPASS": {
+      "blocks": 10000,
+      "owned_bytes_estimate": 1058552,
+      "process_cpu_ns_per_block": 895.0,
+      "slot_calls": 0
+    },
+    "UNLOADED": {
+      "blocks": 10000,
+      "owned_bytes_estimate": 4584,
+      "process_cpu_ns_per_block": 862.5,
+      "slot_calls": 0
+    }
+  },
+  "reload_prepare_and_8_blocks_ns": 1353885,
+  "scope": "offline x86 actual DSP; process CPU time; no audio driver"
+}

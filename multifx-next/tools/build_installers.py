@@ -12,7 +12,11 @@ def main():
     files['source/multifx-next/'+str(f.relative_to(root))]=f.read_bytes()
  for name in ['CMakeLists.txt','README.md']:
   files['source/multifx-next/'+name]=(root/name).read_bytes()
- for name in ['multifx2/api.h','multifx2/modules/tremolo.cpp','multifx4/ir_cab.h']:
+ for folder in ['modules','manifests','examples','vendor']:
+  for f in sorted((repo/'multifx2'/folder).rglob('*')):
+   if f.is_file() and '__pycache__' not in f.parts:
+    files['source/'+str(f.relative_to(repo))]=f.read_bytes()
+ for name in ['multifx2/api.h','multifx4/ir_cab.h','source/dsp.h','source/parameters.h']:
   files['source/'+name]=(repo/name).read_bytes()
  source_id=hashlib.sha256(b''.join(k.encode()+hashlib.sha256(v).digest() for k,v in sorted(files.items()))+(root/'installer/install.py').read_bytes()+(root/'installer/README-PL.txt').read_bytes()).hexdigest()[:16]
  args.output.mkdir(parents=True,exist_ok=True)

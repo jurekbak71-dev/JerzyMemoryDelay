@@ -1,10 +1,12 @@
-# Jerzy MultiFX Next — pierwszy prototyp
+# Jerzy MultiFX Next — eksperymentalny silnik RT
 
-Rzeczywisty host C++20 z backendem JACK2, stereofonicznym wejściem/wyjściem,
-blokowym DSP i niezależnymi wtyczkami FX oraz instrumentami MIDI. Wszystkie nowe
-pliki znajdują się w `multifx-next/`; historyczne wersje pozostają niezmienione.
+Rzeczywisty host C++20 z backendami JACK2 i bezpośrednim ALSA, stereofonicznym wejściem/wyjściem,
+blokowym DSP i niezależnymi wtyczkami FX oraz instrumentami MIDI. Kod silnika znajduje się w `multifx-next/`; root CMake dodaje opcjonalny target,
+a historyczne silniki pozostają zachowane.
 
-Stan weryfikacji i ograniczenia: [TESTING.md](docs/TESTING.md).
+Bieżący audyt: [REFACTOR_AUDIT.md](docs/REFACTOR_AUDIT.md).
+Raport bieżących testów: [REFACTOR_REPORT.md](docs/REFACTOR_REPORT.md).
+Historyczne wyniki prototypu: [TESTING.md](docs/TESTING.md).
 Projekt nie jest jeszcze zweryfikowany scenicznie na Raspberry Pi 4 / HeadRush Core.
 Testy dummy JACK na x86_64 nie są pomiarem latencji sprzętowej.
 
@@ -15,7 +17,9 @@ Testy dummy JACK na x86_64 nie są pomiarem latencji sprzętowej.
 - Szeregowe i równoległe tory, miks wielu źródeł i mapowanie kanałów; wyrównanie latencji.
 - Jedna oczekująca zmiana planu, przejęcie na granicy bloku i zwolnienie starego przez kontroler.
 - ACTIVE: DSP; BYPASS: dry z wyrównaniem / cisza instrumentu; UNLOADED: brak instancji DSP.
-- Powrót z BYPASS tworzy świeżą instancję z zapisanymi parametrami, bez starych nut/ogonów.
+- Rampy64 i odroczony unload; BYPASS FX zachowuje instancję, instrument MIDI odtwarza ją.
+- Opcjonalne ograniczone ogony: [STATE_TRANSITIONS.md](docs/STATE_TRANSITIONS.md).
+- Mapowania MIDI CC/master/BPM i spójny zapis: [MIDI_STATE.md](docs/MIDI_STATE.md).
 - MIDI Note On/Off, CC7, All Sound Off/All Notes Off i Program Change we wtyczce instrumentu;
   routowanie według maski kanałów. Utrata MIDI wywołuje panic, także przy utracie w JACK mixdown.
 - Tempo/transport JACK; BPM sesji jako fallback bez poprawnego JACK BBT.
@@ -31,17 +35,24 @@ Wtyczki demonstracyjne naprawdę przetwarzają/generują audio:
 | `gain` | stereo `output = input * gain + offset`; parametry gain [0,2], offset [-1,1] |
 | `synth` | 16 kanałów MIDI, jeden głos na kanał, wavetable sine / triangle przez Program Change, poziom [0,1] |
 | `cab` | rzeczywista konwolucja partycjonowana IR WAV; 64 próbki opóźnienia, wewnętrznie wyrównany dry/wet |
+| `generator` | niezależny generator110Hz bez wejścia i MIDI |
+| `cab_dual` | dwa IR, blend/mix, level ±18dB, low/high-cut; [DUAL_CAB.md](docs/DUAL_CAB.md) |
 | `legacy` | adapter FX ABI v2; `p0`…`p47` to stare parametry znormalizowane, asset to stare `.so` |
 
 CAB 1.1.0 używa PFFFT real FFT (SSE na x86_64, NEON na ARM64), z przygotowanymi
 poza audio buforami wyrównanymi do 64 bajtów. WAV i resampling zachowują zachowanie
 `multifx4/ir_cab.h`; historycznego pliku nie zmieniono. Nie zawiera starych filtrów
-low/high-cut ani podwójnego CAB w jednym module. Dwa CAB można zestawić w grafie.
+low/high-cut ani podwójnego CAB w jednym module. Pełny gitarowy CAB realizuje
+teraz osobny `cab_dual`; migracja v0.4 używa właśnie tego modułu.
 Porównania próbek, CPU/RAM i ograniczenia: [CAB_OPTIMIZATION.md](docs/CAB_OPTIMIZATION.md).
 
 Wersja 1.0.0 pozostaje osobną wersją paczki. Presety przypięte do 1.0.0 nie są po cichu
 przekierowywane na 1.1.0; zachowaj starą paczkę albo świadomie utwórz nowy preset
 z nową wersją i tymi samymi parametrami. Nie nadpisujemy zapisanych presetów.
+
+Instalacja testowa z Windows: [TEST_INSTALLATION.md](docs/TEST_INSTALLATION.md).
+Migracja presetów: [MIGRATION_V04.md](docs/MIGRATION_V04.md).
+Benchmark Pi: [BENCHMARK_RPI.md](docs/BENCHMARK_RPI.md).
 
 ## Kompilacja Linux / natywna ARM64
 

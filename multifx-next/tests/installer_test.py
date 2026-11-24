@@ -8,6 +8,12 @@ with tempfile.TemporaryDirectory() as tmp:
  for kind in ['jack2','alsa']:
   archive=d/f'jerzy-multifx-next-{kind}-source.tar.gz'
   assert archive.is_file(),kind
+  with tarfile.open(archive) as t:
+   names=set(t.getnames())
+   assert any(n.endswith('/source/source/dsp.h') for n in names), 'memory delay DSP missing'
+   assert any(n.endswith('/source/source/parameters.h') for n in names), 'memory delay parameters missing'
+   assert any(n.endswith('/multifx2/modules/reel_echo.cpp') for n in names), 'complete legacy source catalog missing'
+   assert any(n.endswith('/multifx2/vendor/reel/TapeEngine.cpp') for n in names), 'legacy dependency missing'
   out=d/kind;out.mkdir()
   with tarfile.open(archive) as t:t.extractall(out,filter='data')
   bundle=next(out.iterdir())
@@ -20,3 +26,5 @@ with tempfile.TemporaryDirectory() as tmp:
   assert r.returncode!=0 and 'checksum' in r.stderr.lower(),r.stderr
   assert not (d/'installed').exists()
 print('two standalone source archives, help, integrity gate: PASS')
+
+subprocess.run([sys.executable,root/"tests/deploy_integrity_test.py"],check=True)

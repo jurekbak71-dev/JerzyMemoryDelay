@@ -1,7 +1,7 @@
 JERZY MULTIFX NEXT — DWIE WERSJE DO TESTOW
 
 To instalator ze zrodel: kompiluje na Twoim Pi, wiec nie wymaga odgadywania
-wersji Raspberry Pi OS. Zawiera host, cztery pluginy i ich zrodla/licencje.
+wersji Raspberry Pi OS. Zawiera host, sześć pluginów JFX3 i 13 modułów ABI2 i ich zrodla/licencje.
 Nie jest obrazem karty SD, usluga ani aplikacja z GUI.
 Wymagania: Linux ARM64 (Pi OS 64-bit), Python >=3.10, CMake >=3.25,
 kompilator C++20, make i pkg-config. Dodatkowo naglowki libjack-jackd2-dev

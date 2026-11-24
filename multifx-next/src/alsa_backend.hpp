@@ -1,6 +1,7 @@
 #pragma once
 #include "engine.hpp"
 #include "midi_queue.hpp"
+#include "rt_metrics.hpp"
 #include "session.hpp"
 #include <alsa/asoundlib.h>
 #include <atomic>
@@ -17,6 +18,7 @@ struct AlsaSettings {
 };
 class AlsaBackend {
   AlsaSettings settings_;
+  TimeHistogram work_time_;
   snd_pcm_t *capture_{}, *playback_{};
   snd_seq_t *seq_{};
   snd_pcm_format_t in_format_{}, out_format_{};

@@ -1,6 +1,14 @@
 """Called after verified payload extraction; no root or network changes."""
 import hashlib,json,os,pathlib,platform,shutil,subprocess,sys,uuid
 
+def installation_complete(target,meta):
+    try:
+        if json.loads((target/'variant.json').read_text())!=meta:return False
+        host=target/'bin'/('JerzyMultiFXNext' if meta['backend']=='jack2' else 'JerzyMultiFXNextALSA')
+        if not all(f.is_file() and os.access(f,os.X_OK) for f in [host,target/'start.sh']):return False
+        return all((target/'plugins'/name/file).is_file() for name in ['gain','synth','generator','cab','cab_dual','legacy'] for file in ['plugin.so','manifest.json']) and all((target/'legacy-catalog'/(module+suffix)).is_file() for module in ['compressor','overdrive','tremolo','memory_delay','small_clone','big_muff','attack_decay','tape_drive','mx_analog_delay','atomic_cluster','reel_echo','oil_drum_echo','lofi_crush'] for suffix in ['.so','.json']) and all((target/'plugins'/plugin/'assets/licenses'/name).is_file() for plugin in ['cab','cab_dual'] for name in ['PFFFT.txt','PFFFT-NOTICES.txt'])
+    except (OSError,ValueError):return False
+
 def deploy(bundle,home=None):
     bundle=pathlib.Path(bundle);home=pathlib.Path(home or pathlib.Path.home())
     meta=json.loads((bundle/'variant.json').read_text())
@@ -14,12 +22,7 @@ def deploy(bundle,home=None):
     prefix=home/'.local/opt/jerzy-multifx-next'
     target=prefix/(meta['backend']+'-'+meta['source_id'])
     host=target/'bin'/('JerzyMultiFXNext' if meta['backend']=='jack2' else 'JerzyMultiFXNextALSA')
-    def complete():
-        try:
-            if json.loads((target/'variant.json').read_text())!=meta:return False
-            if not all(f.is_file() and os.access(f,os.X_OK) for f in [host,target/'start.sh']):return False
-            return all((target/'plugins'/name/file).is_file() for name in ['gain','synth','cab','legacy'] for file in ['plugin.so','manifest.json']) and all((target/'plugins/cab/assets/licenses'/name).is_file() for name in ['PFFFT.txt','PFFFT-NOTICES.txt'])
-        except (OSError,ValueError):return False
+    def complete():return installation_complete(target,meta)
     if target.exists() and not complete():
         target.rename(target.with_name(target.name+'.incomplete-'+uuid.uuid4().hex[:8]))
     if not target.exists():

@@ -36,6 +36,7 @@ def main():
             (stage/'bin').mkdir()
             shutil.copy2(build/host,stage/'bin'/host)
             shutil.copytree(build/'plugins',stage/'plugins')
+            shutil.copytree(build/'legacy-catalog',stage/'legacy-catalog')
             shutil.copytree(root/'source/multifx-next/tools',stage/'tools')
             shutil.copy2(root/'README-PL.txt',stage/'README-PL.txt')
             shutil.copy2(root/'variant.json',stage/'variant.json')

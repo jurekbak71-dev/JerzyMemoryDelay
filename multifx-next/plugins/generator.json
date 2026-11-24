@@ -1,0 +1,1 @@
+{"format_version":1,"plugin_id":"generator","plugin_version":"1.0.0","abi_major":3,"abi_minor":0,"library":"plugin.so","ports":{"inputs":0,"outputs":2,"midi_input":false},"parameters":[{"key":"frequency","min":20,"max":2000,"default":110},{"key":"gain","min":0,"max":0.25,"default":0.05}],"latency_frames":0,"assets":[]}

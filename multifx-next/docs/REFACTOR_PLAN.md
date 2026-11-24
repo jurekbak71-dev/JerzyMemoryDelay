@@ -9,13 +9,13 @@ controller. Add state ramps/retirement, complete dual CAB, explicit preset/CC mi
 benchmarks and CI. Preserve ABI2 binary layout and old sources.
 
 - [x] Audit actual v0.4, source Git, Notion context, baseline4/4.
-- [ ] Import existing Next implementation with source attribution; fresh baseline tests.
-- [ ] Bound and test click-reduced transitions/retirement; no DSP after bypass, delayed unload.
-- [ ] Complete dual CAB A/B, cached filters, mix/level, bypass work skipping, numeric tests.
-- [ ] Migrate guitar presets and all13 ABI2 modules; preserve params/master/tempo/CC without synth.
-- [ ] Add generator/error plugins and graph/CAB/param/start-stop stress; sanitizer runs.
-- [ ] Benchmark modes/FFT; p95/p99 callback, RSS/PSS, XRUN and physical-loopback tool/scripts.
-- [ ] Optional root build integration and GitHub Actions x64/ARM64 without deployment.
+- [x] Import existing Next implementation with source attribution; fresh baseline tests.
+- [x] Bound and test click-reduced transitions/retirement; no DSP after bypass, delayed unload.
+- [x] Complete dual CAB A/B, cached filters, mix/level, bypass work skipping, numeric tests.
+- [x] Migrate guitar presets and all13 ABI2 modules; preserve params/master/tempo/CC without synth.
+- [x] Add generator/error plugins and graph/CAB/param/start-stop stress; sanitizer runs.
+- [x] Benchmark modes/FFT; p95/p99 callback, RSS/PSS, XRUN and physical-loopback tool/scripts.
+- [x] Optional root build integration and GitHub Actions x64/ARM64 without deployment.
 - [ ] Final review, logical commits, push only new branch and Draft PR to source branch.
 
 Review focus: old-plan lifetime during ramp, directACTIVE->UNLOADED retention, MIDI stuck

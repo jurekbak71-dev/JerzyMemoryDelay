@@ -10,6 +10,8 @@ with tempfile.TemporaryDirectory(dir='/workspace/work') as tmp:
  marker=next(s for s in r.stdout.splitlines() if s.startswith('JFX_INSTALL_OK '))
  target=pathlib.Path(marker.split(' ',1)[1]);assert target.is_relative_to(home),target
  meta=json.loads((target/'variant.json').read_text())
+ assert len(list((target/'legacy-catalog').glob('*.so')))==13, 'legacy module catalog not installed'
+ assert (target/'plugins/cab_dual/plugin.so').is_file(), 'dual CAB missing'
  subprocess.run(['desktop-file-validate',home/'.local/share/applications'/('jerzy-multifx-next-'+meta['backend']+'.desktop')],check=True)
  assert (home/'.local/share/jerzy-multifx-next/installers'/target.name/'click_app.py').exists()
  subprocess.run([target/'start.sh','--help'],check=True,capture_output=True)

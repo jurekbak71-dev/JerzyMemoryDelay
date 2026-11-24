@@ -1,3 +1,4 @@
+#include "audio_audit.hpp"
 #include "engine.hpp"
 #include <cmath>
 #include <iostream>
@@ -9,6 +10,7 @@ void check(bool v, const char *why) {
 }
 int main(int argc, char **argv) {
   try {
+    AudioAudit audit;
     check(argc == 2, "plugins");
     Engine e(44100, 64);
     GraphSpec g;
@@ -25,24 +27,24 @@ int main(int argc, char **argv) {
       x = 1;
     BlockView b{64, {in, in}, {out, right}, nullptr, 0, {120, 0, 1, 1}, false};
     check(e.publish(g), "publish");
-    e.process(b);
+    audited_audio([&] { e.process(b); });
     check(e.collect(), "initial ack");
     check(out[0] == 0, "gain processes");
     g.slots[0].mode = Mode::Bypass;
     check(e.publish(g), "bypass publish");
-    e.process(b);
+    audited_audio([&] { e.process(b); });
     check(e.collect(), "bypass ack");
     check(out[0] < .05f && out[63] > .95f,
           "bypass must ramp instead of instantaneous switch");
     for (unsigned i = 1; i < 64; i++)
       check(std::abs(out[i] - out[i - 1]) < .02f, "bounded mode ramp step");
     auto calls = e.diagnostics().slot_calls[0];
-    e.process(b);
+    audited_audio([&] { e.process(b); });
     check(e.diagnostics().slot_calls[0] == calls,
           "bypass DSP stopped after ramp");
     g.slots[0].mode = Mode::Active;
     check(e.publish(g), "activate");
-    e.process(b);
+    audited_audio([&] { e.process(b); });
     e.collect();
     check(out[0] > .95f && out[63] < .05f, "activate ramp");
     std::weak_ptr<Instance> old = g.slots[0].instance;
@@ -50,14 +52,14 @@ int main(int argc, char **argv) {
     g.slots[0].instance.reset();
     check(e.publish(g), "unload");
     b.frames = 16;
-    e.process(b);
+    audited_audio([&] { e.process(b); });
     check(!e.collect() && !old.expired(),
           "unload retains old DSP through ramp");
     for (int k = 0; k < 3; k++)
-      e.process(b);
+      audited_audio([&] { e.process(b); });
     check(e.collect() && old.expired(),
           "controller retires DSP after last ramp use");
-    e.process(b);
+    audited_audio([&] { e.process(b); });
     check(out[0] == 1, "unloaded passthrough");
     GraphSpec instrument;
     SlotSpec voice;
@@ -78,17 +80,18 @@ int main(int argc, char **argv) {
     b.frames = 64;
     b.events = &note;
     b.event_count = 1;
-    e.process(b);
+    audited_audio([&] { e.process(b); });
     e.collect();
     b.events = nullptr;
     b.event_count = 0;
     instrument.slots[0].mode = Mode::Bypass;
     check(e.publish(instrument), "mute instrument");
-    e.process(b);
+    audited_audio([&] { e.process(b); });
     e.collect();
     check(std::abs(out[0]) > .01f && std::abs(out[63]) < .001f,
           "instrument fades before panic, rather than cutting notes at block "
           "start");
+    audit.clean();
     std::cout << "PASS mode ramps, zero post-bypass calls, deferred unload "
                  "over small blocks\n";
   } catch (const std::exception &e) {

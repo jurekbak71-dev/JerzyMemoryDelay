@@ -172,3 +172,9 @@ if(JERZY_BUILD_MULTIFX4)
     add_test(NAME MultiFX4DualSynthIR COMMAND MultiFX4DSPTests)
   endif()
 endif()
+
+# Isolated replacement engine. Historical hosts/ABI2 remain available unchanged.
+option(JERZY_BUILD_MULTIFX_RT "Build block JFX3 RT engine without BassAmbient" OFF)
+if(JERZY_BUILD_MULTIFX_RT)
+  add_subdirectory(multifx-next)
+endif()

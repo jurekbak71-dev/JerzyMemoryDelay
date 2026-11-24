@@ -13,6 +13,7 @@ try:
  s=p.stdout.readline();assert s.startswith('OK '),s
  j=json.loads(s[3:]);assert j['blocks']>0,j
  assert j['backend']=='ALSA' and j['capture_channels']==2,j
+ assert j['timing_scope']=='alsa_decode_dsp_encode' and sum(j['callback_histogram'])>0,j
  p.stdin.write('QUIT\n');p.stdin.flush()
  assert p.wait(timeout=3)==0,p.stderr.read()
 finally:

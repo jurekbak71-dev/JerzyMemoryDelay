@@ -1,0 +1,65 @@
+Test project /workspace/work/rt-tsan
+      Start  1: NextIRFormats
+ 1/30 Test  #1: NextIRFormats ....................   Passed    2.40 sec
+      Start  2: NextLifecycle
+ 2/30 Test  #2: NextLifecycle ....................   Passed   31.80 sec
+      Start  3: NextMetrics
+ 3/30 Test  #3: NextMetrics ......................   Passed    0.01 sec
+      Start  4: NextCCConcurrency
+ 4/30 Test  #4: NextCCConcurrency ................   Passed    4.10 sec
+      Start  5: NextCCBinding
+ 5/30 Test  #5: NextCCBinding ....................   Passed    0.11 sec
+      Start  6: NextPluginExtensions
+ 6/30 Test  #6: NextPluginExtensions .............   Passed    0.06 sec
+      Start  7: NextDualCab
+ 7/30 Test  #7: NextDualCab ......................   Passed   21.03 sec
+      Start  8: NextTail
+ 8/30 Test  #8: NextTail .........................   Passed    0.02 sec
+      Start  9: NextTransitions
+ 9/30 Test  #9: NextTransitions ..................   Passed    0.05 sec
+      Start 10: NextConvolver
+10/30 Test #10: NextConvolver ....................   Passed    9.82 sec
+      Start 11: NextCabCompatibility
+11/30 Test #11: NextCabCompatibility .............   Passed    7.41 sec
+      Start 23: NextPlugins
+12/30 Test #23: NextPlugins ......................   Passed    0.02 sec
+      Start 12: NextEngine
+13/30 Test #12: NextEngine .......................   Passed   10.90 sec
+      Start 13: NextSession
+14/30 Test #13: NextSession ......................   Passed    0.10 sec
+      Start 14: NextBenchmarkTools
+15/30 Test #14: NextBenchmarkTools ...............   Passed    0.76 sec
+      Start 15: NextMigration
+16/30 Test #15: NextMigration ....................   Passed    1.86 sec
+      Start 16: NextClickPackages
+17/30 Test #16: NextClickPackages ................   Passed    3.56 sec
+      Start 17: NextInstallers
+18/30 Test #17: NextInstallers ...................   Passed    1.37 sec
+      Start 18: NextPackages
+19/30 Test #18: NextPackages .....................   Passed    3.43 sec
+      Start 19: NextLegacy
+20/30 Test #19: NextLegacy .......................   Passed    0.01 sec
+      Start 20: NextResources
+21/30 Test #20: NextResources ....................   Passed    0.10 sec
+      Start 21: NextReviewRegressions
+22/30 Test #21: NextReviewRegressions ............   Passed    0.10 sec
+      Start 22: NextOverload
+23/30 Test #22: NextOverload .....................   Passed    0.02 sec
+      Start 24: NextJACK
+24/30 Test #24: NextJACK .........................   Passed    6.38 sec
+      Start 25: NextMidiQueue
+25/30 Test #25: NextMidiQueue ....................   Passed    0.11 sec
+      Start 26: NextPCM
+26/30 Test #26: NextPCM ..........................   Passed    0.01 sec
+      Start 27: NextALSA
+27/30 Test #27: NextALSA .........................   Passed    0.25 sec
+      Start 28: NextALSATempo
+28/30 Test #28: NextALSATempo ....................   Passed    0.18 sec
+      Start 29: NextALSAAudio
+29/30 Test #29: NextALSAAudio ....................   Passed    0.43 sec
+      Start 30: NextLegacyCatalog
+30/30 Test #30: NextLegacyCatalog ................   Passed  102.00 sec
+
+100% tests passed out of 30
+
+Total Test time (real) = 208.39 sec

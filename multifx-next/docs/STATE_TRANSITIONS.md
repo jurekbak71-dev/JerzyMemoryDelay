@@ -9,7 +9,9 @@ zatrzymać/join audio przed destrukcją Engine. Nie ma shared_ptr refcount w cal
 ACTIVE->BYPASS: 64 próbki crossfade wet/dry, później zero wywołań DSP. Instancja
 pozostaje. ACTIVE->UNLOADED: stare DSP jest wypożyczone z poprzedniego planu do
 ostatniej próbki rampy; dopiero collect niszczy plan/instancję poza audio.
-BYPASS->ACTIVE tworzy świeżą instancję z zapisanymi parametrami i rampą dry/wet.
+BYPASS->ACTIVE dla FX ponownie używa przygotowanej instancji z rampą dry/wet.
+Instrument MIDI odtwarza instancję z parametrami, aby także plugin ignorujący
+panic nie przywrócił zatrzymanych nut; może to wymagać czasu ładowania samplera.
 Instrument zamiast dry ma zero; panic trafia na ostatnią używaną próbkę rampy,
 żeby nie wyciąć nut przed fade. Opóźniony dry ring przechodzi przez swap buforów
 na wątku audio bez alokacji; nigdy nie jest czytany/kopiowany przez kontroler.

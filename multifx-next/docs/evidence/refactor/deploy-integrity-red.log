@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/workspace/work/JerzyMemoryDelay/multifx-next/tests/deploy_integrity_test.py", line 26, in <module>
+    p.unlink();assert not m.installation_complete(t,meta),str(p)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: /tmp/tmpjme8ldge/legacy-catalog/tremolo.so

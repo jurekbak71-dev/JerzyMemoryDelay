@@ -138,6 +138,10 @@ AlsaBackend::~AlsaBackend() {
 }
 void AlsaBackend::describe(Json &j) const {
   j["backend"] = "ALSA";
+  j["callback_histogram"] = work_time_.snapshot();
+  j["callback_histogram_width_ns"] = 1000;
+  j["callback_histogram_overflow_bin"] = 4095;
+  j["timing_scope"] = "alsa_decode_dsp_encode";
   j["linked"] = linked_;
   j["device"] = settings_.device;
   j["capture_device"] = settings_.capture_device.empty()
@@ -318,6 +322,7 @@ void AlsaBackend::run() noexcept {
       }
       continue;
     }
+    uint64_t work_start = monotonic_ns();
     unsigned inbytes = snd_pcm_format_physical_width(in_format_) / 8,
              outbytes = snd_pcm_format_physical_width(out_format_) / 8;
     for (unsigned f = 0; f < settings_.period; f++)
@@ -344,7 +349,7 @@ void AlsaBackend::run() noexcept {
                     {out_[0].data(), out_[1].data()},
                     events_.data(),
                     count,
-                    {120, frame, 1, 1},
+                    {120, frame, 1, 0},
                     overflow};
     engine_->process(block);
     frame += settings_.period;
@@ -356,6 +361,7 @@ void AlsaBackend::run() noexcept {
                         (c ? settings_.out_right : settings_.out_left) - 1) *
                            outbytes,
                    out_format_, out_[c][f]);
+    work_time_.record(monotonic_ns() - work_start);
     if (!transfer(playback_, output_.data(), false)) {
       if (stopping_)
         break;
