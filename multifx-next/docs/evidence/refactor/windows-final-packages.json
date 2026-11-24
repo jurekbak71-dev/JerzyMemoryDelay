@@ -1,0 +1,16 @@
+[
+  {
+    "filename": "Jerzy-RPi-jack2-Windows.zip",
+    "sha256": "d9b1c8d1f1cc3c239f51471bcfa4874df5c012274f552bee3a15e9615ee94336",
+    "source_commit": "1cad803858af94bece43e6e1ce3818914682aea6",
+    "source_id": "2953d266adb0ce2a",
+    "source_files_verified_against_commit": 283
+  },
+  {
+    "filename": "Jerzy-RPi-alsa-Windows.zip",
+    "sha256": "c006290300025db6fa9c28df7a798a178285aa1fca8713c3180ac2063cca108d",
+    "source_commit": "1cad803858af94bece43e6e1ce3818914682aea6",
+    "source_id": "2953d266adb0ce2a",
+    "source_files_verified_against_commit": 283
+  }
+]

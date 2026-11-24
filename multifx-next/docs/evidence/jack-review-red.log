@@ -1,0 +1,48 @@
+Test project /workspace/work/next-build
+    Start 8: NextJACK
+1/1 Test #8: NextJACK .........................***Failed    3.37 sec
+Cannot connect to server socket err = No such file or directory
+Cannot connect to server request channel
+jack server is not running or cannot be started
+JackShmReadWritePtr::~JackShmReadWritePtr - Init not done for -1, skipping unlock
+JackShmReadWritePtr::~JackShmReadWritePtr - Init not done for -1, skipping unlock
+MultiFX Next: JACK server unavailable or client name already in use
+jackdmp 1.9.22
+Copyright 2001-2005 Paul Davis and others.
+Copyright 2004-2016 Grame.
+Copyright 2016-2023 Filipe Coelho.
+jackdmp comes with ABSOLUTELY NO WARRANTY
+This is free software, and you are welcome to redistribute it
+under certain conditions; see the file COPYING for details
+JACK server starting in non-realtime mode
+self-connect-mode is "Don't restrict self connect requests"
+Cannot lock down 107341340 byte memory area (Cannot allocate memory)
+Cannot connect to server socket err = No such file or directory
+Cannot connect to server request channel
+jack server is not running or cannot be started
+JackShmReadWritePtr::~JackShmReadWritePtr - Init not done for -1, skipping unlock
+JackShmReadWritePtr::~JackShmReadWritePtr - Init not done for -1, skipping unlock
+MultiFX Next: JACK server unavailable or client name already in use
+Cannot lock down 107341340 byte memory area (Cannot allocate memory)
+JackTimedDriver::Process XRun = 6453 usec
+JackTimedDriver::Process XRun = 5 usec
+JackEngine::XRun: client = JerzyMultiFXNext was not finished, state = Triggered
+JackAudioDriver::ProcessGraphAsyncMaster: Process error
+JackTimedDriver::Process XRun = 13 usec
+JackMidiBuffer::ReserveEvent - the buffer does not have enough room to enqueue a 3 byte event
+JackTimedDriver::Process XRun = 980 usec
+
+Traceback (most recent call last):
+  File "/workspace/work/JerzyMemoryDelay/multifx-next/tests/jack_integration.py", line 38, in <module>
+    a=capture(overflow=True);assert a['tail_variation']<1e-6,a
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'tail_variation': 0.0375839, 'left': 0.0999498, 'right': -0.15005, 'note_energy': 0.0375757, 'finite': True}
+
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =   3.37 sec
+
+The following tests FAILED:
+	  8 - NextJACK (Failed)
+Errors while running CTest

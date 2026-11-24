@@ -1,0 +1,567 @@
+PFFFT binary distribution notices — collected from the pinned, unmodified source files.
+
+
+Copyright (c) 2020  Dario Mambro ( dario.mambro@gmail.com )
+Copyright (c) 2019  Hayati Ayguen ( h_ayguen@web.de )
+Copyright (c) 2013  Julien Pommier ( pommier@modartt.com )
+
+Copyright (c) 2004 the University Corporation for Atmospheric
+Research ("UCAR"). All rights reserved. Developed by NCAR's
+Computational and Information Systems Laboratory, UCAR,
+www.cisl.ucar.edu.
+
+Redistribution and use of the Software in source and binary forms,
+with or without modification, is permitted provided that the
+following conditions are met:
+
+- Neither the names of NCAR's Computational and Information Systems
+Laboratory, the University Corporation for Atmospheric Research,
+nor the names of its sponsors or contributors may be used to
+endorse or promote products derived from this Software without
+specific prior written permission.  
+
+- Redistributions of source code must retain the above copyright
+notices, this list of conditions, and the disclaimer below.
+
+- Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions, and the disclaimer below in the
+documentation and/or other materials provided with the
+distribution.
+
+THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE CONTRIBUTORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE
+SOFTWARE.
+
+
+
+--- include/pffft/pffft.h ---
+/* Copyright (c) 2013  Julien Pommier ( pommier@modartt.com ) 
+
+   Based on original fortran 77 code from FFTPACKv4 from NETLIB,
+   authored by Dr Paul Swarztrauber of NCAR, in 1985.
+
+   As confirmed by the NCAR fftpack software curators, the following
+   FFTPACKv5 license applies to FFTPACKv4 sources. My changes are
+   released under the same terms.
+
+   FFTPACK license:
+
+   http://www.cisl.ucar.edu/css/software/fftpack5/ftpk.html
+
+   Copyright (c) 2004 the University Corporation for Atmospheric
+   Research ("UCAR"). All rights reserved. Developed by NCAR's
+   Computational and Information Systems Laboratory, UCAR,
+   www.cisl.ucar.edu.
+
+   Redistribution and use of the Software in source and binary forms,
+   with or without modification, is permitted provided that the
+   following conditions are met:
+
+   - Neither the names of NCAR's Computational and Information Systems
+   Laboratory, the University Corporation for Atmospheric Research,
+   nor the names of its sponsors or contributors may be used to
+   endorse or promote products derived from this Software without
+   specific prior written permission.  
+
+   - Redistributions of source code must retain the above copyright
+   notices, this list of conditions, and the disclaimer below.
+
+   - Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions, and the disclaimer below in the
+   documentation and/or other materials provided with the
+   distribution.
+
+   THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NONINFRINGEMENT. IN NO EVENT SHALL THE CONTRIBUTORS OR COPYRIGHT
+   HOLDERS BE LIABLE FOR ANY CLAIM, INDIRECT, INCIDENTAL, SPECIAL,
+   EXEMPLARY, OR CONSEQUENTIAL DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE
+   SOFTWARE.
+*/
+   
+/*
+   PFFFT : a Pretty Fast FFT.
+
+   This is basically an adaptation of the single precision fftpack
+   (v4) as found on netlib taking advantage of SIMD instruction found
+   on cpus such as intel x86 (SSE1), powerpc (Altivec), and arm (NEON).
+   
+   For architectures where no SIMD instruction is available, the code
+   falls back to a scalar version.  
+
+   Restrictions: 
+
+   - 1D transforms only, with 32-bit single precision.
+
+   - supports only transforms for inputs of length N of the form
+   N=(2^a)*(3^b)*(5^c), a >= 5, b >=0, c >= 0 (32, 48, 64, 96, 128,
+   144, 160, etc are all acceptable lengths). Performance is best for
+   128<=N<=8192.
+
+   - all (float*) pointers in the functions below are expected to
+   have an "simd-compatible" alignment, that is 16 bytes on x86 and
+   powerpc CPUs.
+  
+   You can allocate such buffers with the functions
+   pffft_aligned_malloc / pffft_aligned_free (or with stuff like
+   posix_memalign..)
+
+*/
+
+
+
+--- src/pffft.c ---
+/* Copyright (c) 2013  Julien Pommier ( pommier@modartt.com )
+   Copyright (c) 2020  Hayati Ayguen ( h_ayguen@web.de )
+
+   Based on original fortran 77 code from FFTPACKv4 from NETLIB
+   (http://www.netlib.org/fftpack), authored by Dr Paul Swarztrauber
+   of NCAR, in 1985.
+
+   As confirmed by the NCAR fftpack software curators, the following
+   FFTPACKv5 license applies to FFTPACKv4 sources. My changes are
+   released under the same terms.
+
+   FFTPACK license:
+
+   http://www.cisl.ucar.edu/css/software/fftpack5/ftpk.html
+
+   Copyright (c) 2004 the University Corporation for Atmospheric
+   Research ("UCAR"). All rights reserved. Developed by NCAR's
+   Computational and Information Systems Laboratory, UCAR,
+   www.cisl.ucar.edu.
+
+   Redistribution and use of the Software in source and binary forms,
+   with or without modification, is permitted provided that the
+   following conditions are met:
+
+   - Neither the names of NCAR's Computational and Information Systems
+   Laboratory, the University Corporation for Atmospheric Research,
+   nor the names of its sponsors or contributors may be used to
+   endorse or promote products derived from this Software without
+   specific prior written permission.  
+
+   - Redistributions of source code must retain the above copyright
+   notices, this list of conditions, and the disclaimer below.
+
+   - Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions, and the disclaimer below in the
+   documentation and/or other materials provided with the
+   distribution.
+
+   THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NONINFRINGEMENT. IN NO EVENT SHALL THE CONTRIBUTORS OR COPYRIGHT
+   HOLDERS BE LIABLE FOR ANY CLAIM, INDIRECT, INCIDENTAL, SPECIAL,
+   EXEMPLARY, OR CONSEQUENTIAL DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE
+   SOFTWARE.
+
+
+   PFFFT : a Pretty Fast FFT.
+
+   This file is largerly based on the original FFTPACK implementation, modified in
+   order to take advantage of SIMD instructions of modern CPUs.
+*/
+
+/*
+  ChangeLog: 
+  - 2011/10/02, version 1: This is the very first release of this file.
+*/
+
+
+
+--- src/pffft_priv_impl.h ---
+/* Copyright (c) 2013  Julien Pommier ( pommier@modartt.com )
+   Copyright (c) 2020  Hayati Ayguen ( h_ayguen@web.de )
+   Copyright (c) 2020  Dario Mambro ( dario.mambro@gmail.com )
+
+   Based on original fortran 77 code from FFTPACKv4 from NETLIB
+   (http://www.netlib.org/fftpack), authored by Dr Paul Swarztrauber
+   of NCAR, in 1985.
+
+   As confirmed by the NCAR fftpack software curators, the following
+   FFTPACKv5 license applies to FFTPACKv4 sources. My changes are
+   released under the same terms.
+
+   FFTPACK license:
+
+   http://www.cisl.ucar.edu/css/software/fftpack5/ftpk.html
+
+   Copyright (c) 2004 the University Corporation for Atmospheric
+   Research ("UCAR"). All rights reserved. Developed by NCAR's
+   Computational and Information Systems Laboratory, UCAR,
+   www.cisl.ucar.edu.
+
+   Redistribution and use of the Software in source and binary forms,
+   with or without modification, is permitted provided that the
+   following conditions are met:
+
+   - Neither the names of NCAR's Computational and Information Systems
+   Laboratory, the University Corporation for Atmospheric Research,
+   nor the names of its sponsors or contributors may be used to
+   endorse or promote products derived from this Software without
+   specific prior written permission.
+
+   - Redistributions of source code must retain the above copyright
+   notices, this list of conditions, and the disclaimer below.
+
+   - Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions, and the disclaimer below in the
+   documentation and/or other materials provided with the
+   distribution.
+
+   THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NONINFRINGEMENT. IN NO EVENT SHALL THE CONTRIBUTORS OR COPYRIGHT
+   HOLDERS BE LIABLE FOR ANY CLAIM, INDIRECT, INCIDENTAL, SPECIAL,
+   EXEMPLARY, OR CONSEQUENTIAL DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE
+   SOFTWARE.
+
+
+   PFFFT : a Pretty Fast FFT.
+
+   This file is largerly based on the original FFTPACK implementation, modified in
+   order to take advantage of SIMD instructions of modern CPUs.
+*/
+
+/* this file requires architecture specific preprocessor definitions
+ * it's only for library internal use
+ */
+
+
+/* define own constants required to turn off g++ extensions .. */
+
+
+--- src/simd/pf_altivec_float.h ---
+
+/* Copyright (c) 2013  Julien Pommier ( pommier@modartt.com )
+
+   Redistribution and use of the Software in source and binary forms,
+   with or without modification, is permitted provided that the
+   following conditions are met:
+
+   - Neither the names of NCAR's Computational and Information Systems
+   Laboratory, the University Corporation for Atmospheric Research,
+   nor the names of its sponsors or contributors may be used to
+   endorse or promote products derived from this Software without
+   specific prior written permission.
+
+   - Redistributions of source code must retain the above copyright
+   notices, this list of conditions, and the disclaimer below.
+
+   - Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions, and the disclaimer below in the
+   documentation and/or other materials provided with the
+   distribution.
+
+   THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NONINFRINGEMENT. IN NO EVENT SHALL THE CONTRIBUTORS OR COPYRIGHT
+   HOLDERS BE LIABLE FOR ANY CLAIM, INDIRECT, INCIDENTAL, SPECIAL,
+   EXEMPLARY, OR CONSEQUENTIAL DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE
+   SOFTWARE.
+*/
+
+
+
+--- src/simd/pf_float.h ---
+
+/* Copyright (c) 2013  Julien Pommier ( pommier@modartt.com )
+
+   Redistribution and use of the Software in source and binary forms,
+   with or without modification, is permitted provided that the
+   following conditions are met:
+
+   - Neither the names of NCAR's Computational and Information Systems
+   Laboratory, the University Corporation for Atmospheric Research,
+   nor the names of its sponsors or contributors may be used to
+   endorse or promote products derived from this Software without
+   specific prior written permission.
+
+   - Redistributions of source code must retain the above copyright
+   notices, this list of conditions, and the disclaimer below.
+
+   - Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions, and the disclaimer below in the
+   documentation and/or other materials provided with the
+   distribution.
+
+   THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NONINFRINGEMENT. IN NO EVENT SHALL THE CONTRIBUTORS OR COPYRIGHT
+   HOLDERS BE LIABLE FOR ANY CLAIM, INDIRECT, INCIDENTAL, SPECIAL,
+   EXEMPLARY, OR CONSEQUENTIAL DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE
+   SOFTWARE.
+*/
+
+
+
+--- src/simd/pf_fma_x86.h ---
+/* Copyright (c) 2024  hayguen@web.de
+   Copyright (c) 2013  Julien Pommier ( pommier@modartt.com )
+
+   Redistribution and use of the Software in source and binary forms,
+   with or without modification, is permitted provided that the
+   following conditions are met:
+
+   - Neither the names of PFFFT, nor the names of its
+   sponsors or contributors may be used to endorse or promote products
+   derived from this Software without specific prior written permission.
+
+   - Redistributions of source code must retain the above copyright
+   notices, this list of conditions, and the disclaimer below.
+
+   - Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions, and the disclaimer below in the
+   documentation and/or other materials provided with the distribution.
+
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+   HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+   INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+   BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+   OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+   AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
+   THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+   DAMAGE.
+*/
+
+
+
+--- src/simd/pf_helium_float.h ---
+/* Copyright (c) 2026  Márton Danóczy
+
+   Redistribution and use of the Software in source and binary forms,
+   with or without modification, is permitted provided that the
+   following conditions are met:
+
+   - Neither the names of NCAR's Computational and Information Systems
+   Laboratory, the University Corporation for Atmospheric Research,
+   nor the names of its sponsors or contributors may be used to
+   endorse or promote products derived from this Software without
+   specific prior written permission.
+
+   - Redistributions of source code must retain the above copyright
+   notices, this list of conditions, and the disclaimer below.
+
+   - Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions, and the disclaimer below in the
+   documentation and/or other materials provided with the
+   distribution.
+
+   THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NONINFRINGEMENT. IN NO EVENT SHALL THE CONTRIBUTORS OR COPYRIGHT
+   HOLDERS BE LIABLE FOR ANY CLAIM, INDIRECT, INCIDENTAL, SPECIAL,
+   EXEMPLARY, OR CONSEQUENTIAL DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE
+   SOFTWARE.
+*/
+
+
+
+--- src/simd/pf_neon_float.h ---
+
+/* Copyright (c) 2013  Julien Pommier ( pommier@modartt.com )
+
+   Redistribution and use of the Software in source and binary forms,
+   with or without modification, is permitted provided that the
+   following conditions are met:
+
+   - Neither the names of NCAR's Computational and Information Systems
+   Laboratory, the University Corporation for Atmospheric Research,
+   nor the names of its sponsors or contributors may be used to
+   endorse or promote products derived from this Software without
+   specific prior written permission.
+
+   - Redistributions of source code must retain the above copyright
+   notices, this list of conditions, and the disclaimer below.
+
+   - Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions, and the disclaimer below in the
+   documentation and/or other materials provided with the
+   distribution.
+
+   THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NONINFRINGEMENT. IN NO EVENT SHALL THE CONTRIBUTORS OR COPYRIGHT
+   HOLDERS BE LIABLE FOR ANY CLAIM, INDIRECT, INCIDENTAL, SPECIAL,
+   EXEMPLARY, OR CONSEQUENTIAL DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE
+   SOFTWARE.
+*/
+
+
+
+--- src/simd/pf_rvv_float.h ---
+
+/* Copyright (c) 2026  Michael Neuling ( mikey@neuling.org )
+
+   Redistribution and use of the Software in source and binary forms,
+   with or without modification, is permitted provided that the
+   following conditions are met:
+
+   - Neither the names of NCAR's Computational and Information Systems
+   Laboratory, the University Corporation for Atmospheric Research,
+   nor the names of its sponsors or contributors may be used to
+   endorse or promote products derived from this Software without
+   specific prior written permission.
+
+   - Redistributions of source code must retain the above copyright
+   notices, this list of conditions, and the disclaimer below.
+
+   - Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions, and the disclaimer below in the
+   documentation and/or other materials provided with the
+   distribution.
+
+   THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NONINFRINGEMENT. IN NO EVENT SHALL THE CONTRIBUTORS OR COPYRIGHT
+   HOLDERS BE LIABLE FOR ANY CLAIM, INDIRECT, INCIDENTAL, SPECIAL,
+   EXEMPLARY, OR CONSEQUENTIAL DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE
+   SOFTWARE.
+*/
+
+
+
+--- src/simd/pf_scalar_float.h ---
+
+/* Copyright (c) 2013  Julien Pommier ( pommier@modartt.com )
+   Copyright (c) 2020  Hayati Ayguen ( h_ayguen@web.de )
+
+   Redistribution and use of the Software in source and binary forms,
+   with or without modification, is permitted provided that the
+   following conditions are met:
+
+   - Neither the names of NCAR's Computational and Information Systems
+   Laboratory, the University Corporation for Atmospheric Research,
+   nor the names of its sponsors or contributors may be used to
+   endorse or promote products derived from this Software without
+   specific prior written permission.
+
+   - Redistributions of source code must retain the above copyright
+   notices, this list of conditions, and the disclaimer below.
+
+   - Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions, and the disclaimer below in the
+   documentation and/or other materials provided with the
+   distribution.
+
+   THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NONINFRINGEMENT. IN NO EVENT SHALL THE CONTRIBUTORS OR COPYRIGHT
+   HOLDERS BE LIABLE FOR ANY CLAIM, INDIRECT, INCIDENTAL, SPECIAL,
+   EXEMPLARY, OR CONSEQUENTIAL DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE
+   SOFTWARE.
+*/
+
+
+
+--- src/simd/pf_sse1_float.h ---
+
+/* Copyright (c) 2013  Julien Pommier ( pommier@modartt.com )
+
+   Redistribution and use of the Software in source and binary forms,
+   with or without modification, is permitted provided that the
+   following conditions are met:
+
+   - Neither the names of NCAR's Computational and Information Systems
+   Laboratory, the University Corporation for Atmospheric Research,
+   nor the names of its sponsors or contributors may be used to
+   endorse or promote products derived from this Software without
+   specific prior written permission.
+
+   - Redistributions of source code must retain the above copyright
+   notices, this list of conditions, and the disclaimer below.
+
+   - Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions, and the disclaimer below in the
+   documentation and/or other materials provided with the
+   distribution.
+
+   THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NONINFRINGEMENT. IN NO EVENT SHALL THE CONTRIBUTORS OR COPYRIGHT
+   HOLDERS BE LIABLE FOR ANY CLAIM, INDIRECT, INCIDENTAL, SPECIAL,
+   EXEMPLARY, OR CONSEQUENTIAL DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE
+   SOFTWARE.
+*/
+
+
+
+--- src/simd/pf_wasm_float.h ---
+/*
+   Copyright (c) 2026  Marton Danoczy ( marton78@gmail.com )
+*/
+
+/* Copyright (c) 2013  Julien Pommier ( pommier@modartt.com )
+
+   Redistribution and use of the Software in source and binary forms,
+   with or without modification, is permitted provided that the
+   following conditions are met:
+
+   - Neither the names of NCAR's Computational and Information Systems
+   Laboratory, the University Corporation for Atmospheric Research,
+   nor the names of its sponsors or contributors may be used to
+   endorse or promote products derived from this Software without
+   specific prior written permission.
+
+   - Redistributions of source code must retain the above copyright
+   notices, this list of conditions, and the disclaimer below.
+
+   - Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions, and the disclaimer below in the
+   documentation and/or other materials provided with the
+   distribution.
+
+   THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NONINFRINGEMENT. IN NO EVENT SHALL THE CONTRIBUTORS OR COPYRIGHT
+   HOLDERS BE LIABLE FOR ANY CLAIM, INDIRECT, INCIDENTAL, SPECIAL,
+   EXEMPLARY, OR CONSEQUENTIAL DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE
+   SOFTWARE.
+*/
+
+
+Jerzy MultiFX Next local modification: return NULL on setup allocation failure and release partial setup. FFT arithmetic unchanged. See setup-allocation-failure.patch.

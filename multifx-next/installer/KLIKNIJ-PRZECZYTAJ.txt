@@ -1,0 +1,29 @@
+JERZY MULTIFX NEXT — INSTALACJA MYSZKĄ
+
+1. Pobierz plik .deb na Raspberry Pi i kliknij go dwa razy.
+2. W systemowym oknie kliknij „Zainstaluj”. Jeśli system poprosi o hasło, wpisz swoje hasło.
+3. Z menu aplikacji (Dźwięk i obraz) uruchom „Jerzy MultiFX Next JACK2” albo „Jerzy MultiFX Next ALSA”.
+4. W oknie programu kliknij „Zainstaluj” i poczekaj. Następnie kliknij „Uruchom audio”.
+
+Nie musisz otwierać terminala ani wpisywać komend.
+Pierwsze przygotowanie programu może potrwać kilka minut. Internet może być potrzebny,
+żeby systemowy instalator doinstalował wymagane pakiety. Nie przerywaj tego procesu.
+
+Domyślnie: HeadRush Core, wejście 1 na oba kanały, wyjścia 1 i 2.
+JACK2 korzysta z już działającego JACK-a. Przycisk start łączy wyłącznie porty nowego hosta.
+Jeżeli JACK nie działa, uruchom go w swoim dotychczasowym programie do JACK-a.
+ALSA wymaga zwolnienia HeadRusha: wcześniej zatrzymaj JACK w swoim dotychczasowym programie.
+Nie uruchamiaj obu wariantów jednocześnie na HeadRushu.
+
+Poziom testowego efektu ustaw suwakiem, potem kliknij „Włącz efekt”.
+„Zatrzymaj” wyłącza audio. Zamknięcie okna również zatrzymuje program.
+Nie dodano autostartu ani zmian usług systemowych. To prosty panel testowy, nie pełny edytor efektów.
+
+Jeśli instalacja zgłosi brak pakietów lub nieobsługiwaną wersję systemu, nie obchodź błędu.
+Prześlij treść okna błędu. Nie znamy wydania systemu faktycznie zainstalowanego na Twoim Pi.
+Pakiety wymagają Python >=3.10, CMake >=3.25 i g++ >=11; menedżer pakietów sprawdza te zależności.
+Typowe aktualne Pi OS Bookworm/Trixie udostępniają te wersje; Bullseye może ich nie udostępniać.
+Instalacja przez menedżer pakietów na fizycznym Pi i dźwięk przez HeadRush są NIEZWERYFIKOWANE.
+
+Usunięcie ikon/pakietu: systemowy program zarządzania oprogramowaniem.
+Osobiste pliki programu/presety pozostają w ~/.local/opt/jerzy-multifx-next/.

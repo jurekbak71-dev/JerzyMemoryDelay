@@ -1,0 +1,126 @@
+{
+  "date": "2026-11-17",
+  "base_commit": "c7c616e204d3532c8f997976325bb1757606b825",
+  "feature_commit": "d7a087a85d13945a7147ec2665b4c79ec0ad25ac",
+  "results": {
+    "cab-debug-tests": {
+      "passed": 12,
+      "failed": 0
+    },
+    "cab-release-tests": {
+      "passed": 12,
+      "failed": 0
+    },
+    "cab-asan-tests": {
+      "passed": 11,
+      "failed": 0
+    },
+    "cab-tsan-tests": {
+      "passed": 11,
+      "failed": 0
+    },
+    "arm-tests": {
+      "passed": 10,
+      "failed": 0
+    }
+  },
+  "source_sha256": {
+    "multifx-next/CMakeLists.txt": "cc80c0809faf7d095bb99adcc8bc3601f94d033f9b0b2f69792fd1c66dab57e3",
+    "multifx-next/cmake/arm64-linux.cmake": "81dd507d9e88a2d20c90d26c3cedf069acf33a7b9ce9a072367abef97e5ae590",
+    "multifx-next/include/jfx.h": "73bb055b04e9e606a7dc7d828d7663ea9e735144248d6f45e9051cfe8f8fa245",
+    "multifx-next/plugins/cab.cpp": "cc6638046254311306f75abdf8cf6acef8feb26c9f2035f992222ceba3e8c028",
+    "multifx-next/plugins/cab.json": "f3c0124ff36c4652e7d932f52e5da997580f3d26074d693ae37daeac52a2299b",
+    "multifx-next/plugins/gain.cpp": "08be624086059cb2d89d6c18f810fd1737b406921cdf1643ffe0b9a034e7abd7",
+    "multifx-next/plugins/gain.json": "fb97c74d20b8d8cbdf0cdcb6919c45ec71cdf595400edffde66e52e669f80609",
+    "multifx-next/plugins/legacy.cpp": "33f2ef4cf5162f0141533fa1172f99598805ac21a4a35875260bc14a787ecb80",
+    "multifx-next/plugins/legacy.json": "9e8ea3bc58ae8937eebfa385b76e2dcb85eba31d8f743b43465e961e96038615",
+    "multifx-next/plugins/synth.cpp": "525ad4a87027365687bd9c63a155d8051091b933ac040c0af0c7ac28c5ce82df",
+    "multifx-next/plugins/synth.json": "a814ea5920049238f0cdde964b59e38c36e3d8db2208a415d8e2a997806161b6",
+    "multifx-next/src/engine.cpp": "140f6133b9509496eb974b94b626db1d23fcb01d1c639f7a8e7f97c5b2a4597c",
+    "multifx-next/src/engine.hpp": "538ab462bc1e3d29bbfbd02ad8ddf85a4ae884cfc254956cc78140383f1d884b",
+    "multifx-next/src/jack_backend.cpp": "f4c55a7d18da9ae4042d975f2313ef2d754d40b7ba7c51be5420432786ed5e8f",
+    "multifx-next/src/jack_backend.hpp": "a361bff418ee2714446dd4956b76230d782cbbd86e43be04df04676ef6a8b92d",
+    "multifx-next/src/main.cpp": "f7a9ea7162550f26e1b8571387222acecbe46f3a11697f590f0fcdad111afd70",
+    "multifx-next/src/pffft_cab.cpp": "8936672832166960092752063e088a93af14a2d508cb9d215a9e5f99be8dda68",
+    "multifx-next/src/pffft_cab.hpp": "be63a66c99929bdd8fce51091eb263e13d7a5d95ba8aa5dc86fda27fe6a3df32",
+    "multifx-next/src/plugin.cpp": "be71ba4e106962cf65323f50aec43d8b2fa9a792ad24ca9ea2e077861037f8dd",
+    "multifx-next/src/plugin.hpp": "eb30e481347caed21590dd053325f4101be41f1fc8ba1fcfc047d7916894ab61",
+    "multifx-next/src/session.cpp": "1669175b4f8a9b629be7cf614f441940c96118eef4a4a1f1697efeb44dd3ae1a",
+    "multifx-next/src/session.hpp": "dc7fee5e361602ada25be1cb4a437fbd7e6e30a094ad01a340d5777105117b13",
+    "multifx-next/tests/cab_compatibility_test.cpp": "cbd07ff1ae1a2a73183b4e52655e236d911676b2984495164025c0c2935680a2",
+    "multifx-next/tests/convolver_bench.cpp": "4f9aa7eabe1de43ebda79d98351e213a8ce2094769f11973ad9a326515d0b484",
+    "multifx-next/tests/convolver_failure_test.cpp": "af299fd737140615d99f675bb675a66c50d705a074cfee483086a10ade318302",
+    "multifx-next/tests/convolver_test.cpp": "425794ba0abb745af9434e50f7fe90d50e938cea7bc96dfcb6d41374284abda2",
+    "multifx-next/tests/cross_configure_test.py": "09d7923465427407aa5ad4d19009c0f9695311fa18ef1c34936b1300f785e4f7",
+    "multifx-next/tests/engine_test.cpp": "9cbc48f4ff2f10debfefbab4c8093c9e0967a812521c506e85f46eb6c1bc2c65",
+    "multifx-next/tests/invalid.cpp": "0d7559c09e582d227be0206e76c48f5ba90a423343ceedca8822327147b92af0",
+    "multifx-next/tests/jack_integration.py": "0c6cae7c167a52cc4018e1398f74a2665608834741545a3368db4ddd6c9f2936",
+    "multifx-next/tests/jack_probe.cpp": "b1be0b4ec999e7e95652a5249565491c39d98bbf11cbdd19c56c09baec706c73",
+    "multifx-next/tests/legacy_test.cpp": "9ba1428447fd1a0eaf8576851cd94515918fdb1b7077d19a94bc76b940d9b45e",
+    "multifx-next/tests/noentry.c": "be37f4d0f2679df4fb08a744fe4f0d8052316b75c0021dc592114c87564c7d1f",
+    "multifx-next/tests/overload.cpp": "6c0b25c9bcfc8bbb4108fa5fa89ba9e3f5501e87264cd4b2f63d27147db47fe6",
+    "multifx-next/tests/overload_test.cpp": "68f8ad8ef40da675812ad89001210228de285cf4fe240553019a32d4f9d3ffdd",
+    "multifx-next/tests/package_test.py": "e6c7659efc32c772eff5eabbba4dfc2a06e4a512d675485d9108e9772db8d24c",
+    "multifx-next/tests/plugin_test.cpp": "c512c27deb52d994458e4206466376346b70801e183240264d61fe244e20f31a",
+    "multifx-next/tests/regressions_test.cpp": "858f25f1e654a5396cb1cdfe9c805a5cc8df65997505f698f1e315c88bcb883f",
+    "multifx-next/tests/resource_test.cpp": "69625c8d0336d80ab1d69b1abcb76ecc17715c8109992b9315ccefdff85da131",
+    "multifx-next/tests/rt_alloc_guard.cpp": "83da81b530bb61304ddff6e674d4dec45a93739f673bc2f264e2cf321d00b284",
+    "multifx-next/tests/session_test.cpp": "921111451ff66463fc8016614e806fbec51b56f5f05f1157cdbb77b7389d2065",
+    "multifx-next/tests/wrong.c": "984ccc9393ecbd6bf1ff660650eb93402a26dec846d1e0cfccf190b426e09296",
+    "multifx-next/tools/jfx_package.py": "e3bc26f26d78da27a1e097770332b0c523489f354e597ea352c83b150d458cd3",
+    "multifx-next/vendor/LICENSE.json.MIT": "86b998c792894ccb911a1cb7994f7a9652894e7a094c0b5e45be2f553f45cf14",
+    "multifx-next/vendor/json.hpp": "9bea4c8066ef4a1c206b2be5a36302f8926f7fdc6087af5d20b417d0cf103ea6",
+    "multifx-next/vendor/pffft/.gitattributes": "f46a059a2c471006d62eaf0b27af3d48dfe10d5834840c915719474564722985",
+    "multifx-next/vendor/pffft/LICENSE.txt": "6c99fce38c991ff104307ecebe20ff014b5e1f5d9e3426da292da8417c7a78cd",
+    "multifx-next/vendor/pffft/NOTICES.txt": "aaa10adfde0964d4da18605315346456764ba94f21f820019c042f782478a794",
+    "multifx-next/vendor/pffft/UPSTREAM.json": "ae810febca2d2fa060ac9d09782e62a82bb2484a59ce74dd6d24df437c0b4c39",
+    "multifx-next/vendor/pffft/include/pffft/pffft.h": "0935379f8b7904b1140050b2c6196c1b86dc08b11fc67da8773df965678469fb",
+    "multifx-next/vendor/pffft/setup-allocation-failure.patch": "ffeca9e983110eaadd8df27982cde31104216b4a7974271b5e661f3ada5d0ea4",
+    "multifx-next/vendor/pffft/src/pffft.c": "9da0908e94261feca20a0d407a3a33e8318d1a66f953d92bee01baaa334d74ca",
+    "multifx-next/vendor/pffft/src/pffft_common.c": "3e89b8c5d345227f5e8f3a35ba04c6713b119687c752834784cdf48823ed0467",
+    "multifx-next/vendor/pffft/src/pffft_priv_impl.h": "4232b018e38452491653a32263f36b4b6ea301660490b373faf97dfd76befdd8",
+    "multifx-next/vendor/pffft/src/simd/pf_altivec_float.h": "dc42daac1418a8a265655b6edf74e218a41dfa3fe425d6b300ebb39ba918eb25",
+    "multifx-next/vendor/pffft/src/simd/pf_float.h": "23af7d983f35c7ac9fa8c58f0bb20994f78c827da8d1780fe1afad74d5ff92f9",
+    "multifx-next/vendor/pffft/src/simd/pf_fma_x86.h": "3356625968c71b6ec71dcef8b15e6cca17794f3ccef84671c1c210224ecddcbe",
+    "multifx-next/vendor/pffft/src/simd/pf_helium_float.h": "b577a8ef42ace740023e45522b40e9995384dbe56964343b5ae4dbf35cc1979f",
+    "multifx-next/vendor/pffft/src/simd/pf_neon_float.h": "7a98d4e2df0429441bd4099f97b1a1d6bde3059f684a9ce951d5a9d837d9ab87",
+    "multifx-next/vendor/pffft/src/simd/pf_rvv_float.h": "c1e2282c5331f9c53beaf5db088b45e34dbf27374d0b423c133bf69948e7fa6b",
+    "multifx-next/vendor/pffft/src/simd/pf_scalar_float.h": "70a7480163508ab457909c65a8398d889846cc24df6f5169d617a12106bd237d",
+    "multifx-next/vendor/pffft/src/simd/pf_sse1_float.h": "19e728e2bcae40d9b8aae748d481306c4f595f49650ec4e3d4bb7589a9bacf4c",
+    "multifx-next/vendor/pffft/src/simd/pf_wasm_float.h": "674b554458a5f4464ac31bac7f72c54abf869d68e1b32025ea15aa547b57236c"
+  },
+  "pffft_upstream": "efc1dd2de6c3562fc464f905d37d9281f08a20dd",
+  "pffft_local_patch": "vendor/pffft/setup-allocation-failure.patch",
+  "platforms": {
+    "native": "Linux x86_64 GCC14.2 Release/Debug/SSE1",
+    "cross": "GCC14.2, glibc2.41 sysroot",
+    "emulator": "QEMU10.0.13 Cortex-A72; no physical hardware"
+  },
+  "arm_host_imports": {
+    "glibc": [
+      "GLIBC_2.17",
+      "GLIBC_2.32",
+      "GLIBC_2.34",
+      "GLIBC_2.38"
+    ],
+    "glibcxx": [
+      "GLIBCXX_3.4",
+      "GLIBCXX_3.4.9",
+      "GLIBCXX_3.4.14",
+      "GLIBCXX_3.4.20",
+      "GLIBCXX_3.4.21",
+      "GLIBCXX_3.4.26",
+      "GLIBCXX_3.4.29",
+      "GLIBCXX_3.4.31",
+      "GLIBCXX_3.4.32"
+    ]
+  },
+  "neon_instruction_count": 812,
+  "unverified": [
+    "physical Pi4/HeadRush",
+    "physical round-trip and XRUN performance",
+    "compatibility with actual Pi OS",
+    "ALSA hardware comparison"
+  ],
+  "publication": "none"
+}

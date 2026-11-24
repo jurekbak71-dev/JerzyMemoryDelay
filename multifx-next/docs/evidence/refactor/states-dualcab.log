@@ -1,0 +1,51 @@
+Test project /workspace/work/rt-next-base
+      Start  1: NextDualCab
+ 1/23 Test  #1: NextDualCab ......................   Passed    1.44 sec
+      Start  2: NextTail
+ 2/23 Test  #2: NextTail .........................   Passed    0.00 sec
+      Start  3: NextTransitions
+ 3/23 Test  #3: NextTransitions ..................   Passed    0.00 sec
+      Start  4: NextConvolver
+ 4/23 Test  #4: NextConvolver ....................   Passed    2.18 sec
+      Start  5: NextCabCompatibility
+ 5/23 Test  #5: NextCabCompatibility .............   Passed    1.78 sec
+      Start 17: NextPlugins
+ 6/23 Test #17: NextPlugins ......................   Passed    0.00 sec
+      Start  6: NextEngine
+ 7/23 Test  #6: NextEngine .......................   Passed    0.04 sec
+      Start  7: NextSession
+ 8/23 Test  #7: NextSession ......................   Passed    0.01 sec
+      Start  8: NextMigration
+ 9/23 Test  #8: NextMigration ....................   Passed    1.13 sec
+      Start  9: NextClickPackages
+10/23 Test  #9: NextClickPackages ................   Passed    1.58 sec
+      Start 10: NextInstallers
+11/23 Test #10: NextInstallers ...................   Passed    0.66 sec
+      Start 11: NextPackages
+12/23 Test #11: NextPackages .....................   Passed    1.93 sec
+      Start 12: NextLegacy
+13/23 Test #12: NextLegacy .......................   Passed    0.00 sec
+      Start 13: NextResources
+14/23 Test #13: NextResources ....................   Passed    0.01 sec
+      Start 14: NextConvolverFailure
+15/23 Test #14: NextConvolverFailure .............   Passed    0.00 sec
+      Start 15: NextReviewRegressions
+16/23 Test #15: NextReviewRegressions ............   Passed    0.00 sec
+      Start 16: NextOverload
+17/23 Test #16: NextOverload .....................   Passed    0.01 sec
+      Start 18: NextJACK
+18/23 Test #18: NextJACK .........................   Passed    5.18 sec
+      Start 19: NextMidiQueue
+19/23 Test #19: NextMidiQueue ....................   Passed    0.01 sec
+      Start 20: NextPCM
+20/23 Test #20: NextPCM ..........................   Passed    0.00 sec
+      Start 21: NextALSAFaults
+21/23 Test #21: NextALSAFaults ...................   Passed    0.30 sec
+      Start 22: NextALSA
+22/23 Test #22: NextALSA .........................   Passed    0.09 sec
+      Start 23: NextALSAAudio
+23/23 Test #23: NextALSAAudio ....................   Passed    0.37 sec
+
+100% tests passed out of 23
+
+Total Test time (real) =  16.75 sec

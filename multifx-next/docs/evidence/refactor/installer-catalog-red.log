@@ -1,0 +1,7 @@
+/tmp/tmpijxj_ohf/jerzy-multifx-next-jack2-source.tar.gz d7d2fbd19a3bbc2a2dfb77a2864f80f394c6de1246bcd2c55a677a686b84b68c
+/tmp/tmpijxj_ohf/jerzy-multifx-next-alsa-source.tar.gz 0aa5fb785f444d8b652abc83e0ac0ff2a28ffa34f3face34e80c198ccbb75054
+Traceback (most recent call last):
+  File "/workspace/work/JerzyMemoryDelay/multifx-next/tests/installer_test.py", line 13, in <module>
+    assert any(n.endswith('/multifx2/modules/reel_echo.cpp') for n in names), 'complete legacy source catalog missing'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: complete legacy source catalog missing

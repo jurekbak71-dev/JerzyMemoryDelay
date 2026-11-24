@@ -1,0 +1,2 @@
+PASS PFFFT reference/direct FIR and boundary lengths; max_abs=2.08616e-07 rms=3.5711e-08 samples=43328
+SIMD=NEON lanes=4

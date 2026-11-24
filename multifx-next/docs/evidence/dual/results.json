@@ -1,0 +1,27 @@
+{
+  "native": {
+    "passed": 18,
+    "failed": 0
+  },
+  "asan_ubsan": {
+    "passed": 16,
+    "failed": 0
+  },
+  "tsan": {
+    "passed": 16,
+    "failed": 0
+  },
+  "arm64_qemu": {
+    "passed": 12,
+    "failed": 0
+  },
+  "arm64_alsa_integration": [
+    "null",
+    "file PCM audio/gain/mapping"
+  ],
+  "physical_pi_headrush_tested": false,
+  "source_branch": "feature/jerzy-multifx-v04-dual-ir-midi",
+  "source_sha": "ffadec107af878424639c40bee979a838af4ca97",
+  "working_branch": "feat/multifx-next-modular-audio-engine",
+  "github_published": false
+}

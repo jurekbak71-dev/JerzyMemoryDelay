@@ -1,0 +1,157 @@
+Start testing: Nov 17 09:37 CET
+----------------------------------------------------------
+8/9 Testing: NextPlugins
+8/9 Test: NextPlugins
+Command: "/workspace/work/next-build/next_plugin_test" "/workspace/work/next-build/plugins"
+Directory: /workspace/work/next-build
+"NextPlugins" start time: Nov 17 09:37 CET
+Output:
+----------------------------------------------------------
+PASS plugin ABI, stereo FX, MIDI instrument, shared libraries, CAB reference and dry alignment
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"NextPlugins" end time: Nov 17 09:37 CET
+"NextPlugins" time elapsed: 00:00:00
+----------------------------------------------------------
+
+1/9 Testing: NextEngine
+1/9 Test: NextEngine
+Command: "/workspace/work/next-build/next_engine_test" "/workspace/work/next-build/plugins"
+Directory: /workspace/work/next-build
+"NextEngine" start time: Nov 17 09:37 CET
+Output:
+----------------------------------------------------------
+PASS audio allocation audit: C and C++ allocation/free calls = 0
+PASS graph audio/MIDI, bypass, compensation, bounded exchange and 2000 concurrent changes
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"NextEngine" end time: Nov 17 09:37 CET
+"NextEngine" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/9 Testing: NextSession
+2/9 Test: NextSession
+Command: "/workspace/work/next-build/next_session_test" "/workspace/work/next-build/plugins"
+Directory: /workspace/work/next-build
+"NextSession" start time: Nov 17 09:37 CET
+Output:
+----------------------------------------------------------
+PASS session commands, reconnect MOVE, modes, preset atomic rollback, library release and clean instrument reactivation
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"NextSession" end time: Nov 17 09:37 CET
+"NextSession" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/9 Testing: NextPackages
+3/9 Test: NextPackages
+Command: "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12" "/workspace/work/JerzyMemoryDelay/multifx-next/tests/package_test.py" "/workspace/work/next-build/plugins"
+Directory: /workspace/work/next-build
+"NextPackages" start time: Nov 17 09:37 CET
+Output:
+----------------------------------------------------------
+....
+----------------------------------------------------------------------
+Ran 4 tests in 2.363s
+
+OK
+<end of output>
+Test time =   2.45 sec
+----------------------------------------------------------
+Test Passed.
+"NextPackages" end time: Nov 17 09:38 CET
+"NextPackages" time elapsed: 00:00:02
+----------------------------------------------------------
+
+4/9 Testing: NextLegacy
+4/9 Test: NextLegacy
+Command: "/workspace/work/next-build/next_legacy_test" "/workspace/work/next-build/plugins"
+Directory: /workspace/work/next-build
+"NextLegacy" start time: Nov 17 09:38 CET
+Output:
+----------------------------------------------------------
+PASS ABI2 migration bridge matches old stereo DSP sample for sample
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"NextLegacy" end time: Nov 17 09:38 CET
+"NextLegacy" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/9 Testing: NextResources
+5/9 Test: NextResources
+Command: "/workspace/work/next-build/next_resource_test" "/workspace/work/next-build/plugins"
+Directory: /workspace/work/next-build
+"NextResources" start time: Nov 17 09:38 CET
+Output:
+----------------------------------------------------------
+Before: OK {"bad_samples":0,"blocks":0,"deadline_misses":0,"latency_frames":0,"max_ns":0,"midi_overflows":0,"oversize_blocks":0,"owned_bytes_estimate":768,"pending":false,"rss_bytes":2252800,"slot_calls":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_ids":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_max_ns":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_total_ns":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total_ns":0}
+Loaded: OK {"bad_samples":0,"blocks":1,"deadline_misses":1,"latency_frames":64,"max_ns":7789404,"midi_overflows":0,"oversize_blocks":0,"owned_bytes_estimate":2103540,"pending":false,"rss_bytes":4812800,"slot_calls":[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_ids":[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_max_ns":[7774101,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_total_ns":[7774101,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total_ns":7789404}
+Unloaded: OK {"bad_samples":0,"blocks":2,"deadline_misses":1,"latency_frames":64,"max_ns":7789404,"midi_overflows":0,"oversize_blocks":0,"owned_bytes_estimate":2628,"pending":false,"rss_bytes":2576384,"slot_calls":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_ids":[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_max_ns":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_total_ns":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total_ns":7797376}
+Released tracked capacity bytes: 2100912
+Heap mmap before/after: 2113536/0
+<end of output>
+Test time =   0.08 sec
+----------------------------------------------------------
+Test Passed.
+"NextResources" end time: Nov 17 09:38 CET
+"NextResources" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/9 Testing: NextReviewRegressions
+6/9 Test: NextReviewRegressions
+Command: "/workspace/work/next-build/next_regressions_test" "/workspace/work/next-build/plugins"
+Directory: /workspace/work/next-build
+"NextReviewRegressions" start time: Nov 17 09:38 CET
+Output:
+----------------------------------------------------------
+PASS review regression 0
+PASS review regression 1
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"NextReviewRegressions" end time: Nov 17 09:38 CET
+"NextReviewRegressions" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/9 Testing: NextOverload
+7/9 Test: NextOverload
+Command: "/workspace/work/next-build/next_overload_test" "/workspace/work/next-build/plugins"
+Directory: /workspace/work/next-build
+"NextOverload" start time: Nov 17 09:38 CET
+Output:
+----------------------------------------------------------
+PASS bounded heavy DSP overload detected: callback_ns=3709433 budget_ns=5208 (192kHz, 1 frame); finite actual audio
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"NextOverload" end time: Nov 17 09:38 CET
+"NextOverload" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/9 Testing: NextJACK
+9/9 Test: NextJACK
+Command: "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12" "/workspace/work/JerzyMemoryDelay/multifx-next/tests/jack_integration.py" "/workspace/work/next-build/JerzyMultiFXNext" "/workspace/work/next-build/next_jack_probe" "/workspace/work/deps/jack/usr/bin/jackd" "/workspace/work/next-build/plugins"
+Directory: /workspace/work/next-build
+"NextJACK" start time: Nov 17 09:38 CET
+Output:
+----------------------------------------------------------
+PASS real JACK stereo passthrough/gain/MIDI audio, Note Off, 200 mode edits; stats={"bad_samples": 0, "blocks": 2886, "deadline_misses": 2, "latency_frames": 0, "max_ns": 2522476, "midi_overflows": 1, "oversize_blocks": 0, "owned_bytes_estimate": 349176, "pending": true, "rss_bytes": 5169152, "slot_calls": [4, 1765, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "slot_ids": [1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "slot_max_ns": [611, 2181890, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "slot_total_ns": [2253, 6240548, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "total_ns": 39213953, "xruns": 16}
+<end of output>
+Test time =   5.17 sec
+----------------------------------------------------------
+Test Passed.
+"NextJACK" end time: Nov 17 09:38 CET
+"NextJACK" time elapsed: 00:00:05
+----------------------------------------------------------
+
+End testing: Nov 17 09:38 CET

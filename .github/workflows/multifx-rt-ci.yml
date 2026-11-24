@@ -1,0 +1,55 @@
+name: MultiFX RT verification
+on:
+  pull_request:
+    branches: [feature/jerzy-multifx-v04-dual-ir-midi]
+  push:
+    branches: [codex/multifx-rt-engine-refactor]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, ubuntu-24.04-arm]
+        build_type: [Debug, Release]
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build dependencies
+        run: sudo apt-get update && sudo apt-get install -y cmake g++ libjack-jackd2-dev jackd2 libasound2-dev python3-tk desktop-file-utils
+      - name: Configure and build all preserved and replacement engines
+        run: |
+          cmake -S . -B build-rt -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DJERZY_BUILD_PLUGIN=OFF -DJERZY_BUILD_MULTIFX=ON -DJERZY_BUILD_MULTIFX2=ON -DJERZY_BUILD_MULTIFX4=ON -DJERZY_BUILD_MULTIFX_RT=ON -DNEXT_ALSA=ON
+          cmake --build build-rt --parallel 2
+      - name: Verify DSP ABI graph migration and dummy backends
+        run: |
+          ctest --test-dir build-rt --output-on-failure
+          python3 -m unittest discover -s multifx2 -p test_panel.py
+          python3 multifx2/check_module_metadata.py build-rt/modules
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rt-tests-${{ matrix.runner }}-${{ matrix.build_type }}
+          path: build-rt/**/Testing/Temporary/LastTest.log
+  sanitizers:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        sanitizer: ['address,undefined', 'thread']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dependencies
+        run: sudo apt-get update && sudo apt-get install -y cmake g++ libjack-jackd2-dev jackd2 libasound2-dev python3-tk desktop-file-utils
+      - name: Build and test instrumented core and actual legacy catalog
+        run: |
+          cmake -S multifx-next -B build-san -DCMAKE_BUILD_TYPE=Debug -DNEXT_ALSA=ON -DNEXT_SANITIZER=${{ matrix.sanitizer }}
+          cmake --build build-san --parallel 2
+          ctest --test-dir build-san --output-on-failure
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rt-sanitizer-${{ matrix.sanitizer }}
+          path: build-san/Testing/Temporary/LastTest.log

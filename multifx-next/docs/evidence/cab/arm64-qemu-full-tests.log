@@ -1,0 +1,174 @@
+Start testing: Nov 17 12:13 CET
+----------------------------------------------------------
+1/10 Testing: NextConvolver
+1/10 Test: NextConvolver
+Command: "/workspace/work/qemu/usr/bin/qemu-aarch64" "-cpu" "cortex-a72" "-L" "/workspace/work/arm-toolchain/usr/aarch64-linux-gnu" "-E" "LD_LIBRARY_PATH=/workspace/work/arm-toolchain/usr/aarch64-linux-gnu/lib:/workspace/work/arm-toolchain/usr/lib/aarch64-linux-gnu" "/workspace/work/next-arm64/next_convolver_test"
+Directory: /workspace/work/next-arm64
+"NextConvolver" start time: Nov 17 12:13 CET
+Output:
+----------------------------------------------------------
+PASS PFFFT reference/direct FIR and boundary lengths; max_abs=2.08616e-07 rms=3.5711e-08 samples=43328
+SIMD=NEON lanes=4
+<end of output>
+Test time =   2.10 sec
+----------------------------------------------------------
+Test Passed.
+"NextConvolver" end time: Nov 17 12:13 CET
+"NextConvolver" time elapsed: 00:00:02
+----------------------------------------------------------
+
+2/10 Testing: NextCabCompatibility
+2/10 Test: NextCabCompatibility
+Command: "/workspace/work/qemu/usr/bin/qemu-aarch64" "-cpu" "cortex-a72" "-L" "/workspace/work/arm-toolchain/usr/aarch64-linux-gnu" "-E" "LD_LIBRARY_PATH=/workspace/work/arm-toolchain/usr/aarch64-linux-gnu/lib:/workspace/work/arm-toolchain/usr/lib/aarch64-linux-gnu" "/workspace/work/next-arm64/next_cab_compatibility_test" "/workspace/work/next-arm64/plugins"
+Directory: /workspace/work/next-arm64
+"NextCabCompatibility" start time: Nov 17 12:13 CET
+Output:
+----------------------------------------------------------
+PASS CAB stereo float WAV, 16 rate pairs and irregular frame counts; max_abs=4.17233e-07 samples=320000
+<end of output>
+Test time =   2.07 sec
+----------------------------------------------------------
+Test Passed.
+"NextCabCompatibility" end time: Nov 17 12:13 CET
+"NextCabCompatibility" time elapsed: 00:00:02
+----------------------------------------------------------
+
+10/10 Testing: NextPlugins
+10/10 Test: NextPlugins
+Command: "/workspace/work/qemu/usr/bin/qemu-aarch64" "-cpu" "cortex-a72" "-L" "/workspace/work/arm-toolchain/usr/aarch64-linux-gnu" "-E" "LD_LIBRARY_PATH=/workspace/work/arm-toolchain/usr/aarch64-linux-gnu/lib:/workspace/work/arm-toolchain/usr/lib/aarch64-linux-gnu" "/workspace/work/next-arm64/next_plugin_test" "/workspace/work/next-arm64/plugins"
+Directory: /workspace/work/next-arm64
+"NextPlugins" start time: Nov 17 12:13 CET
+Output:
+----------------------------------------------------------
+PASS plugin ABI, stereo FX, MIDI instrument, shared libraries, CAB reference and dry alignment
+<end of output>
+Test time =   0.10 sec
+----------------------------------------------------------
+Test Passed.
+"NextPlugins" end time: Nov 17 12:13 CET
+"NextPlugins" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/10 Testing: NextEngine
+3/10 Test: NextEngine
+Command: "/workspace/work/qemu/usr/bin/qemu-aarch64" "-cpu" "cortex-a72" "-L" "/workspace/work/arm-toolchain/usr/aarch64-linux-gnu" "-E" "LD_LIBRARY_PATH=/workspace/work/arm-toolchain/usr/aarch64-linux-gnu/lib:/workspace/work/arm-toolchain/usr/lib/aarch64-linux-gnu" "/workspace/work/next-arm64/next_engine_test" "/workspace/work/next-arm64/plugins"
+Directory: /workspace/work/next-arm64
+"NextEngine" start time: Nov 17 12:13 CET
+Output:
+----------------------------------------------------------
+PASS audio allocation audit: C and C++ allocation/free calls = 0
+PASS graph audio/MIDI, bypass, compensation, bounded exchange and 2000 concurrent changes
+<end of output>
+Test time =   0.32 sec
+----------------------------------------------------------
+Test Passed.
+"NextEngine" end time: Nov 17 12:13 CET
+"NextEngine" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/10 Testing: NextSession
+4/10 Test: NextSession
+Command: "/workspace/work/qemu/usr/bin/qemu-aarch64" "-cpu" "cortex-a72" "-L" "/workspace/work/arm-toolchain/usr/aarch64-linux-gnu" "-E" "LD_LIBRARY_PATH=/workspace/work/arm-toolchain/usr/aarch64-linux-gnu/lib:/workspace/work/arm-toolchain/usr/lib/aarch64-linux-gnu" "/workspace/work/next-arm64/next_session_test" "/workspace/work/next-arm64/plugins"
+Directory: /workspace/work/next-arm64
+"NextSession" start time: Nov 17 12:13 CET
+Output:
+----------------------------------------------------------
+PASS session commands, reconnect MOVE, modes, preset atomic rollback, library release and clean instrument reactivation
+<end of output>
+Test time =   0.12 sec
+----------------------------------------------------------
+Test Passed.
+"NextSession" end time: Nov 17 12:13 CET
+"NextSession" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/10 Testing: NextLegacy
+5/10 Test: NextLegacy
+Command: "/workspace/work/qemu/usr/bin/qemu-aarch64" "-cpu" "cortex-a72" "-L" "/workspace/work/arm-toolchain/usr/aarch64-linux-gnu" "-E" "LD_LIBRARY_PATH=/workspace/work/arm-toolchain/usr/aarch64-linux-gnu/lib:/workspace/work/arm-toolchain/usr/lib/aarch64-linux-gnu" "/workspace/work/next-arm64/next_legacy_test" "/workspace/work/next-arm64/plugins"
+Directory: /workspace/work/next-arm64
+"NextLegacy" start time: Nov 17 12:13 CET
+Output:
+----------------------------------------------------------
+PASS ABI2 migration bridge matches old stereo DSP sample for sample
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"NextLegacy" end time: Nov 17 12:13 CET
+"NextLegacy" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/10 Testing: NextResources
+6/10 Test: NextResources
+Command: "/workspace/work/qemu/usr/bin/qemu-aarch64" "-cpu" "cortex-a72" "-L" "/workspace/work/arm-toolchain/usr/aarch64-linux-gnu" "-E" "LD_LIBRARY_PATH=/workspace/work/arm-toolchain/usr/aarch64-linux-gnu/lib:/workspace/work/arm-toolchain/usr/lib/aarch64-linux-gnu" "/workspace/work/next-arm64/next_resource_test" "/workspace/work/next-arm64/plugins"
+Directory: /workspace/work/next-arm64
+"NextResources" start time: Nov 17 12:13 CET
+Output:
+----------------------------------------------------------
+Before: OK {"bad_samples":0,"blocks":0,"deadline_misses":0,"latency_frames":0,"max_ns":0,"midi_overflows":0,"oversize_blocks":0,"owned_bytes_estimate":768,"pending":false,"rss_bytes":15392768,"slot_calls":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_ids":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_max_ns":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_total_ns":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total_ns":0}
+Loaded: OK {"bad_samples":0,"blocks":1,"deadline_misses":1,"latency_frames":64,"max_ns":4464194,"midi_overflows":0,"oversize_blocks":0,"owned_bytes_estimate":1056596,"pending":false,"rss_bytes":20226048,"slot_calls":[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_ids":[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_max_ns":[3854771,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_total_ns":[3854771,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total_ns":4464194}
+Unloaded: OK {"bad_samples":0,"blocks":2,"deadline_misses":1,"latency_frames":64,"max_ns":4464194,"midi_overflows":0,"oversize_blocks":0,"owned_bytes_estimate":2628,"pending":false,"rss_bytes":19378176,"slot_calls":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_ids":[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_max_ns":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"slot_total_ns":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"total_ns":4546236}
+Released tracked capacity bytes: 1053968
+Heap mmap before/after: 798720/0
+<end of output>
+Test time =   0.21 sec
+----------------------------------------------------------
+Test Passed.
+"NextResources" end time: Nov 17 12:13 CET
+"NextResources" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/10 Testing: NextConvolverFailure
+7/10 Test: NextConvolverFailure
+Command: "/workspace/work/qemu/usr/bin/qemu-aarch64" "-cpu" "cortex-a72" "-L" "/workspace/work/arm-toolchain/usr/aarch64-linux-gnu" "-E" "LD_LIBRARY_PATH=/workspace/work/arm-toolchain/usr/aarch64-linux-gnu/lib:/workspace/work/arm-toolchain/usr/lib/aarch64-linux-gnu" "/workspace/work/next-arm64/next_convolver_failure_test"
+Directory: /workspace/work/next-arm64
+"NextConvolverFailure" start time: Nov 17 12:13 CET
+Output:
+----------------------------------------------------------
+Injecting allocation failure 0
+Injecting allocation failure 1
+Injecting allocation failure 2
+Injecting allocation failure 3
+PASS setup struct, twiddle storage and both aligned spectrum allocation failures preserve live state
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"NextConvolverFailure" end time: Nov 17 12:13 CET
+"NextConvolverFailure" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/10 Testing: NextReviewRegressions
+8/10 Test: NextReviewRegressions
+Command: "/workspace/work/qemu/usr/bin/qemu-aarch64" "-cpu" "cortex-a72" "-L" "/workspace/work/arm-toolchain/usr/aarch64-linux-gnu" "-E" "LD_LIBRARY_PATH=/workspace/work/arm-toolchain/usr/aarch64-linux-gnu/lib:/workspace/work/arm-toolchain/usr/lib/aarch64-linux-gnu" "/workspace/work/next-arm64/next_regressions_test" "/workspace/work/next-arm64/plugins"
+Directory: /workspace/work/next-arm64
+"NextReviewRegressions" start time: Nov 17 12:13 CET
+Output:
+----------------------------------------------------------
+PASS review regression 0
+PASS review regression 1
+<end of output>
+Test time =   0.09 sec
+----------------------------------------------------------
+Test Passed.
+"NextReviewRegressions" end time: Nov 17 12:13 CET
+"NextReviewRegressions" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/10 Testing: NextOverload
+9/10 Test: NextOverload
+Command: "/workspace/work/qemu/usr/bin/qemu-aarch64" "-cpu" "cortex-a72" "-L" "/workspace/work/arm-toolchain/usr/aarch64-linux-gnu" "-E" "LD_LIBRARY_PATH=/workspace/work/arm-toolchain/usr/aarch64-linux-gnu/lib:/workspace/work/arm-toolchain/usr/lib/aarch64-linux-gnu" "/workspace/work/next-arm64/next_overload_test" "/workspace/work/next-arm64/plugins"
+Directory: /workspace/work/next-arm64
+"NextOverload" start time: Nov 17 12:13 CET
+Output:
+----------------------------------------------------------
+PASS bounded heavy DSP overload detected: callback_ns=28165502 budget_ns=5208 (192kHz, 1 frame); finite actual audio
+<end of output>
+Test time =   0.08 sec
+----------------------------------------------------------
+Test Passed.
+"NextOverload" end time: Nov 17 12:13 CET
+"NextOverload" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 17 12:13 CET

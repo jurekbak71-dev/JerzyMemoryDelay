@@ -1,0 +1,82 @@
+[
+  {
+    "file": "binutils-aarch64-linux-gnu_2.44-3_amd64.deb",
+    "bytes": 1686720,
+    "sha256": "6e5a9be38121213dda42189a525db01aad4dc52194b577d7d73d659a5843ce6c"
+  },
+  {
+    "file": "cpp-14-aarch64-linux-gnu_14.2.0-19cross1_amd64.deb",
+    "bytes": 11203104,
+    "sha256": "6610dda7938376fefcbc3b49c81cd23c82e86411a488e4c9a69c082f2acd714e"
+  },
+  {
+    "file": "g++-14-aarch64-linux-gnu_14.2.0-19cross1_amd64.deb",
+    "bytes": 12177992,
+    "sha256": "edbb7ab8e432a4a5b2ca2b7cce97bb643bd6fb1ae75e65bb0e889bae1c6d40eb"
+  },
+  {
+    "file": "gcc-14-aarch64-linux-gnu-base_14.2.0-19cross1_amd64.deb",
+    "bytes": 49664,
+    "sha256": "4a40a7a5429a03f58bdb1f49df9b7aeecb86770f5585d88dcf6a27b5979a6d5d"
+  },
+  {
+    "file": "gcc-14-aarch64-linux-gnu_14.2.0-19cross1_amd64.deb",
+    "bytes": 21571468,
+    "sha256": "489acd3a7479d7e55c01e7f3af10176b70a99ec8c2230ba63cacdbcf2e6e0692"
+  },
+  {
+    "file": "libc6-arm64-cross_2.41-11cross1_all.deb",
+    "bytes": 1168128,
+    "sha256": "82cd3a0c6754d36cb5a7acbd9fa64c38080a681608c41165736dc88438acfc71"
+  },
+  {
+    "file": "libc6-dev-arm64-cross_2.41-11cross1_all.deb",
+    "bytes": 1616752,
+    "sha256": "61e0b87dec4929abc9fb345ef324139498bf23ddbf0b10ca3a743b59c8ddf8bb"
+  },
+  {
+    "file": "libdb5.3t64_5.3.28+dfsg2-9_arm64.deb",
+    "bytes": 629132,
+    "sha256": "bfef56508d69fd3f940668f6abd0a466a362cabf63c4cc1c787cc58d28f6e92f"
+  },
+  {
+    "file": "libgcc-14-dev-arm64-cross_14.2.0-19cross1_all.deb",
+    "bytes": 2451584,
+    "sha256": "44d31567993f2f138638e3088cc75240d13c7d8a2ebe69032aafd37bc35c7a6f"
+  },
+  {
+    "file": "libgcc-s1-arm64-cross_14.2.0-19cross1_all.deb",
+    "bytes": 54056,
+    "sha256": "272751f04dc1669c6368005ccea3496b28626c720c64c98980f705350f4c6b6b"
+  },
+  {
+    "file": "libjack-jackd2-0_1.9.22~dfsg-4_arm64.deb",
+    "bytes": 265068,
+    "sha256": "c6bd35ff8a539a24957b95bae936aeed868a7865ff7227c0ec8dcccd69cebbda"
+  },
+  {
+    "file": "libjack-jackd2-dev_1.9.22~dfsg-4_arm64.deb",
+    "bytes": 59968,
+    "sha256": "becd43423b7e858e8d3ee2fa6d4f8151cfd84f03518ba7c285021f6afa2f7011"
+  },
+  {
+    "file": "libstdc++-14-dev-arm64-cross_14.2.0-19cross1_all.deb",
+    "bytes": 2551912,
+    "sha256": "dc2d2e1e59f2687a6cb30f3f5ed25e795f2769482ee8f7c5835f00481bf5ad65"
+  },
+  {
+    "file": "libstdc++6-arm64-cross_14.2.0-19cross1_all.deb",
+    "bytes": 545968,
+    "sha256": "81e667b7dad2d378defcc502e9772fe4f435a27e62b7a33a20576885b02e9693"
+  },
+  {
+    "file": "linux-libc-dev-arm64-cross_6.12.38-1cross1_all.deb",
+    "bytes": 2445712,
+    "sha256": "fd77c13fedf057038732ef1c4fc06edd753d08092fd5f92c4629551f1f69870f"
+  },
+  {
+    "file": "qemu-user_10.0.13+ds-0+deb13u1_amd64.deb",
+    "bytes": 71089852,
+    "sha256": "ca6ede739327a20ae5a3498230c8a3a9a072c586e131bc6bcc1201eb1725e336"
+  }
+]

@@ -1,0 +1,2 @@
+PASS PFFFT reference/direct FIR and boundary lengths; max_abs=2.16067e-07 rms=4.28391e-08 samples=43328
+SIMD=SSE1 lanes=4

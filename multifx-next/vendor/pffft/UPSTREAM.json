@@ -1,0 +1,27 @@
+{
+  "repository": "https://github.com/marton78/pffft",
+  "commit": "efc1dd2de6c3562fc464f905d37d9281f08a20dd",
+  "license": "LICENSE.txt; source file notices retained",
+  "files": {
+    "LICENSE.txt": "6c99fce38c991ff104307ecebe20ff014b5e1f5d9e3426da292da8417c7a78cd",
+    "include/pffft/pffft.h": "0935379f8b7904b1140050b2c6196c1b86dc08b11fc67da8773df965678469fb",
+    "src/pffft.c": "9da0908e94261feca20a0d407a3a33e8318d1a66f953d92bee01baaa334d74ca",
+    "src/pffft_common.c": "3e89b8c5d345227f5e8f3a35ba04c6713b119687c752834784cdf48823ed0467",
+    "src/pffft_priv_impl.h": "c2d07ced60648e2a968633f3b461fa6b15171e77390ea474391c5c8e277afba7",
+    "src/simd/pf_float.h": "23af7d983f35c7ac9fa8c58f0bb20994f78c827da8d1780fe1afad74d5ff92f9",
+    "src/simd/pf_sse1_float.h": "19e728e2bcae40d9b8aae748d481306c4f595f49650ec4e3d4bb7589a9bacf4c",
+    "src/simd/pf_fma_x86.h": "3356625968c71b6ec71dcef8b15e6cca17794f3ccef84671c1c210224ecddcbe",
+    "src/simd/pf_wasm_float.h": "674b554458a5f4464ac31bac7f72c54abf869d68e1b32025ea15aa547b57236c",
+    "src/simd/pf_neon_float.h": "7a98d4e2df0429441bd4099f97b1a1d6bde3059f684a9ce951d5a9d837d9ab87",
+    "src/simd/pf_altivec_float.h": "dc42daac1418a8a265655b6edf74e218a41dfa3fe425d6b300ebb39ba918eb25",
+    "src/simd/pf_rvv_float.h": "c1e2282c5331f9c53beaf5db088b45e34dbf27374d0b423c133bf69948e7fa6b",
+    "src/simd/pf_helium_float.h": "b577a8ef42ace740023e45522b40e9995384dbe56964343b5ae4dbf35cc1979f",
+    "src/simd/pf_scalar_float.h": "70a7480163508ab457909c65a8398d889846cc24df6f5169d617a12106bd237d"
+  },
+  "patches": [
+    "setup-allocation-failure.patch"
+  ],
+  "local_files": {
+    "src/pffft_priv_impl.h": "4232b018e38452491653a32263f36b4b6ea301660490b373faf97dfd76befdd8"
+  }
+}

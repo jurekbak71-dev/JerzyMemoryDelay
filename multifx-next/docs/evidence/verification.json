@@ -1,0 +1,83 @@
+{
+  "date": "2026-11-17",
+  "platform": "Linux x86_64",
+  "compiler": "GCC 14.2.0",
+  "cmake": "4.4.5",
+  "jack": "1.9.22",
+  "results": {
+    "next-ctest": {
+      "passed": 9,
+      "failed": 0
+    },
+    "release-tests": {
+      "passed": 9,
+      "failed": 0
+    },
+    "asan-tests": {
+      "passed": 9,
+      "failed": 0
+    },
+    "tsan-tests": {
+      "passed": 9,
+      "failed": 0
+    },
+    "legacy-tests": {
+      "passed": 4,
+      "failed": 0
+    }
+  },
+  "extra_checks": {
+    "existing_modules_metadata": 13,
+    "existing_python_panel_tests": 6,
+    "concurrent_graph_changes": 2000,
+    "live_jack_mode_edits": 200,
+    "calibrated_audio_allocation_and_free_calls": 0
+  },
+  "source_sha256": {
+    "multifx-next/CMakeLists.txt": "a6d720be63c846a13d71e11ae2cb3069c8f56b18cfface6fb0ef4538aaaaa8c6",
+    "multifx-next/include/jfx.h": "73bb055b04e9e606a7dc7d828d7663ea9e735144248d6f45e9051cfe8f8fa245",
+    "multifx-next/plugins/cab.cpp": "1499ba74a03d68ad355a93a15d6cd98d3be7952f5647a51ee06ab94d6b03ed10",
+    "multifx-next/plugins/cab.json": "e3ea1be13a2b9ad49d700925df7b1fa4258e9234243e6649ba10f44e71abd145",
+    "multifx-next/plugins/gain.cpp": "08be624086059cb2d89d6c18f810fd1737b406921cdf1643ffe0b9a034e7abd7",
+    "multifx-next/plugins/gain.json": "fb97c74d20b8d8cbdf0cdcb6919c45ec71cdf595400edffde66e52e669f80609",
+    "multifx-next/plugins/legacy.cpp": "33f2ef4cf5162f0141533fa1172f99598805ac21a4a35875260bc14a787ecb80",
+    "multifx-next/plugins/legacy.json": "9e8ea3bc58ae8937eebfa385b76e2dcb85eba31d8f743b43465e961e96038615",
+    "multifx-next/plugins/synth.cpp": "525ad4a87027365687bd9c63a155d8051091b933ac040c0af0c7ac28c5ce82df",
+    "multifx-next/plugins/synth.json": "a814ea5920049238f0cdde964b59e38c36e3d8db2208a415d8e2a997806161b6",
+    "multifx-next/src/engine.cpp": "140f6133b9509496eb974b94b626db1d23fcb01d1c639f7a8e7f97c5b2a4597c",
+    "multifx-next/src/engine.hpp": "538ab462bc1e3d29bbfbd02ad8ddf85a4ae884cfc254956cc78140383f1d884b",
+    "multifx-next/src/jack_backend.cpp": "f4c55a7d18da9ae4042d975f2313ef2d754d40b7ba7c51be5420432786ed5e8f",
+    "multifx-next/src/jack_backend.hpp": "a361bff418ee2714446dd4956b76230d782cbbd86e43be04df04676ef6a8b92d",
+    "multifx-next/src/main.cpp": "f7a9ea7162550f26e1b8571387222acecbe46f3a11697f590f0fcdad111afd70",
+    "multifx-next/src/plugin.cpp": "be71ba4e106962cf65323f50aec43d8b2fa9a792ad24ca9ea2e077861037f8dd",
+    "multifx-next/src/plugin.hpp": "eb30e481347caed21590dd053325f4101be41f1fc8ba1fcfc047d7916894ab61",
+    "multifx-next/src/session.cpp": "1669175b4f8a9b629be7cf614f441940c96118eef4a4a1f1697efeb44dd3ae1a",
+    "multifx-next/src/session.hpp": "dc7fee5e361602ada25be1cb4a437fbd7e6e30a094ad01a340d5777105117b13",
+    "multifx-next/tests/engine_test.cpp": "9cbc48f4ff2f10debfefbab4c8093c9e0967a812521c506e85f46eb6c1bc2c65",
+    "multifx-next/tests/invalid.cpp": "0d7559c09e582d227be0206e76c48f5ba90a423343ceedca8822327147b92af0",
+    "multifx-next/tests/jack_integration.py": "000f5f029d254285bfc3e71fa8f78b290936549c46a2426fe701e47ad589877f",
+    "multifx-next/tests/jack_probe.cpp": "b1be0b4ec999e7e95652a5249565491c39d98bbf11cbdd19c56c09baec706c73",
+    "multifx-next/tests/legacy_test.cpp": "9ba1428447fd1a0eaf8576851cd94515918fdb1b7077d19a94bc76b940d9b45e",
+    "multifx-next/tests/noentry.c": "be37f4d0f2679df4fb08a744fe4f0d8052316b75c0021dc592114c87564c7d1f",
+    "multifx-next/tests/overload.cpp": "6c0b25c9bcfc8bbb4108fa5fa89ba9e3f5501e87264cd4b2f63d27147db47fe6",
+    "multifx-next/tests/overload_test.cpp": "68f8ad8ef40da675812ad89001210228de285cf4fe240553019a32d4f9d3ffdd",
+    "multifx-next/tests/package_test.py": "1f3af1074a750f6541beb1f7616b8e0f3470d5dc1dc1e1607bf9589b30de8eaa",
+    "multifx-next/tests/plugin_test.cpp": "c512c27deb52d994458e4206466376346b70801e183240264d61fe244e20f31a",
+    "multifx-next/tests/regressions_test.cpp": "858f25f1e654a5396cb1cdfe9c805a5cc8df65997505f698f1e315c88bcb883f",
+    "multifx-next/tests/resource_test.cpp": "b460e2ac5290ac172584adeb04d7986206550b39cb447044d620aa5a68fb04e6",
+    "multifx-next/tests/rt_alloc_guard.cpp": "6976d1e525d5193514884dc0b592b710bdd06c85bd3361b5f928fc3897bd65e4",
+    "multifx-next/tests/session_test.cpp": "921111451ff66463fc8016614e806fbec51b56f5f05f1157cdbb77b7389d2065",
+    "multifx-next/tests/wrong.c": "984ccc9393ecbd6bf1ff660650eb93402a26dec846d1e0cfccf190b426e09296",
+    "multifx-next/tools/jfx_package.py": "dd2de381ded539b2c929272d1158c8ea81770c92f251309d50ee7b7db59716fb",
+    "multifx-next/vendor/LICENSE.json.MIT": "86b998c792894ccb911a1cb7994f7a9652894e7a094c0b5e45be2f553f45cf14",
+    "multifx-next/vendor/json.hpp": "9bea4c8066ef4a1c206b2be5a36302f8926f7fdc6087af5d20b417d0cf103ea6"
+  },
+  "unverified": [
+    "physical Pi4/HeadRush",
+    "ARM64 compilation/execution",
+    "physical round-trip",
+    "ALSA comparison",
+    "PFFFT/NEON benchmark"
+  ],
+  "publication": "none"
+}

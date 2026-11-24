@@ -1,0 +1,43 @@
+Test project /workspace/work/rt-next-base
+      Start  1: NextConvolver
+ 1/19 Test  #1: NextConvolver ....................   Passed    2.25 sec
+      Start  2: NextCabCompatibility
+ 2/19 Test  #2: NextCabCompatibility .............   Passed    1.78 sec
+      Start 13: NextPlugins
+ 3/19 Test #13: NextPlugins ......................   Passed    0.01 sec
+      Start  3: NextEngine
+ 4/19 Test  #3: NextEngine .......................   Passed    0.03 sec
+      Start  4: NextSession
+ 5/19 Test  #4: NextSession ......................   Passed    0.01 sec
+      Start  5: NextClickPackages
+ 6/19 Test  #5: NextClickPackages ................   Passed    1.54 sec
+      Start  6: NextInstallers
+ 7/19 Test  #6: NextInstallers ...................   Passed    0.51 sec
+      Start  7: NextPackages
+ 8/19 Test  #7: NextPackages .....................   Passed    1.95 sec
+      Start  8: NextLegacy
+ 9/19 Test  #8: NextLegacy .......................   Passed    0.00 sec
+      Start  9: NextResources
+10/19 Test  #9: NextResources ....................   Passed    0.01 sec
+      Start 10: NextConvolverFailure
+11/19 Test #10: NextConvolverFailure .............   Passed    0.00 sec
+      Start 11: NextReviewRegressions
+12/19 Test #11: NextReviewRegressions ............   Passed    0.00 sec
+      Start 12: NextOverload
+13/19 Test #12: NextOverload .....................   Passed    0.01 sec
+      Start 14: NextJACK
+14/19 Test #14: NextJACK .........................   Passed    5.16 sec
+      Start 15: NextMidiQueue
+15/19 Test #15: NextMidiQueue ....................   Passed    0.01 sec
+      Start 16: NextPCM
+16/19 Test #16: NextPCM ..........................   Passed    0.00 sec
+      Start 17: NextALSAFaults
+17/19 Test #17: NextALSAFaults ...................   Passed    0.31 sec
+      Start 18: NextALSA
+18/19 Test #18: NextALSA .........................   Passed    0.09 sec
+      Start 19: NextALSAAudio
+19/19 Test #19: NextALSAAudio ....................   Passed    0.26 sec
+
+100% tests passed out of 19
+
+Total Test time (real) =  13.94 sec

@@ -1,0 +1,13 @@
+F....
+======================================================================
+FAIL: test_cab_binary_license_retained_and_required (__main__.PackageTests.test_cab_binary_license_retained_and_required)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/work/JerzyMemoryDelay/multifx-next/tests/package_test.py", line 23, in test_cab_binary_license_retained_and_required
+    self.assertNotEqual(self.run_tool('pack',source,temp/'missing-license.jfx').returncode,0,'required binary license omitted')
+AssertionError: 0 == 0 : required binary license omitted
+
+----------------------------------------------------------------------
+Ran 5 tests in 2.482s
+
+FAILED (failures=1)

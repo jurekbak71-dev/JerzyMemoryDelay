@@ -1,0 +1,22 @@
+set(CMAKE_SYSTEM_NAME Linux)
+set(CMAKE_SYSTEM_PROCESSOR aarch64)
+# Installed toolchain defaults. Override prefix/suffix for an extracted local toolchain.
+if(NOT NEXT_ARM64_COMPILER_PREFIX)
+ set(NEXT_ARM64_COMPILER_PREFIX aarch64-linux-gnu-)
+endif()
+set(CMAKE_C_COMPILER "${NEXT_ARM64_COMPILER_PREFIX}gcc${NEXT_ARM64_COMPILER_SUFFIX}")
+set(CMAKE_CXX_COMPILER "${NEXT_ARM64_COMPILER_PREFIX}g++${NEXT_ARM64_COMPILER_SUFFIX}")
+if(NEXT_ARM64_SYSROOT)
+ set(CMAKE_SYSROOT "${NEXT_ARM64_SYSROOT}")
+ set(CMAKE_FIND_ROOT_PATH "${NEXT_ARM64_SYSROOT}")
+ # CMake find-root modes do not constrain the native pkg-config executable.
+ set(ENV{PKG_CONFIG_SYSROOT_DIR} "${NEXT_ARM64_SYSROOT}")
+ set(ENV{PKG_CONFIG_LIBDIR} "${NEXT_ARM64_SYSROOT}/usr/lib/aarch64-linux-gnu/pkgconfig:${NEXT_ARM64_SYSROOT}/usr/aarch64-linux-gnu/lib/pkgconfig:${NEXT_ARM64_SYSROOT}/usr/lib/pkgconfig:${NEXT_ARM64_SYSROOT}/usr/share/pkgconfig")
+ set(ENV{PKG_CONFIG_PATH} "")
+endif()
+# These settings must survive CMake try_compile subprojects.
+list(APPEND CMAKE_TRY_COMPILE_PLATFORM_VARIABLES NEXT_ARM64_COMPILER_PREFIX NEXT_ARM64_COMPILER_SUFFIX NEXT_ARM64_SYSROOT)
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)

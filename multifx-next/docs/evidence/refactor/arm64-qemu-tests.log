@@ -1,0 +1,49 @@
+Test project /workspace/work/rt-arm64
+      Start  1: NextIRFormats
+ 1/22 Test  #1: NextIRFormats ....................   Passed    2.41 sec
+      Start  2: NextLifecycle
+ 2/22 Test  #2: NextLifecycle ....................   Passed   18.21 sec
+      Start  3: NextMetrics
+ 3/22 Test  #3: NextMetrics ......................   Passed    0.07 sec
+      Start  4: NextCCConcurrency
+ 4/22 Test  #4: NextCCConcurrency ................   Passed    7.07 sec
+      Start  5: NextCCBinding
+ 5/22 Test  #5: NextCCBinding ....................   Passed    0.21 sec
+      Start  6: NextPluginExtensions
+ 6/22 Test  #6: NextPluginExtensions .............   Passed    0.29 sec
+      Start  7: NextDualCab
+ 7/22 Test  #7: NextDualCab ......................   Passed    9.42 sec
+      Start  8: NextTail
+ 8/22 Test  #8: NextTail .........................   Passed    0.18 sec
+      Start  9: NextTransitions
+ 9/22 Test  #9: NextTransitions ..................   Passed    0.15 sec
+      Start 10: NextConvolver
+10/22 Test #10: NextConvolver ....................   Passed    4.36 sec
+      Start 11: NextCabCompatibility
+11/22 Test #11: NextCabCompatibility .............   Passed    3.82 sec
+      Start 19: NextPlugins
+12/22 Test #19: NextPlugins ......................   Passed    0.18 sec
+      Start 12: NextEngine
+13/22 Test #12: NextEngine .......................   Passed   11.23 sec
+      Start 13: NextSession
+14/22 Test #13: NextSession ......................   Passed    0.17 sec
+      Start 14: NextLegacy
+15/22 Test #14: NextLegacy .......................   Passed    0.09 sec
+      Start 15: NextResources
+16/22 Test #15: NextResources ....................   Passed    0.28 sec
+      Start 16: NextConvolverFailure
+17/22 Test #16: NextConvolverFailure .............   Passed    0.05 sec
+      Start 17: NextReviewRegressions
+18/22 Test #17: NextReviewRegressions ............   Passed    0.18 sec
+      Start 18: NextOverload
+19/22 Test #18: NextOverload .....................   Passed    0.17 sec
+      Start 20: NextMidiQueue
+20/22 Test #20: NextMidiQueue ....................   Passed    0.06 sec
+      Start 21: NextPCM
+21/22 Test #21: NextPCM ..........................   Passed    0.06 sec
+      Start 22: NextLegacyCatalog
+22/22 Test #22: NextLegacyCatalog ................   Passed   86.60 sec
+
+100% tests passed out of 22
+
+Total Test time (real) = 145.30 sec
