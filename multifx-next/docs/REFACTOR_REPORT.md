@@ -93,8 +93,8 @@ czasy nie są gwarancją RT ani dowodem przewagi na Pi. Źródło harness: tests
 Pi4/HeadRush Core, faktyczna wersja systemu użytkownika, priorytet RT i limity
 systemu, USB, temperatury/throttling,30/60min stabilność, fizyczny loopback,
 rzeczywisty p95/p99 na urządzeniu i przewaga JACK2/ALSA. Rzeczywiste okno Windows,
-SSH do Pi i jego zależności również nie były uruchamiane. GitHub Actions wymaga
-osobnego potwierdzenia uruchomienia w GitHub; plik workflow nie jest wynikiem CI.
+SSH do Pi i jego zależności również nie były uruchamiane. GitHub Actions został uruchomiony w GitHub; podczas ostatniego sprawdzenia
+pozostawał in_progress. Nie zaliczamy nieukończonych zadań jako PASS.
 
 ## NIEWYKONANE
 
@@ -124,5 +124,10 @@ Repo: https://github.com/jurekbak71-dev/JerzyMemoryDelay .
 Baza: feature/jerzy-multifx-v04-dual-ir-midi, ffadec107af878424639c40bee979a838af4ca97.
 Gałąź robocza: codex/multifx-rt-engine-refactor.
 Etapy:52623ae audyt,51b60cf ponowne użycie jawnego JFX3,9ed6939 rampy/dualCAB.
-Dalsze commity, synchronizacja i adres Draft PR są podane w końcowym raporcie
-sesji po rzeczywistym wykonaniu publikacji. Bez merge, force-push i wdrożenia.
+Commit1cad803858af94bece43e6e1ce3818914682aea6 zawiera MIDI/migrację/testy/CI
+i poprawki instalatorów. Opublikowano gałąź na origin i utworzono Draft PR:
+https://github.com/jurekbak71-dev/JerzyMemoryDelay/pull/5 .
+ZIP-y zbudowano z1cad803; wszystkie283 pliki źródłowe każdego payloadu porównano
+bajtowo z tym commitem. Końcowa izolowana instalacja obu dokładnie tych ZIP-ów
+przeszła; SHA256 w evidence/refactor/windows-final-packages.json. Późniejszy commit
+uzupełnia tylko raport/dowody. Bez merge, force-push i wdrożenia.

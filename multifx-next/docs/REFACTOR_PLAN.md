@@ -16,7 +16,7 @@ benchmarks and CI. Preserve ABI2 binary layout and old sources.
 - [x] Add generator/error plugins and graph/CAB/param/start-stop stress; sanitizer runs.
 - [x] Benchmark modes/FFT; p95/p99 callback, RSS/PSS, XRUN and physical-loopback tool/scripts.
 - [x] Optional root build integration and GitHub Actions x64/ARM64 without deployment.
-- [ ] Final review, logical commits, push only new branch and Draft PR to source branch.
+- [x] Final review, logical commits, push only new branch and Draft PR to source branch.
 
 Review focus: old-plan lifetime during ramp, directACTIVE->UNLOADED retention, MIDI stuck
 notes, dual CAB missing-slot semantics, migration rejection instead of silent feature loss,
